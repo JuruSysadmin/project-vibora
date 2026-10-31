@@ -1,0 +1,28 @@
+# Godot 4 — cache e artefatos de importação (gerados, não versionar)
+.godot/
+.import/
+
+# .NET / C#
+bin/
+obj/
+.mono/
+*.user
+*.suo
+
+# Exportações do jogo
+/build/
+*.pck
+*.zip
+
+# Sobras locais
+*.old
+*.tmp
+*~
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Credenciais e configuração local de agente
+.ai-game-dev/credentials.json
+.claude/settings.local.json

@@ -1,0 +1,208 @@
+[gd_scene format=3 uid="uid://dnxbo0oosnl6l"]
+
+[ext_resource type="Material" uid="uid://iuo2fa3aroxb" path="res://materials/floor.tres" id="1_j60wy"]
+[ext_resource type="Material" uid="uid://dsntuvco3jwr" path="res://materials/ceiling.tres" id="2_qgxqk"]
+[ext_resource type="Material" uid="uid://buh8cokssor13" path="res://materials/Tiles101_1K-JPG/Tiles101_1K-JPG.tres" id="3_1b6n0"]
+[ext_resource type="Script" uid="uid://repj6liq31hu" path="res://scripts/Player.cs" id="4_1b6n0"]
+[ext_resource type="Material" uid="uid://ci482xng2v4iu" path="res://materials/player.tres" id="5_llcge"]
+[ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="6_1b6n0"]
+[ext_resource type="Script" uid="uid://csjccrhj5wnx7" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="7_llcge"]
+[ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="8_lwi15"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_lwi15"]
+size = Vector3(16, 0.5, 12)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_e6mo4"]
+size = Vector3(16, 0.5, 12)
+
+[sub_resource type="BoxMesh" id="BoxMesh_px6rj"]
+size = Vector3(16, 0.5, 12)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2ucnx"]
+size = Vector3(16, 0.5, 12)
+
+[sub_resource type="BoxMesh" id="BoxMesh_cr2eh"]
+size = Vector3(16.5, 5, 0.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cy6r3"]
+size = Vector3(16.5, 5, 0.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_0tv6x"]
+size = Vector3(16.5, 5, 0.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_42ncp"]
+size = Vector3(16.5, 5, 0.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_s61md"]
+size = Vector3(0.5, 5, 12)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_d46x6"]
+size = Vector3(0.5, 5, 12)
+
+[sub_resource type="BoxMesh" id="BoxMesh_n3syt"]
+size = Vector3(0.5, 5, 12)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wqkcq"]
+size = Vector3(0.5, 5, 12)
+
+[sub_resource type="Environment" id="Environment_jg26c"]
+background_mode = 1
+background_color = Color(0.043137256, 0.050980393, 0.0627451, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.53333336, 0.6, 0.73333335, 1)
+ambient_light_energy = 0.45
+tonemap_mode = 2
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_353n8"]
+radius = 0.4
+height = 1.8
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_4rfup"]
+radius = 0.4
+height = 1.8
+
+[sub_resource type="Resource" id="Resource_e6mo4"]
+script = ExtResource("8_lwi15")
+
+[node name="Level01" type="Node3D" unique_id=1069077734]
+
+[node name="Room" type="Node3D" parent="." unique_id=1997948591]
+
+[node name="Floor" type="StaticBody3D" parent="Room" unique_id=1682783075]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Room/Floor" unique_id=1649836882]
+material_override = ExtResource("1_j60wy")
+mesh = SubResource("BoxMesh_lwi15")
+
+[node name="Collider" type="CollisionShape3D" parent="Room/Floor" unique_id=1167848077]
+shape = SubResource("BoxShape3D_e6mo4")
+
+[node name="Ceiling" type="StaticBody3D" parent="Room" unique_id=541766861]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.25, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Room/Ceiling" unique_id=1589807731]
+material_override = ExtResource("2_qgxqk")
+mesh = SubResource("BoxMesh_px6rj")
+
+[node name="Collider" type="CollisionShape3D" parent="Room/Ceiling" unique_id=1349058442]
+shape = SubResource("BoxShape3D_2ucnx")
+
+[node name="WallN" type="StaticBody3D" parent="Room" unique_id=79610611]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, -6.25)
+
+[node name="Mesh" type="MeshInstance3D" parent="Room/WallN" unique_id=1104171841]
+material_override = ExtResource("3_1b6n0")
+mesh = SubResource("BoxMesh_cr2eh")
+
+[node name="Collider" type="CollisionShape3D" parent="Room/WallN" unique_id=1817312169]
+shape = SubResource("BoxShape3D_cy6r3")
+
+[node name="WallS" type="StaticBody3D" parent="Room" unique_id=1916123051]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 6.25)
+
+[node name="Mesh" type="MeshInstance3D" parent="Room/WallS" unique_id=1583897813]
+material_override = ExtResource("3_1b6n0")
+mesh = SubResource("BoxMesh_0tv6x")
+
+[node name="Collider" type="CollisionShape3D" parent="Room/WallS" unique_id=139031382]
+shape = SubResource("BoxShape3D_42ncp")
+
+[node name="WallW" type="StaticBody3D" parent="Room" unique_id=1321687942]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.25, 2.5, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Room/WallW" unique_id=1942595514]
+material_override = ExtResource("3_1b6n0")
+mesh = SubResource("BoxMesh_s61md")
+
+[node name="Collider" type="CollisionShape3D" parent="Room/WallW" unique_id=640266524]
+shape = SubResource("BoxShape3D_d46x6")
+
+[node name="WallE" type="StaticBody3D" parent="Room" unique_id=146445234]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.25, 2.5, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Room/WallE" unique_id=559123940]
+material_override = ExtResource("3_1b6n0")
+mesh = SubResource("BoxMesh_n3syt")
+
+[node name="Collider" type="CollisionShape3D" parent="Room/WallE" unique_id=347000384]
+shape = SubResource("BoxShape3D_wqkcq")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1520227093]
+environment = SubResource("Environment_jg26c")
+
+[node name="Lamp1" type="OmniLight3D" parent="." unique_id=1229649023]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 4.4, -3)
+light_color = Color(1, 0.9137255, 0.76862746, 1)
+light_energy = 2.0
+shadow_enabled = true
+omni_range = 9.0
+
+[node name="Lamp2" type="OmniLight3D" parent="." unique_id=1085715467]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 4.4, -3)
+light_color = Color(1, 0.9137255, 0.76862746, 1)
+light_energy = 2.0
+shadow_enabled = true
+omni_range = 9.0
+
+[node name="Lamp3" type="OmniLight3D" parent="." unique_id=1363744682]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 4.4, 3)
+light_color = Color(1, 0.9137255, 0.76862746, 1)
+light_energy = 2.0
+shadow_enabled = true
+omni_range = 9.0
+
+[node name="Lamp4" type="OmniLight3D" parent="." unique_id=873743427]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 4.4, 3)
+light_color = Color(1, 0.9137255, 0.76862746, 1)
+light_energy = 2.0
+shadow_enabled = true
+omni_range = 9.0
+
+[node name="Player" type="CharacterBody3D" parent="." unique_id=356130549]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+script = ExtResource("4_1b6n0")
+
+[node name="Collider" type="CollisionShape3D" parent="Player" unique_id=780146140]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_353n8")
+
+[node name="Body" type="MeshInstance3D" parent="Player" unique_id=220073527]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+material_override = ExtResource("5_llcge")
+mesh = SubResource("CapsuleMesh_4rfup")
+
+[node name="SpringArm3D" type="SpringArm3D" parent="Player" unique_id=737319942]
+transform = Transform3D(1, 0, 0, 0, 0.9659258, 0.25881904, 0, -0.25881904, 0.9659258, 0, 1.5, 0)
+spring_length = 4.5
+
+[node name="Camera3D" type="Camera3D" parent="Player/SpringArm3D" unique_id=2061642262]
+current = true
+fov = 70.0
+
+[node name="MainCamera" type="Camera3D" parent="." unique_id=349752352]
+physics_interpolation_mode = 1
+transform = Transform3D(0.92190474, -0.09123443, 0.3765209, 8.2891434e-05, 0.97192216, 0.23530263, -0.3874167, -0.2168954, 0.8960272, 4, 2.6, 9.5)
+top_level = true
+fov = 60.0
+
+[node name="PhantomCameraHost" type="Node" parent="MainCamera" unique_id=577680536]
+process_priority = 300
+process_physics_priority = 300
+script = ExtResource("6_1b6n0")
+
+[node name="PCam_Main" type="Node3D" parent="." unique_id=229277199 node_paths=PackedStringArray("follow_target", "look_at_target")]
+transform = Transform3D(0.92190474, -0.09123443, 0.3765209, 8.2891434e-05, 0.97192216, 0.23530263, -0.3874167, -0.2168954, 0.8960272, 4, 2.6, 9.5)
+script = ExtResource("7_llcge")
+priority = 10
+follow_target = NodePath("../Player")
+look_at_mode = 2
+look_at_target = NodePath("../Player")
+tween_resource = SubResource("Resource_e6mo4")
+follow_offset = Vector3(4, 2.5, 5)
+follow_damping = true
+follow_distance = 4.5
+spring_length = 4.5
+look_at_damping = true
+align_transform_with_view = Callable()
+align_rotation_with_view = Callable()
