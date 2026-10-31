@@ -1,0 +1,16 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://6v0picpor0j4"]
+
+[ext_resource type="Texture2D" uid="uid://dc8mer1wbgmpd" path="res://materials/armario/Electrical_Cabinet_ujzfde2_Mid_2K_BaseColor.jpg" id="1_jv8yk"]
+[ext_resource type="Texture2D" uid="uid://by36ye4rrim1v" path="res://materials/armario/Electrical_Cabinet_ujzfde2_Mid_2K_AO.jpg" id="2_kbt2l"]
+[ext_resource type="Texture2D" uid="uid://c2balwg2ed74w" path="res://materials/armario/Electrical_Cabinet_ujzfde2_Mid_2K_Normal.jpg" id="3_1iwwk"]
+[ext_resource type="Texture2D" uid="uid://cr22in58nxk5n" path="res://materials/armario/Electrical_Cabinet_ujzfde2_Mid_2K_Roughness.jpg" id="4_u8ibj"]
+
+[resource]
+albedo_texture = ExtResource("1_jv8yk")
+roughness_texture = ExtResource("4_u8ibj")
+roughness_texture_channel = 4
+normal_enabled = true
+normal_texture = ExtResource("3_1iwwk")
+ao_enabled = true
+ao_texture = ExtResource("2_kbt2l")
+ao_texture_channel = 4

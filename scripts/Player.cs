@@ -1,41 +1,49 @@
 using Godot;
 
-
 public partial class Player : CharacterBody3D
 {
-    [Export] public float MoveSpeed { get; set; } = 5.0f;
-    [Export] public float Acceleration { get; set; } = 35.0f;
-    [Export] public float Deceleration { get; set; } = 40.0f;
-    [Export] public float AirControl { get; set; } = 0.45f;
-    [Export] public float JumpVelocity { get; set; } = 5.5f;
-    [Export] public float CoyoteTime { get; set; } = 0.12f;
-    [Export] public float JumpBufferTime { get; set; } = 0.12f;
-    [Export] public float MouseSensitivity { get; set; } = 0.0025f;
-    [Export] public float PitchMin { get; set; } = -1.1f;
-    [Export] public float PitchMax { get; set; } = 0.45f;
+    [Export] public float MoveSpeed { get; set; } = 6.0f;
+    [Export] public float Acceleration { get; set; } = 100.0f;
+    [Export] public float Deceleration { get; set; } = 28.0f;
+    [Export] public float AirControl { get; set; } = 0.2f;
+    [Export] public float JumpVelocity { get; set; } = 6.0f;
+    [Export] public float JumpCut { get; set; } = 0.45f;
+    [Export] public float CoyoteTime { get; set; } = 0.08f;
+    [Export] public float JumpBufferTime { get; set; } = 0.08f;
+    [Export] public float TurnSpeed { get; set; } = 18.0f;
+    [Export] public float MouseSensitivity { get; set; } = 0.15f;
+    [Export] public float PitchMinDegrees { get; set; } = -63.0f;
+    [Export] public float PitchMaxDegrees { get; set; } = 25.0f;
+    [Export] public NodePath PhantomCameraPath { get; set; } = new("%PCam_Main");
 
-    private SpringArm3D _springArm = null!;
+    private const int FollowModeThirdPerson = 6;
+
+    private Node3D _body = null!;
+    private Node _pcam = null!;
     private float _gravity;
-    private float _pitch;
     private float _coyoteTimer;
     private float _jumpBufferTimer;
+    private bool _wasOnFloor = true;
 
     public override void _Ready()
     {
-        _springArm = GetNode<SpringArm3D>("SpringArm3D");
-        _pitch = _springArm.Rotation.X;
+        _body = GetNode<Node3D>("Body");
+        _pcam = GetNode(PhantomCameraPath);
         _gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
-        FloorSnapLength = 0.2f;
+        FloorSnapLength = 0.25f;
         Input.MouseMode = Input.MouseModeEnum.Captured;
     }
 
     public override void _UnhandledInput(InputEvent @event)
     {
-        if (@event is InputEventMouseMotion motion && Input.MouseMode == Input.MouseModeEnum.Captured)
+        if (@event is InputEventMouseMotion motion
+            && Input.MouseMode == Input.MouseModeEnum.Captured
+            && CanOrbitThirdPerson())
         {
-            RotateY(-motion.Relative.X * MouseSensitivity);
-            _pitch = Mathf.Clamp(_pitch - motion.Relative.Y * MouseSensitivity, PitchMin, PitchMax);
-            _springArm.Rotation = new Vector3(_pitch, 0.0f, 0.0f);
+            Vector3 rot = _pcam.Call("get_third_person_rotation_degrees").AsVector3();
+            rot.X = Mathf.Clamp(rot.X - motion.Relative.Y * MouseSensitivity, PitchMinDegrees, PitchMaxDegrees);
+            rot.Y -= motion.Relative.X * MouseSensitivity;
+            _pcam.Call("set_third_person_rotation_degrees", rot);
         }
         else if (@event.IsActionPressed("ui_cancel"))
         {
@@ -55,10 +63,15 @@ public partial class Player : CharacterBody3D
     {
         float dt = (float)delta;
         Vector3 velocity = Velocity;
+        bool onFloor = IsOnFloor();
 
-        if (IsOnFloor())
+        if (onFloor)
         {
             _coyoteTimer = CoyoteTime;
+            if (!_wasOnFloor)
+            {
+                velocity.Y = Mathf.Min(velocity.Y, 0.0f);
+            }
         }
         else
         {
@@ -80,6 +93,11 @@ public partial class Player : CharacterBody3D
             velocity.Y = JumpVelocity;
             _jumpBufferTimer = 0.0f;
             _coyoteTimer = 0.0f;
+            onFloor = false;
+        }
+        else if (!onFloor && velocity.Y > 0.0f && Input.IsActionJustReleased("jump"))
+        {
+            velocity.Y *= JumpCut;
         }
 
         Vector2 input = Input.GetVector("move_left", "move_right", "move_forward", "move_back");
@@ -87,12 +105,16 @@ public partial class Player : CharacterBody3D
 
         if (input != Vector2.Zero)
         {
-            Vector3 direction = (Transform.Basis * new Vector3(input.X, 0.0f, input.Y)).Normalized();
+            Vector3 direction = CameraRelativeDirection(input);
             targetVelocity = direction * MoveSpeed;
+
+            float targetYaw = Mathf.Atan2(-direction.X, -direction.Z);
+            float bodyYaw = Mathf.LerpAngle(_body.Rotation.Y, targetYaw, 1.0f - Mathf.Exp(-TurnSpeed * dt));
+            _body.Rotation = new Vector3(0.0f, bodyYaw, 0.0f);
         }
 
         float rate = input != Vector2.Zero ? Acceleration : Deceleration;
-        if (!IsOnFloor())
+        if (!onFloor)
         {
             rate *= AirControl;
         }
@@ -104,5 +126,36 @@ public partial class Player : CharacterBody3D
 
         Velocity = velocity;
         MoveAndSlide();
+        _wasOnFloor = IsOnFloor();
+    }
+
+    private bool CanOrbitThirdPerson()
+    {
+        if (_pcam == null || !GodotObject.IsInstanceValid(_pcam))
+        {
+            return false;
+        }
+
+        if (!_pcam.HasMethod("get_follow_mode")
+            || !_pcam.HasMethod("get_third_person_rotation_degrees")
+            || !_pcam.HasMethod("set_third_person_rotation_degrees"))
+        {
+            return false;
+        }
+
+        return _pcam.Call("get_follow_mode").AsInt32() == FollowModeThirdPerson;
+    }
+
+    private Vector3 CameraRelativeDirection(Vector2 input)
+    {
+        Camera3D? cam = GetViewport().GetCamera3D();
+        if (cam == null)
+        {
+            return new Vector3(input.X, 0.0f, input.Y).Normalized();
+        }
+
+        Vector3 direction = cam.GlobalTransform.Basis * new Vector3(input.X, 0.0f, input.Y);
+        direction.Y = 0.0f;
+        return direction.Normalized();
     }
 }
