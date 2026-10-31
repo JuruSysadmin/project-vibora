@@ -21,3 +21,22 @@ Blender instalado na máquina: 5.2.2 LTS (`/usr/bin/blender`).
 Importa nativo, sem depender de nada instalado, e é o único que preserva hierarquia de nós, skinning e animação. Também é o mais previsível em time: o arquivo vai pro git e todo mundo vê igual.
 
 Escolher `.blend` só vale quando se está iterando sozinho e quer editar → salvar → ver no jogo na hora.
+
+## `.fbx` — importa nativo, mas sem as texturas
+
+Testado com o armário elétrico da Poly Haven em `materials/armario/`: o `.fbx` entrou como `PackedScene` sem precisar do `fbx2gltf` (o Godot 4.3+ tem importador FBX embutido via ufbx).
+
+**Pegadinha:** vem **sem material**. O `.fbx` de packs assim referencia texturas externas que não são embutidas, então o modelo aparece branco até alguém ligar as imagens na mão.
+
+Padrão que funcionou: criar um `StandardMaterial3D` com
+
+| Slot Godot | Textura do pack |
+|---|---|
+| `albedo_texture` | `_BaseColor` |
+| `normal_texture` + `normal_enabled` | `_Normal` |
+| `roughness_texture` + canal **Grayscale (4)** | `_Roughness` |
+| `ao_texture` + `ao_enabled` + canal **Grayscale (4)** | `_AO` |
+
+Ficam de fora `_Bump`, `_Cavity`, `_Gloss` e `_Specular`: o `StandardMaterial3D` não tem slot de specular, e `_Gloss` é o inverso da roughness.
+
+O modelo também não traz colisão — é preciso um `StaticBody3D` + `CollisionShape3D` (box casando com o AABB do mesh resolve bem para props).

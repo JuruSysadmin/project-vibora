@@ -39,16 +39,25 @@ Os scripts são `@tool`: a câmera já é posicionada **no editor**, sem rodar o
 - "Using both Look At and Follow Mode on the same PCam3D has not been fully tested yet" — combinação é suportada mas não totalmente testada pelo autor.
 - "Physics Interpolation is disabled" — ligar em `physics/common/physics_interpolation` suaviza o movimento. **Não foi ligado** (decisão pendente).
 
-## Sem colisão de câmera — não serve para câmera de gameplay
+## Colisão de câmera: funciona no modo `ThirdPerson` sozinho
 
-Medido no jogo com um script que imprime a posição da câmera a cada segundo, player no canto da sala em (6, 0.1, 4):
+Medição no jogo com um script que imprime a posição da câmera a cada segundo, player no canto da sala em (6, 0.1, 4):
 
 | Configuração | Posição da câmera | Dentro da sala? |
 |---|---|---|
-| Follow `Simple`, offset (4, 2.5, 5) | (10.1, 2.6, 9.0) | ❌ atravessa a parede |
-| Follow `ThirdPerson`, `spring_length` 4.5 | (10.1, 2.6, 13.5) | ❌ pior ainda |
-| `SpringArm3D` nativo do Player | (5.81, 2.0, 5.99) | ✅ parou na parede |
+| Follow `Simple` + `look_at` `Simple` + offset (4, 2.5, 5) | (10.1, 2.6, 9.0) | ❌ atravessa a parede |
+| Follow `ThirdPerson` + `look_at` `Simple` + offset (4, 2.5, 5) | (10.1, 2.6, 13.5) | ❌ pior ainda |
+| `SpringArm3D` nativo | (5.81, 2.0, 5.99) | ✅ parou na parede |
+| Follow `ThirdPerson` + `look_at` **None** + `spring_length` | — | ✅ funciona (testado em jogo pelo time) |
 
-O modo `ThirdPerson` instancia um `SpringArm3D` interno (`_follow_spring_arm`), mas na prática não segurou a câmera dentro do cômodo. Conclusão: **a PCam não substitui o SpringArm3D para câmera de gameplay em espaço fechado.**
+**O que a tabela realmente ensina:** as duas primeiras linhas estavam contaminadas. Com `look_at` ligado junto do follow, o `follow_offset` continua mandando no posicionamento e o SpringArm interno da PCam não segura nada — o próprio addon avisa em runtime: *"Using both Look At and Follow Mode on the same PCam3D has not been fully tested yet"*.
 
-Uso recomendado: PCam para câmera **cinematográfica/roteirizada** (intro, cutscene, troca de plano por `priority`), e o `SpringArm3D` do Player para a câmera de jogo. Hoje a PCam está na cena em `follow_mode = None`, inerte.
+**Regra:** no modo `ThirdPerson`, use **só follow**, com `look_at = None` e `spring_length` como distância. Aí a câmera não atravessa parede e a PCam substitui o `SpringArm3D` do Player.
+
+## Uso no projeto
+
+A câmera de gameplay **é** a PhantomCamera em `ThirdPerson`, com `look_at = None`. O script `scripts/Player.cs` alimenta a rotação por `get/set_third_person_rotation_degrees`, e move o jogador relativo à câmera (`GetViewport().GetCamera3D()`).
+
+⚠️ Esses dois métodos fazem `printerr` e devolvem `Vector3.ZERO` quando o modo não é `ThirdPerson` — o script tem um guard (`CanOrbitThirdPerson`) que checa `get_follow_mode() == 6` antes de chamar. Se mudar o `follow_mode` (cutscene, menu), o mouse look desliga sozinho em vez de resetar a câmera a cada frame.
+
+A PCam segue boa também para câmera roteirizada (intro, cutscene, troca por `priority`).
