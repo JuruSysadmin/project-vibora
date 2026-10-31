@@ -6,6 +6,13 @@ public partial class DoorTransition : Node
     [Export] public float BlackHoldTime { get; set; } = 0.55f;
     [Export] public float FadeInTime { get; set; } = 0.45f;
     [Export] public string RequiredKeyId { get; set; } = "";
+    /// <summary>
+    /// Para onde o jogador olha ao chegar de cada lado (graus, eixo Y da câmera).
+    /// O padrão 180/0 serve para portas em parede voltada a Z; portas em parede
+    /// voltada a X usam 90/-90.
+    /// </summary>
+    [Export] public float YawIntoRoomFromFrente { get; set; } = 180.0f;
+    [Export] public float YawIntoRoomFromFundo { get; set; } = 0.0f;
     [Export] public string PromptText { get; set; } = "Abrir porta";
     [Export] public string LockedText { get; set; } = "Trancada — precisa de cartão";
 
@@ -97,7 +104,7 @@ public partial class DoorTransition : Node
 
     private void FaceIntoRoom(string destinationPoint)
     {
-        float yaw = destinationPoint == "Fundo" ? 0.0f : 180.0f;
+        float yaw = destinationPoint == "Fundo" ? YawIntoRoomFromFundo : YawIntoRoomFromFrente;
 
         if (_phantomCamera.HasMethod("get_follow_mode")
             && _phantomCamera.HasMethod("set_third_person_rotation_degrees")
