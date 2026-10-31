@@ -15,7 +15,6 @@ normal_texture = ExtResource("NormalGL")
 ao_enabled = true
 ao_texture = ExtResource("AmbientOcclusion")
 ao_texture_channel = 4
-heightmap_enabled = true
 heightmap_scale = 0.2
 heightmap_texture = ExtResource("Displacement")
 uv1_scale = Vector3(0.3333, 0.3333, 0.3333)

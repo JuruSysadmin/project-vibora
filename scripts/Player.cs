@@ -16,6 +16,13 @@ public partial class Player : CharacterBody3D
     [Export] public float PitchMaxDegrees { get; set; } = 25.0f;
     [Export] public NodePath PhantomCameraPath { get; set; } = new("%PCam_Main");
 
+    /// <summary>
+    /// Trava o controle (movimento e órbita da câmera) durante transições e
+    /// cutscenes. A gravidade continua agindo: travar no ar não congela o
+    /// jogador flutuando.
+    /// </summary>
+    public bool InputLocked { get; set; }
+
     private const int FollowModeThirdPerson = 6;
 
     private Node3D _body = null!;
@@ -34,9 +41,15 @@ public partial class Player : CharacterBody3D
         Input.MouseMode = Input.MouseModeEnum.Captured;
     }
 
+    public void FaceYawDegrees(float yawDegrees)
+    {
+        _body.Rotation = new Vector3(0.0f, Mathf.DegToRad(yawDegrees), 0.0f);
+    }
+
     public override void _UnhandledInput(InputEvent @event)
     {
         if (@event is InputEventMouseMotion motion
+            && !InputLocked
             && Input.MouseMode == Input.MouseModeEnum.Captured
             && CanOrbitThirdPerson())
         {
@@ -62,6 +75,22 @@ public partial class Player : CharacterBody3D
     public override void _PhysicsProcess(double delta)
     {
         float dt = (float)delta;
+
+        if (InputLocked)
+        {
+            // Sem controle horizontal, mas a gravidade continua valendo.
+            Vector3 parado = Velocity;
+            parado.X = 0.0f;
+            parado.Z = 0.0f;
+            parado.Y = IsOnFloor() ? Mathf.Min(parado.Y, 0.0f) : parado.Y - _gravity * dt;
+            Velocity = parado;
+            _coyoteTimer = 0.0f;
+            _jumpBufferTimer = 0.0f;
+            MoveAndSlide();
+            _wasOnFloor = IsOnFloor();
+            return;
+        }
+
         Vector3 velocity = Velocity;
         bool onFloor = IsOnFloor();
 
