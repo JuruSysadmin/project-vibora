@@ -7,6 +7,7 @@
 [ext_resource type="Material" uid="uid://ci482xng2v4iu" path="res://art/materiais/player.tres" id="5_42ncp"]
 [ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="6_1b6n0"]
 [ext_resource type="Script" uid="uid://odlcx4l1c2t5" path="res://sistemas/Saude.cs" id="6_n3syt"]
+[ext_resource type="Script" uid="uid://dlqnq727u8vbn" path="res://gameplay/PlayerMotor.cs" id="7_jg26c"]
 [ext_resource type="Script" uid="uid://csjccrhj5wnx7" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="7_llcge"]
 [ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="8_lwi15"]
 [ext_resource type="PackedScene" uid="uid://c0q08uefbp6ik" path="res://art/props/armario/Electrical_Cabinet_ujzfde2_Mid.fbx" id="9_lwi15"]
@@ -447,6 +448,9 @@ mesh = SubResource("CapsuleMesh_px6rj")
 [node name="Saude" type="Node" parent="Player" unique_id=1040864615 node_paths=PackedStringArray("Corpo")]
 script = ExtResource("6_n3syt")
 Corpo = NodePath("../Body")
+
+[node name="Motor" type="Node" parent="Player" unique_id=1063543824]
+script = ExtResource("7_jg26c")
 
 [node name="MainCamera" type="Camera3D" parent="." unique_id=349752352]
 physics_interpolation_mode = 1

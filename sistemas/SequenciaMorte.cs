@@ -21,6 +21,10 @@ public partial class SequenciaMorte : CanvasLayer
     [ExportGroup("Cores")]
     [Export] public Color CorMorte { get; set; } = new(0.58f, 0.08f, 0.06f);
 
+    [ExportGroup("Arte")]
+    [Export] public string PastaArte { get; set; } = "res://art/telas/gameover";
+    [Export] public float EscalaArte { get; set; } = 2f;
+
     public static int Continuacoes { get; private set; }
 
     private enum Estado { Inativo, Desacelerando, Aguardando, Prompt }
@@ -28,8 +32,19 @@ public partial class SequenciaMorte : CanvasLayer
     private Estado _estado = Estado.Inativo;
 
     private TextureRect _vinheta = null!;
-    private VBoxContainer _prompt = null!;
+    private Control _tela = null!;
+    private Control? _caixa;
+    private bool _ajustado;
     private AudioStreamPlayer _audio = null!;
+    private BaseButton _botaoSim = null!;
+    private BaseButton _botaoNao = null!;
+
+    private TextureRect? _fumacaA;
+    private TextureRect? _fumacaB;
+    private TextureRect? _mortoPan;
+
+    private bool _arte;
+    private float _escala = 2f;
 
     private int[] _barras = System.Array.Empty<int>();
     private float[] _barrasBase = System.Array.Empty<float>();
@@ -43,14 +58,15 @@ public partial class SequenciaMorte : CanvasLayer
     public override void _Ready()
     {
         Layer = 20;
+        _escala = Mathf.Min(EscalaArte, Mathf.Max(GetViewport().GetVisibleRect().Size.Y / 480f, 0.5f));
         _vinheta = ConstruirVinheta();
-        _prompt = ConstruirPrompt();
         _audio = new AudioStreamPlayer
         {
             Bus = BarraCue,
             ProcessMode = Node.ProcessModeEnum.Always,
         };
         AddChild(_audio);
+        ConstruirTela();
     }
 
     public override void _ExitTree()
@@ -78,7 +94,8 @@ public partial class SequenciaMorte : CanvasLayer
 
         _vinheta.Visible = true;
         _vinheta.Modulate = new Color(1f, 1f, 1f, 0f);
-        _prompt.Visible = false;
+        _tela.Visible = false;
+        _ajustado = false;
     }
 
     public override void _Process(double delta)
@@ -132,21 +149,78 @@ public partial class SequenciaMorte : CanvasLayer
             _estado = Estado.Prompt;
             _tPrompt = 0f;
             _tVinheta = 0f;
-            _prompt.Visible = true;
-            _prompt.Modulate = new Color(1f, 1f, 1f, 0f);
-            _prompt.GetNode<Button>("Botoes/Sim").GrabFocus();
+            _tela.Visible = true;
+            _tela.Modulate = new Color(1f, 1f, 1f, 0f);
+            _botaoSim.GrabFocus();
         }
     }
 
     private void AnimarPrompt(float dt)
     {
+        if (!_ajustado)
+        {
+            // Repete até o layout existir: no primeiro frame do prompt os
+            // sizes ainda são zero e o ajuste concluiria errado.
+            _ajustado = AjustarATela();
+        }
+
         _tPrompt += dt;
         _tVinheta += dt;
 
-        _prompt.Modulate = new Color(1f, 1f, 1f, Mathf.Clamp(_tPrompt / 0.8f, 0f, 1f));
+        _tela.Modulate = new Color(1f, 1f, 1f, Mathf.Clamp(_tPrompt / 0.8f, 0f, 1f));
 
         float alfa = 1f - Mathf.Clamp(_tVinheta / TempoVinheta, 0f, 1f);
         _vinheta.Modulate = new Color(1f, 1f, 1f, alfa);
+
+        if (_fumacaA is { } futA && _fumacaB is { } futB)
+        {
+            futA.PivotOffset = futA.Size / 2f;
+            futB.PivotOffset = futB.Size / 2f;
+            futA.Rotation += dt * 0.04f;
+            futB.Rotation -= dt * 0.03f;
+        }
+
+        if (_mortoPan is { } pan)
+        {
+            float oscilacao = Mathf.Sin(_tPrompt * 0.5f) * pan.Size.X * 0.06f;
+            pan.Position = new Vector2(-pan.Size.X * 0.1f + oscilacao, 0f);
+        }
+    }
+
+    /// <summary>
+    /// Encaixa o conteúdo na tela. O container cresce além da viewport quando
+    /// os filhos somam mais altura do que ela tem, e aí os botões saem por
+    /// baixo. Medido depois do layout (o Size só é válido no frame seguinte),
+    /// escala em torno do centro para caber sem constantes mágicas.
+    /// </summary>
+    /// <returns>false enquanto o layout não estiver calculado (tenta de novo).</returns>
+    private bool AjustarATela()
+    {
+        if (_caixa == null)
+        {
+            return true;
+        }
+
+        float alturaTela = _tela.Size.Y;
+        float alturaConteudo = _caixa.Size.Y;
+
+        if (alturaTela <= 1f || alturaConteudo <= 1f)
+        {
+            return false;
+        }
+
+        // 4% de folga: sem margem o último botão encosta na borda e parece cortado.
+        float fator = Mathf.Min(1f, alturaTela * 0.96f / alturaConteudo);
+        if (fator < 1f)
+        {
+            // Escala a partir do canto (pivô zero) e centraliza na mão: com
+            // PivotOffset o conteúdo encolhe em torno do centro e desce junto.
+            _caixa.PivotOffset = Vector2.Zero;
+            _caixa.Scale = Vector2.One * fator;
+            _caixa.Position = (_tela.Size - _caixa.Size * fator) / 2f;
+        }
+
+        return true;
     }
 
     private void AoSim()
@@ -169,17 +243,8 @@ public partial class SequenciaMorte : CanvasLayer
         RestaurarVolumes();
         _audio.Stop();
         _vinheta.Visible = false;
-        _prompt.Visible = false;
+        _tela.Visible = false;
         _estado = Estado.Inativo;
-    }
-
-    private void TocarCue()
-    {
-        _audio.Stop();
-        var som = GD.Load<AudioStream>(CaminhoSom);
-        if (som == null) return;
-        _audio.Stream = som;
-        _audio.Play();
     }
 
     private void FadeAudio(float ratio)
@@ -228,6 +293,249 @@ public partial class SequenciaMorte : CanvasLayer
         _barrasBase[n] = AudioServer.GetBusVolumeDb(indice);
     }
 
+    private void TocarCue()
+    {
+        _audio.Stop();
+        var som = GD.Load<AudioStream>(CaminhoSom);
+        if (som == null) return;
+        _audio.Stream = som;
+        _audio.Play();
+    }
+
+    private Texture2D? CarregarArte(string nome)
+    {
+        var caminho = PastaArte + "/" + nome + ".png";
+        return ResourceLoader.Exists(caminho) ? GD.Load<Texture2D>(caminho) : null;
+    }
+
+    private void ConstruirTela()
+    {
+        _tela = new Control { Name = "Tela", MouseFilter = Control.MouseFilterEnum.Ignore };
+        AddChild(_tela);
+        _tela.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.FullRect);
+
+        Texture2D? bg = CarregarArte("gameover_BG");
+        Texture2D? morto = CarregarArte("youAreDead");
+        Texture2D? sim = CarregarArte("yes");
+        Texture2D? nao = CarregarArte("No");
+        _arte = bg != null && morto != null && sim != null && nao != null;
+
+        if (_arte)
+        {
+            AdicionarTexturaCompleta(bg!, 1f);
+        }
+
+        var caixa = new VBoxContainer
+        {
+            MouseFilter = Control.MouseFilterEnum.Ignore,
+            Alignment = BoxContainer.AlignmentMode.Center,
+        };
+        caixa.AddThemeConstantOverride("separation", 18);
+
+        if (_arte)
+        {
+            var aditivo = new CanvasItemMaterial
+            {
+                BlendMode = CanvasItemMaterial.BlendModeEnum.Add,
+            };
+
+            _fumacaA = AdicionarTexturaCompleta(CarregarArte("eff1"), 0.14f);
+            _fumacaB = AdicionarTexturaCompleta(CarregarArte("eff2"), 0.2f);
+            if (_fumacaA != null)
+            {
+                _fumacaA.Scale = Vector2.One * 1.3f;
+                _fumacaA.Material = aditivo;
+            }
+            if (_fumacaB != null)
+            {
+                _fumacaB.Scale = Vector2.One * 1.3f;
+                _fumacaB.Material = aditivo;
+            }
+
+            var larguraMorto = _escala * 428f;
+            var alturaMorto = _escala * 240f;
+            var areaMorto = new Control
+            {
+                ClipContents = true,
+                CustomMinimumSize = new Vector2(larguraMorto, alturaMorto),
+                SizeFlagsHorizontal = Control.SizeFlags.ShrinkCenter,
+                MouseFilter = Control.MouseFilterEnum.Ignore,
+            };
+            _mortoPan = new TextureRect
+            {
+                Texture = morto,
+                StretchMode = TextureRect.StretchModeEnum.Scale,
+                ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize,
+                Material = aditivo,
+                Position = new Vector2(-larguraMorto * 0.1f, 0f),
+                Size = new Vector2(larguraMorto * 1.2f, alturaMorto),
+                MouseFilter = Control.MouseFilterEnum.Ignore,
+            };
+            areaMorto.AddChild(_mortoPan);
+
+            TextureRect? rotuloContinue = null;
+            var cont = CarregarArte("continue");
+            if (cont != null)
+            {
+                rotuloContinue = new TextureRect
+                {
+                    Texture = cont,
+                    StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered,
+                    ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize,
+                    Material = aditivo,
+                    CustomMinimumSize = Vector2.One * _escala * new Vector2(256f, 42f),
+                    SizeFlagsHorizontal = Control.SizeFlags.ShrinkCenter,
+                    MouseFilter = Control.MouseFilterEnum.Ignore,
+                };
+            }
+
+            caixa.AddChild(areaMorto);
+            if (rotuloContinue != null) caixa.AddChild(rotuloContinue);
+
+            var vac0 = new Control
+            {
+                CustomMinimumSize = new Vector2(0f, 16f),
+                MouseFilter = Control.MouseFilterEnum.Ignore,
+            };
+            caixa.AddChild(vac0);
+
+            _botaoSim = ConstruirBotaoTextura(sim, "SIM");
+            _botaoNao = ConstruirBotaoTextura(nao, "NAO");
+        }
+        else
+        {
+            var rotulo = new Label
+            {
+                Text = "GAME OVER",
+                LabelSettings = new LabelSettings
+                {
+                    FontSize = 72,
+                    FontColor = Colors.White,
+                    OutlineSize = 16,
+                    OutlineColor = Colors.Black,
+                },
+                HorizontalAlignment = HorizontalAlignment.Center,
+            };
+
+            var pergunta = new Label
+            {
+                Text = "CONTINUAR?",
+                LabelSettings = new LabelSettings
+                {
+                    FontSize = 28,
+                    FontColor = Colors.White,
+                    OutlineSize = 10,
+                    OutlineColor = Colors.Black,
+                },
+                HorizontalAlignment = HorizontalAlignment.Center,
+            };
+
+            caixa.AddChild(pergunta);
+            caixa.AddChild(rotulo);
+            caixa.MoveChild(rotulo, 0);
+            caixa.MoveChild(pergunta, 1);
+
+            var tSim = new Button
+            {
+                Text = "SIM",
+                CustomMinimumSize = new Vector2(180f, 52f),
+            };
+            tSim.AddThemeFontSizeOverride("font_size", 26);
+
+            var tNao = new Button
+            {
+                Text = "NÃO",
+                CustomMinimumSize = new Vector2(180f, 52f),
+            };
+            tNao.AddThemeFontSizeOverride("font_size", 26);
+
+            _botaoSim = tSim;
+            _botaoNao = tNao;
+        }
+
+        var vac1 = new Control
+        {
+            CustomMinimumSize = new Vector2(0f, 30f),
+            MouseFilter = Control.MouseFilterEnum.Ignore,
+        };
+
+        var botoes = new HBoxContainer
+        {
+            MouseFilter = Control.MouseFilterEnum.Pass,
+            SizeFlagsHorizontal = Control.SizeFlags.ShrinkCenter,
+        };
+        botoes.AddThemeConstantOverride("separation", 64);
+        botoes.AddChild(_botaoSim);
+        botoes.AddChild(_botaoNao);
+
+        caixa.AddChild(vac1);
+        caixa.AddChild(botoes);
+
+        _botaoSim.Pressed += AoSim;
+        _botaoNao.Pressed += AoNao;
+        _botaoSim.FocusEntered += AplicarBrilho;
+        _botaoSim.FocusExited += AplicarBrilho;
+        _botaoNao.FocusEntered += AplicarBrilho;
+        _botaoNao.FocusExited += AplicarBrilho;
+
+        _tela.AddChild(caixa);
+        _caixa = caixa;
+        caixa.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.FullRect);
+        caixa.Name = "Prompt";
+        botoes.Name = "Botoes";
+        _botaoSim.Name = "Sim";
+        _botaoNao.Name = "Nao";
+
+        _tela.Visible = false;
+    }
+
+    private BaseButton ConstruirBotaoTextura(Texture2D? tex, string texto)
+    {
+        if (tex == null)
+        {
+            var botao = new Button
+            {
+                Text = texto,
+                CustomMinimumSize = new Vector2(180f, 52f),
+            };
+            botao.AddThemeFontSizeOverride("font_size", 26);
+            return botao;
+        }
+
+        return new TextureButton
+        {
+            TextureNormal = tex,
+            IgnoreTextureSize = true,
+            StretchMode = TextureButton.StretchModeEnum.KeepAspectCentered,
+            CustomMinimumSize = Vector2.One * _escala * new Vector2(128f, 64f),
+        };
+    }
+
+    private void AplicarBrilho()
+    {
+        _botaoSim.Modulate = Colors.White;
+        _botaoNao.Modulate = Colors.White;
+
+        BaseButton focada = _botaoSim.HasFocus() ? _botaoSim
+            : _botaoNao.HasFocus() ? _botaoNao : null;
+
+        if (focada != null) focada.Modulate = new Color(1.4f, 1.4f, 1.4f);
+    }
+
+    private TextureRect AdicionarTexturaCompleta(Texture2D tex, float alfa)
+    {
+        var rect = new TextureRect
+        {
+            Texture = tex,
+            StretchMode = TextureRect.StretchModeEnum.Scale,
+            MouseFilter = Control.MouseFilterEnum.Ignore,
+        };
+        _tela.AddChild(rect);
+        rect.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.FullRect);
+        rect.Modulate = new Color(1f, 1f, 1f, alfa);
+        return rect;
+    }
+
     private TextureRect ConstruirVinheta()
     {
         var grad = new Godot.Gradient();
@@ -260,76 +568,5 @@ public partial class SequenciaMorte : CanvasLayer
         vinheta.Visible = false;
         vinheta.Modulate = new Color(1f, 1f, 1f, 0f);
         return vinheta;
-    }
-
-    private VBoxContainer ConstruirPrompt()
-    {
-        var rotulo = new Label
-        {
-            Text = "GAME OVER",
-            LabelSettings = new LabelSettings
-            {
-                FontSize = 72,
-                FontColor = Colors.White,
-                OutlineSize = 16,
-                OutlineColor = Colors.Black,
-            },
-            HorizontalAlignment = HorizontalAlignment.Center,
-        };
-
-        var pergunta = new Label
-        {
-            Text = "CONTINUAR?",
-            LabelSettings = new LabelSettings
-            {
-                FontSize = 28,
-                FontColor = Colors.White,
-                OutlineSize = 10,
-                OutlineColor = Colors.Black,
-            },
-            HorizontalAlignment = HorizontalAlignment.Center,
-        };
-
-        var sim = new Button
-        {
-            Text = "SIM",
-            CustomMinimumSize = new Vector2(180f, 52f),
-        };
-        sim.AddThemeFontSizeOverride("font_size", 26);
-
-        var nao = new Button
-        {
-            Text = "NÃO",
-            CustomMinimumSize = new Vector2(180f, 52f),
-        };
-        nao.AddThemeFontSizeOverride("font_size", 26);
-
-        sim.Pressed += AoSim;
-        nao.Pressed += AoNao;
-
-        var botoes = new HBoxContainer();
-        botoes.AddThemeConstantOverride("separation", 32);
-        botoes.AddChild(sim);
-        botoes.AddChild(nao);
-
-        var prompt = new VBoxContainer
-        {
-            MouseFilter = Control.MouseFilterEnum.Ignore,
-        };
-        prompt.AddThemeConstantOverride("separation", 20);
-        prompt.AddChild(pergunta);
-        prompt.AddChild(new Control { CustomMinimumSize = new Vector2(0f, 12f) });
-        prompt.AddChild(botoes);
-
-        AddChild(prompt);
-        prompt.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.Center);
-
-        prompt.Name = "Prompt";
-        botoes.Name = "Botoes";
-        sim.Name = "Sim";
-        nao.Name = "Nao";
-
-        prompt.Visible = false;
-        return prompt;
     }
 }

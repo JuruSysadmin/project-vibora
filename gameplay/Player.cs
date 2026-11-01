@@ -1,16 +1,16 @@
 using Godot;
 
+/// <summary>
+/// Controlador do jogador: lê input, resolve a direção relativa à câmera,
+/// cuida da órbita da PhantomCamera e delega a física ao PlayerMotor.
+///
+/// A física não mora aqui de propósito: movimento, pulo e giro de corpo são
+/// do motor; input, câmera e morte são do controlador. Quando entrar ataque
+/// e mira, eles entram neste arquivo sem inchar a parte de movimento.
+/// </summary>
 public partial class Player : CharacterBody3D
 {
-    [Export] public float MoveSpeed { get; set; } = 6.0f;
-    [Export] public float Acceleration { get; set; } = 100.0f;
-    [Export] public float Deceleration { get; set; } = 28.0f;
-    [Export] public float AirControl { get; set; } = 0.2f;
-    [Export] public float JumpVelocity { get; set; } = 6.0f;
-    [Export] public float JumpCut { get; set; } = 0.45f;
-    [Export] public float CoyoteTime { get; set; } = 0.08f;
-    [Export] public float JumpBufferTime { get; set; } = 0.08f;
-    [Export] public float TurnSpeed { get; set; } = 18.0f;
+    /// <summary>Degrees per mouse pixel (Phantom Third Person API uses degrees).</summary>
     [Export] public float MouseSensitivity { get; set; } = 0.15f;
     [Export] public float PitchMinDegrees { get; set; } = -63.0f;
     [Export] public float PitchMaxDegrees { get; set; } = 25.0f;
@@ -18,25 +18,23 @@ public partial class Player : CharacterBody3D
 
     /// <summary>
     /// Trava o controle (movimento e órbita da câmera) durante transições e
-    /// cutscenes. A gravidade continua agindo: travar no ar não congela o
-    /// jogador flutuando.
+    /// cutscenes. Repassado ao motor a cada frame.
     /// </summary>
     public bool InputLocked { get; set; }
 
     private const int FollowModeThirdPerson = 6;
 
+    private PlayerMotor _motor = null!;
     private Node3D _body = null!;
     private Node _pcam = null!;
-    private float _gravity;
-    private float _coyoteTimer;
-    private float _jumpBufferTimer;
-    private bool _wasOnFloor = true;
 
     public override void _Ready()
     {
         _body = GetNode<Node3D>("Body");
+        _motor = GetNode<PlayerMotor>("Motor");
+        _motor.Configurar(this, _body);
+
         _pcam = GetNode(PhantomCameraPath);
-        _gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
         FloorSnapLength = 0.25f;
         Input.MouseMode = Input.MouseModeEnum.Captured;
 
@@ -46,24 +44,10 @@ public partial class Player : CharacterBody3D
         }
     }
 
+    /// <summary>Vira o corpo de imediato (usado na chegada de uma transição).</summary>
     public void FaceYawDegrees(float yawDegrees)
     {
-        _body.Rotation = new Vector3(0.0f, Mathf.DegToRad(yawDegrees), 0.0f);
-    }
-
-    private void Morrer()
-    {
-        InputLocked = true;
-        Input.MouseMode = Input.MouseModeEnum.Visible;
-
-        if (GetNodeOrNull<SequenciaMorte>("%SequenciaMorte") is SequenciaMorte sequencia)
-        {
-            sequencia.Iniciar();
-            return;
-        }
-
-        GD.Print("[Player] morreu — recarregando a cena");
-        GetTree().CreateTimer(2.5).Timeout += () => GetTree().ReloadCurrentScene();
+        _motor.OrientarPara(yawDegrees);
     }
 
     public override void _UnhandledInput(InputEvent @event)
@@ -94,88 +78,36 @@ public partial class Player : CharacterBody3D
 
     public override void _PhysicsProcess(double delta)
     {
-        float dt = (float)delta;
+        _motor.Travado = InputLocked;
 
-        if (InputLocked)
+        Vector2 entrada = Input.GetVector("move_left", "move_right", "move_forward", "move_back");
+        Vector3 direcao = entrada == Vector2.Zero ? Vector3.Zero : CameraRelativeDirection(entrada);
+
+        _motor.Executar(
+            (float)delta,
+            direcao,
+            Input.IsActionJustPressed("jump"),
+            Input.IsActionJustReleased("jump"));
+    }
+
+    /// <summary>
+    /// Morte do jogador: entrega para a SequenciaMorte. O reload direto fica
+    /// como fallback caso o nó não exista, senão o jogo travaria com o
+    /// jogador morto e o input travado.
+    /// </summary>
+    private void Morrer()
+    {
+        InputLocked = true;
+        Input.MouseMode = Input.MouseModeEnum.Visible;
+
+        if (GetNodeOrNull<SequenciaMorte>("%SequenciaMorte") is SequenciaMorte sequencia)
         {
-            // Sem controle horizontal, mas a gravidade continua valendo.
-            Vector3 parado = Velocity;
-            parado.X = 0.0f;
-            parado.Z = 0.0f;
-            parado.Y = IsOnFloor() ? Mathf.Min(parado.Y, 0.0f) : parado.Y - _gravity * dt;
-            Velocity = parado;
-            _coyoteTimer = 0.0f;
-            _jumpBufferTimer = 0.0f;
-            MoveAndSlide();
-            _wasOnFloor = IsOnFloor();
+            sequencia.Iniciar();
             return;
         }
 
-        Vector3 velocity = Velocity;
-        bool onFloor = IsOnFloor();
-
-        if (onFloor)
-        {
-            _coyoteTimer = CoyoteTime;
-            if (!_wasOnFloor)
-            {
-                velocity.Y = Mathf.Min(velocity.Y, 0.0f);
-            }
-        }
-        else
-        {
-            _coyoteTimer = Mathf.Max(0.0f, _coyoteTimer - dt);
-            velocity.Y -= _gravity * dt;
-        }
-
-        if (Input.IsActionJustPressed("jump"))
-        {
-            _jumpBufferTimer = JumpBufferTime;
-        }
-        else
-        {
-            _jumpBufferTimer = Mathf.Max(0.0f, _jumpBufferTimer - dt);
-        }
-
-        if (_jumpBufferTimer > 0.0f && _coyoteTimer > 0.0f)
-        {
-            velocity.Y = JumpVelocity;
-            _jumpBufferTimer = 0.0f;
-            _coyoteTimer = 0.0f;
-            onFloor = false;
-        }
-        else if (!onFloor && velocity.Y > 0.0f && Input.IsActionJustReleased("jump"))
-        {
-            velocity.Y *= JumpCut;
-        }
-
-        Vector2 input = Input.GetVector("move_left", "move_right", "move_forward", "move_back");
-        Vector3 targetVelocity = Vector3.Zero;
-
-        if (input != Vector2.Zero)
-        {
-            Vector3 direction = CameraRelativeDirection(input);
-            targetVelocity = direction * MoveSpeed;
-
-            float targetYaw = Mathf.Atan2(-direction.X, -direction.Z);
-            float bodyYaw = Mathf.LerpAngle(_body.Rotation.Y, targetYaw, 1.0f - Mathf.Exp(-TurnSpeed * dt));
-            _body.Rotation = new Vector3(0.0f, bodyYaw, 0.0f);
-        }
-
-        float rate = input != Vector2.Zero ? Acceleration : Deceleration;
-        if (!onFloor)
-        {
-            rate *= AirControl;
-        }
-
-        Vector3 horizontal = new Vector3(velocity.X, 0.0f, velocity.Z);
-        horizontal = horizontal.MoveToward(targetVelocity, rate * dt);
-        velocity.X = horizontal.X;
-        velocity.Z = horizontal.Z;
-
-        Velocity = velocity;
-        MoveAndSlide();
-        _wasOnFloor = IsOnFloor();
+        GD.Print("[Player] morreu — recarregando a cena");
+        GetTree().CreateTimer(2.5).Timeout += () => GetTree().ReloadCurrentScene();
     }
 
     private bool CanOrbitThirdPerson()
