@@ -51,14 +51,17 @@ public partial class Player : CharacterBody3D
         _body.Rotation = new Vector3(0.0f, Mathf.DegToRad(yawDegrees), 0.0f);
     }
 
-    /// <summary>
-    /// Morte do jogador. Por enquanto recarrega a cena: é o feedback mais
-    /// honesto sem HUD de fim de jogo.
-    /// </summary>
     private void Morrer()
     {
         InputLocked = true;
         Input.MouseMode = Input.MouseModeEnum.Visible;
+
+        if (GetNodeOrNull<SequenciaMorte>("%SequenciaMorte") is SequenciaMorte sequencia)
+        {
+            sequencia.Iniciar();
+            return;
+        }
+
         GD.Print("[Player] morreu — recarregando a cena");
         GetTree().CreateTimer(2.5).Timeout += () => GetTree().ReloadCurrentScene();
     }

@@ -1,0 +1,41 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://ui/MedidorVida.cs" id="1_mv"]
+
+[sub_resource type="Gradient" id="Gradient_mv"]
+offsets = PackedFloat32Array(0, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradTex_mv"]
+gradient = SubResource("Gradient_mv")
+
+[node name="MedidorVida" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 300.0
+offset_bottom = 22.0
+script = ExtResource("1_mv")
+
+[node name="BarraRastro" type="TextureProgressBar" parent="."]
+layout_mode = 0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+value = 1.0
+max_value = 1.0
+step = 0.0
+texture_progress = SubResource("GradTex_mv")
+tint_progress = Color(1, 0, 0, 0.5)
+
+[node name="BarraVida" type="TextureProgressBar" parent="."]
+layout_mode = 0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+value = 1.0
+max_value = 1.0
+step = 0.0
+texture_progress = SubResource("GradTex_mv")
+tint_progress = Color(0, 1, 0, 1)

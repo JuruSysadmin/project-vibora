@@ -19,6 +19,8 @@
 [ext_resource type="Resource" uid="uid://ild5ohueq2x6" path="res://gameplay/dados/perseguidor.tres" id="15_s61md"]
 [ext_resource type="Resource" uid="uid://d0md83f7nmxuo" path="res://gameplay/dados/zumbi_lento.tres" id="17_d46x6"]
 [ext_resource type="Curve3D" uid="uid://c6rdfy4dxld5m" path="res://gameplay/dados/rota_sala1.tres" id="18_d46x6"]
+[ext_resource type="PackedScene" path="res://ui/MedidorVida.tscn" id="19_mv"]
+[ext_resource type="Script" uid="uid://bhls4td6lof17" path="res://sistemas/SequenciaMorte.cs" id="20_sm"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_lwi15"]
 size = Vector3(16, 0.5, 12)
@@ -1076,6 +1078,18 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05, 0)
 
 [node name="Collider" type="CollisionShape3D" parent="Porta1/PortaColisor" unique_id=578021153]
 shape = SubResource("BoxShape3D_cy6r3")
+
+[node name="HudVida" type="CanvasLayer" parent="." unique_id=1930171827]
+
+[node name="MedidorVida" parent="HudVida" unique_id=1068354464 instance=ExtResource("19_mv")]
+offset_left = 24.0
+offset_top = 24.0
+SaudePath = NodePath("../../Player/Saude")
+
+[node name="SequenciaMorte" type="CanvasLayer" parent="." unique_id=913572048]
+unique_name_in_owner = true
+layer = 20
+script = ExtResource("20_sm")
 
 [node name="Navegacao" type="NavigationRegion3D" parent="." unique_id=1213022945]
 navigation_mesh = SubResource("NavigationMesh_d46x6")
