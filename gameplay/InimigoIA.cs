@@ -29,8 +29,8 @@ public partial class InimigoIA : CharacterBody3D
     /// </summary>
     [Export] public Curve3D? Rota { get; set; }
 
-    /// <summary>Vida atual, inicializada a partir do arquétipo.</summary>
-    public int Vida { get; private set; }
+    /// <summary>Vida atual, lida do componente Saude.</summary>
+    public int Vida => _saude != null ? _saude.Atual : 0;
 
     /// <summary>
     /// Nome de exibição do arquétipo. NÃO é o nome do nó: renomear nó em
@@ -46,11 +46,23 @@ public partial class InimigoIA : CharacterBody3D
     /// <summary>Multiplicador do raio para perder o alvo (evita piscar no limite).</summary>
     [Export] public float FolgaParaPerder { get; set; } = 1.2f;
 
+    /// <summary>Dano aplicado ao encostar no jogador.</summary>
+    [Export] public int DanoPorContato { get; set; } = 10;
+
+    /// <summary>Distância em que o contato passa a machucar.</summary>
+    [Export] public float AlcanceDeAtaque { get; set; } = 2.2f;
+
+    /// <summary>Intervalo mínimo entre dois danos, em segundos.</summary>
+    [Export] public float IntervaloDeAtaque { get; set; } = 1.0f;
+
     public Estado EstadoAtual { get; private set; } = Estado.Ocioso;
 
     private NavigationAgent3D _agente = null!;
     private Node3D _jogador = null!;
+    private Saude _saude = null!;
+    private Saude? _saudeJogador;
     private float _gravidade;
+    private float _cooldownAtaque;
     /// <summary>Distância já percorrida na rota (0 até GetBakedLength).</summary>
     private float _rotaDistancia;
     private int _rotaSentido = 1;
@@ -60,6 +72,9 @@ public partial class InimigoIA : CharacterBody3D
         _agente = GetNode<NavigationAgent3D>("NavigationAgent3D");
         _jogador = GetParent().GetNode<Node3D>("Player");
         _gravidade = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
+        _saude = GetNode<Saude>("Saude");
+        _saudeJogador = _jogador.GetNodeOrNull<Saude>("Saude");
+        _saude.Morreu += Morrer;
 
         AplicarArquetipo();
 
@@ -84,6 +99,13 @@ public partial class InimigoIA : CharacterBody3D
         {
             case Estado.Perseguindo when distancia > DistanciaDeParada:
                 MoverPara(_jogador.GlobalPosition, ref velocity, dt);
+                TentarMorder(distancia, dt);
+                break;
+
+            case Estado.Perseguindo:
+                // Chegou perto o bastante para parar: hora de morder.
+                TentarMorder(distancia, dt);
+                Frear(ref velocity, dt);
                 break;
 
             case Estado.Patrulhando:
@@ -97,6 +119,30 @@ public partial class InimigoIA : CharacterBody3D
 
         Velocity = velocity;
         MoveAndSlide();
+    }
+
+    /// <summary>
+    /// Dano por contato: com cápsulas, distância é equivalente a sobreposição
+    /// e não custa física. O cooldown evita drenar a vida em três frames.
+    /// </summary>
+    private void TentarMorder(float distancia, float dt)
+    {
+        _cooldownAtaque -= dt;
+
+        if (distancia > AlcanceDeAtaque || _cooldownAtaque > 0.0f || _saudeJogador == null)
+        {
+            return;
+        }
+
+        if (_saudeJogador.AplicarDano(DanoPorContato))
+        {
+            _cooldownAtaque = IntervaloDeAtaque;
+        }
+    }
+
+    private void Morrer()
+    {
+        QueueFree();
     }
 
     private bool TemRota()
@@ -190,7 +236,7 @@ public partial class InimigoIA : CharacterBody3D
     {
         if (Dados == null)
         {
-            Vida = 100;
+            _saude.Configurar(100);
             return;
         }
 
@@ -198,7 +244,7 @@ public partial class InimigoIA : CharacterBody3D
         RaioDeVisao = Dados.RaioDeVisao;
         DistanciaDeParada = Dados.DistanciaDeParada;
         GiroSuave = Dados.GiroSuave;
-        Vida = Dados.Vida;
+        _saude.Configurar(Dados.Vida);
         AplicarCor(Dados.Cor);
     }
 

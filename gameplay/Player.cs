@@ -39,11 +39,28 @@ public partial class Player : CharacterBody3D
         _gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
         FloorSnapLength = 0.25f;
         Input.MouseMode = Input.MouseModeEnum.Captured;
+
+        if (GetNodeOrNull<Saude>("Saude") is Saude saude)
+        {
+            saude.Morreu += Morrer;
+        }
     }
 
     public void FaceYawDegrees(float yawDegrees)
     {
         _body.Rotation = new Vector3(0.0f, Mathf.DegToRad(yawDegrees), 0.0f);
+    }
+
+    /// <summary>
+    /// Morte do jogador. Por enquanto recarrega a cena: é o feedback mais
+    /// honesto sem HUD de fim de jogo.
+    /// </summary>
+    private void Morrer()
+    {
+        InputLocked = true;
+        Input.MouseMode = Input.MouseModeEnum.Visible;
+        GD.Print("[Player] morreu — recarregando a cena");
+        GetTree().CreateTimer(2.5).Timeout += () => GetTree().ReloadCurrentScene();
     }
 
     public override void _UnhandledInput(InputEvent @event)

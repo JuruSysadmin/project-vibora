@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://repj6liq31hu" path="res://gameplay/Player.cs" id="4_1b6n0"]
 [ext_resource type="Material" uid="uid://ci482xng2v4iu" path="res://art/materiais/player.tres" id="5_42ncp"]
 [ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="6_1b6n0"]
+[ext_resource type="Script" uid="uid://odlcx4l1c2t5" path="res://sistemas/Saude.cs" id="6_n3syt"]
 [ext_resource type="Script" uid="uid://csjccrhj5wnx7" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="7_llcge"]
 [ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="8_lwi15"]
 [ext_resource type="PackedScene" uid="uid://c0q08uefbp6ik" path="res://art/props/armario/Electrical_Cabinet_ujzfde2_Mid.fbx" id="9_lwi15"]
@@ -428,6 +429,8 @@ omni_range = 9.0
 
 [node name="Player" type="CharacterBody3D" parent="." unique_id=356130549]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+collision_layer = 2
+collision_mask = 5
 script = ExtResource("4_1b6n0")
 
 [node name="Collider" type="CollisionShape3D" parent="Player" unique_id=780146140]
@@ -438,6 +441,10 @@ shape = SubResource("CapsuleShape3D_353n8")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 material_override = ExtResource("5_42ncp")
 mesh = SubResource("CapsuleMesh_px6rj")
+
+[node name="Saude" type="Node" parent="Player" unique_id=1040864615 node_paths=PackedStringArray("Corpo")]
+script = ExtResource("6_n3syt")
+Corpo = NodePath("../Body")
 
 [node name="MainCamera" type="Camera3D" parent="." unique_id=349752352]
 physics_interpolation_mode = 1
@@ -1075,6 +1082,8 @@ navigation_mesh = SubResource("NavigationMesh_d46x6")
 
 [node name="Inimigo" type="CharacterBody3D" parent="." unique_id=396155259]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.2, 4)
+collision_layer = 4
+collision_mask = 3
 script = ExtResource("14_cy6r3")
 Dados = ExtResource("15_s61md")
 
@@ -1092,8 +1101,14 @@ path_desired_distance = 0.5
 target_desired_distance = 0.6
 radius = 0.4
 
+[node name="Saude" type="Node" parent="Inimigo" unique_id=648692296 node_paths=PackedStringArray("Corpo")]
+script = ExtResource("6_n3syt")
+Corpo = NodePath("../Body")
+
 [node name="ZumbiLento" type="CharacterBody3D" parent="." unique_id=1512548117]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0.2, -3)
+collision_layer = 4
+collision_mask = 3
 script = ExtResource("14_cy6r3")
 Dados = ExtResource("17_d46x6")
 Rota = ExtResource("18_d46x6")
@@ -1111,6 +1126,10 @@ mesh = SubResource("CapsuleMesh_wqkcq")
 path_desired_distance = 0.5
 target_desired_distance = 0.6
 radius = 0.4
+
+[node name="Saude" type="Node" parent="ZumbiLento" unique_id=1715379341 node_paths=PackedStringArray("Corpo")]
+script = ExtResource("6_n3syt")
+Corpo = NodePath("../Body")
 
 [editable path="Armario"]
 [editable path="ArmarioSalaB"]
