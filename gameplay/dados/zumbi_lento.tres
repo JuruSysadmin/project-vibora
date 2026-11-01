@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="InimigoDados" format=3 uid="uid://d0md83f7nmxuo"]
+
+[ext_resource type="Script" uid="uid://bwaob8sq1npxv" path="res://gameplay/InimigoDados.cs" id="1_e45xg"]
+
+[resource]
+script = ExtResource("1_e45xg")
+Nome = "Zumbi Lento"
+Velocidade = 1.8
+RaioDeVisao = 10.0
+DistanciaDeParada = 1.5
+Vida = 150
+Cor = Color(0.3529412, 0.47843137, 0.2901961, 1)

@@ -54,3 +54,27 @@ t=2  Perseguindo  dist=1,63   alcançou e parou em DistanciaDeParada
 t=2..8            dist=1,63   parado, sem empurrar o jogador
 t=9+ Perseguindo  dist≈1,7-2,7 seguindo o jogador em movimento
 ```
+
+## Arquétipos como dado (`InimigoDados`)
+
+Inimigo novo **não é cena nova**: é um `.tres` em `gameplay/dados/`.
+
+```
+Inimigo (CharacterBody3D)  ── Dados ──►  gameplay/dados/perseguidor.tres
+ZumbiLento (CharacterBody3D) ─ Dados ──►  gameplay/dados/zumbi_lento.tres
+```
+
+O `Resource` carrega `Nome`, `Velocidade`, `RaioDeVisao`, `DistanciaDeParada`, `GiroSuave`, `Vida` e `Cor`. Em `_Ready`, `AplicarArquetipo()` copia os valores para os exports (que ficam como fallback para inimigos sem arquétipo) e pinta a cápsula.
+
+Medido em jogo:
+
+```
+Inimigo    | vida=80  vel=5.5 raio=20 | laranja
+ZumbiLento | vida=150 vel=1.8 raio=10 | verde
+```
+
+### Duas armadilhas nesse caminho
+
+**1. Duplicar o material antes de pintar.** `AplicarCor` faz `baseMaterial.Duplicate()` e só então troca `AlbedoColor`. Sem duplicar, pintar um inimigo pintaria **todos** os que compartilham o mesmo `.tres`.
+
+**2. Nunca renomear o nó com o nome do arquétipo.** A primeira versão fazia `Name = Dados.Nome` no `_Ready` e isso quebrou tudo: os inimigos deixavam de ser encontrados por `get_node("Inimigo")`, porque o nó passou a se chamar "Perseguidor". Renomear nó em runtime quebra referência por caminho e por nome único. O nome de exibição vive em `NomeExibicao`, uma propriedade — não no nome do nó.

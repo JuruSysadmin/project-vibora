@@ -15,6 +15,8 @@
 [ext_resource type="Material" uid="uid://b4qqxfwp1aqqy" path="res://art/materiais/aro.tres" id="13_s61md"]
 [ext_resource type="Script" uid="uid://c2jkuwo3uvcqx" path="res://gameplay/InimigoIA.cs" id="14_cy6r3"]
 [ext_resource type="Material" uid="uid://cmau6erknntbw" path="res://art/materiais/inimigo.tres" id="15_d46x6"]
+[ext_resource type="Resource" uid="uid://ild5ohueq2x6" path="res://gameplay/dados/perseguidor.tres" id="15_s61md"]
+[ext_resource type="Resource" uid="uid://d0md83f7nmxuo" path="res://gameplay/dados/zumbi_lento.tres" id="17_d46x6"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_lwi15"]
 size = Vector3(16, 0.5, 12)
@@ -1077,6 +1079,7 @@ navigation_mesh = SubResource("NavigationMesh_d46x6")
 [node name="Inimigo" type="CharacterBody3D" parent="." unique_id=396155259]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.2, 4)
 script = ExtResource("14_cy6r3")
+Dados = ExtResource("15_s61md")
 
 [node name="Collider" type="CollisionShape3D" parent="Inimigo" unique_id=1801829239]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
@@ -1088,6 +1091,25 @@ material_override = ExtResource("15_d46x6")
 mesh = SubResource("CapsuleMesh_wqkcq")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="Inimigo" unique_id=847600636]
+path_desired_distance = 0.5
+target_desired_distance = 0.6
+radius = 0.4
+
+[node name="ZumbiLento" type="CharacterBody3D" parent="." unique_id=1512548117]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0.2, -3)
+script = ExtResource("14_cy6r3")
+Dados = ExtResource("17_d46x6")
+
+[node name="Collider" type="CollisionShape3D" parent="ZumbiLento" unique_id=2087452]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_n3syt")
+
+[node name="Body" type="MeshInstance3D" parent="ZumbiLento" unique_id=1595524303]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+material_override = ExtResource("15_d46x6")
+mesh = SubResource("CapsuleMesh_wqkcq")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="ZumbiLento" unique_id=1871161014]
 path_desired_distance = 0.5
 target_desired_distance = 0.6
 radius = 0.4

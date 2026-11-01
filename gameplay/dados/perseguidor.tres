@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="InimigoDados" format=3 uid="uid://ild5ohueq2x6"]
+
+[ext_resource type="Script" uid="uid://bwaob8sq1npxv" path="res://gameplay/InimigoDados.cs" id="1_6bqkp"]
+
+[resource]
+script = ExtResource("1_6bqkp")
+Nome = "Perseguidor"
+Velocidade = 5.5
+RaioDeVisao = 20.0
+DistanciaDeParada = 2.2
+GiroSuave = 16.0
+Vida = 80
+Cor = Color(0.8784314, 0.5254902, 0.22745098, 1)

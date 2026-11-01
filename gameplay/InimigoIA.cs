@@ -16,6 +16,22 @@ public partial class InimigoIA : CharacterBody3D
 {
     public enum Estado { Ocioso, Perseguindo }
 
+    /// <summary>
+    /// Arquétipo opcional. Quando preenchido, os valores dele sobrescrevem os
+    /// exports abaixo em _Ready — os exports passam a ser fallback para
+    /// inimigos sem arquétipo.
+    /// </summary>
+    [Export] public InimigoDados? Dados { get; set; }
+
+    /// <summary>Vida atual, inicializada a partir do arquétipo.</summary>
+    public int Vida { get; private set; }
+
+    /// <summary>
+    /// Nome de exibição do arquétipo. NÃO é o nome do nó: renomear nó em
+    /// runtime quebra referências por caminho e por nome único.
+    /// </summary>
+    public string NomeExibicao => Dados?.Nome ?? Name;
+
     [Export] public float Velocidade { get; set; } = 3.5f;
     [Export] public float RaioDeVisao { get; set; } = 14.0f;
     /// <summary>Para de andar a esta distância do jogador.</summary>
@@ -35,6 +51,8 @@ public partial class InimigoIA : CharacterBody3D
         _agente = GetNode<NavigationAgent3D>("NavigationAgent3D");
         _jogador = GetParent().GetNode<Node3D>("Player");
         _gravidade = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
+
+        AplicarArquetipo();
     }
 
     public override void _PhysicsProcess(double delta)
@@ -63,6 +81,38 @@ public partial class InimigoIA : CharacterBody3D
 
         Velocity = velocity;
         MoveAndSlide();
+    }
+
+    /// <summary>Copia os valores do arquétipo e pinta a cápsula.</summary>
+    private void AplicarArquetipo()
+    {
+        if (Dados == null)
+        {
+            Vida = 100;
+            return;
+        }
+
+        Velocidade = Dados.Velocidade;
+        RaioDeVisao = Dados.RaioDeVisao;
+        DistanciaDeParada = Dados.DistanciaDeParada;
+        GiroSuave = Dados.GiroSuave;
+        Vida = Dados.Vida;
+        AplicarCor(Dados.Cor);
+    }
+
+    /// <summary>
+    /// Duplica o material antes de trocar a cor: sem duplicar, pintar um
+    /// inimigo pintaria todos os que compartilham o mesmo .tres.
+    /// </summary>
+    private void AplicarCor(Color cor)
+    {
+        MeshInstance3D? corpo = GetNodeOrNull<MeshInstance3D>("Body");
+        if (corpo?.MaterialOverride is StandardMaterial3D baseMaterial)
+        {
+            StandardMaterial3D copia = (StandardMaterial3D)baseMaterial.Duplicate();
+            copia.AlbedoColor = cor;
+            corpo.MaterialOverride = copia;
+        }
     }
 
     /// <summary>Transições da máquina de estados.</summary>
