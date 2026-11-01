@@ -31,8 +31,33 @@ Resultado: **43 polígonos**. Qualquer parede nova precisa estar no grupo `naveg
 
 | Estado | Quando entra | O que faz |
 |---|---|---|
-| `Ocioso` | jogador além de `RaioDeVisao` | freia e para |
-| `Perseguindo` | jogador dentro de `RaioDeVisao` | segue o caminho do `NavigationAgent3D` |
+| `Patrulhando` | tem `Rota` e não vê o jogador | segue a `Curve3D` |
+| `Ocioso` | sem rota e sem alvo | freia e para |
+| `Perseguindo` | jogador dentro de `RaioDeVisao` | ignora a rota e persegue |
+
+## Patrulha com `Curve3D`
+
+`Rota` é um export **do nó**, não do arquétipo: o arquétipo descreve o tipo, a rota é colocação de cena (cada inimigo patrulha a área dele).
+
+O truque da implementação: **o ponto-alvo anda pela curva** na velocidade do inimigo, e o inimigo persegue esse ponto pelo `NavigationAgent3D`. Assim ele contorna paredes em vez de cortar caminho em linha reta, e não precisa de lógica de "cheguei no waypoint".
+
+```
+_rotaDistancia += _rotaSentido * Velocidade * dt;   // anda e volta nos extremos
+MoverPara(Rota.SampleBaked(_rotaDistancia), ...);
+```
+
+Ao perder o jogador, ele **retoma a rota no ponto em que estava** — o `_rotaDistancia` não é resetado.
+
+### Ciclo medido em jogo
+
+```
+t=1-2   Patrulhando   seguindo a rota
+t=3-6   Perseguindo   jogador entrou nos 10 m
+t=6     jogador teleportado para a Sala A (20,6 m)
+t=7-14  Patrulhando   retomou a rota no ponto onde estava
+t=15+   Perseguindo   jogador voltou ao alcance
+t=22-26 Perseguindo   parado a 1,5 m
+```
 
 `FolgaParaPerder` (1,2×) evita piscar entre estados quando o jogador fica no limite do raio.
 

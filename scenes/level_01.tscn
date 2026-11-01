@@ -17,6 +17,7 @@
 [ext_resource type="Material" uid="uid://cmau6erknntbw" path="res://art/materiais/inimigo.tres" id="15_d46x6"]
 [ext_resource type="Resource" uid="uid://ild5ohueq2x6" path="res://gameplay/dados/perseguidor.tres" id="15_s61md"]
 [ext_resource type="Resource" uid="uid://d0md83f7nmxuo" path="res://gameplay/dados/zumbi_lento.tres" id="17_d46x6"]
+[ext_resource type="Curve3D" uid="uid://c6rdfy4dxld5m" path="res://gameplay/dados/rota_sala1.tres" id="18_d46x6"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_lwi15"]
 size = Vector3(16, 0.5, 12)
@@ -1095,6 +1096,7 @@ radius = 0.4
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0.2, -3)
 script = ExtResource("14_cy6r3")
 Dados = ExtResource("17_d46x6")
+Rota = ExtResource("18_d46x6")
 
 [node name="Collider" type="CollisionShape3D" parent="ZumbiLento" unique_id=2087452]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
