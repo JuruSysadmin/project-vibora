@@ -19,6 +19,10 @@ run/main_scene="res://scenes/level_01.tscn"
 config/features=PackedStringArray("4.7", "C#")
 config/icon="res://icon.svg"
 
+[audio]
+
+buses/default_bus_layout="res://art/sons/barras.tres"
+
 [autoload]
 
 PhantomCameraManager="*res://addons/phantom_camera/scripts/managers/phantom_camera_manager.gd"

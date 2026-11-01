@@ -14,6 +14,8 @@ public partial class SequenciaMorte : CanvasLayer
     [ExportGroup("Audio")]
     [Export] public string BarraMusica { get; set; } = "Music";
     [Export] public string BarraSfx { get; set; } = "SFX";
+    [Export] public string BarraCue { get; set; } = "Master";
+    [Export] public string CaminhoSom { get; set; } = "res://art/sons/morte.wav";
     [Export] public float TempoFadeAudio { get; set; } = 1.4f;
 
     [ExportGroup("Cores")]
@@ -27,6 +29,7 @@ public partial class SequenciaMorte : CanvasLayer
 
     private TextureRect _vinheta = null!;
     private VBoxContainer _prompt = null!;
+    private AudioStreamPlayer _audio = null!;
 
     private int[] _barras = System.Array.Empty<int>();
     private float[] _barrasBase = System.Array.Empty<float>();
@@ -42,6 +45,12 @@ public partial class SequenciaMorte : CanvasLayer
         Layer = 20;
         _vinheta = ConstruirVinheta();
         _prompt = ConstruirPrompt();
+        _audio = new AudioStreamPlayer
+        {
+            Bus = BarraCue,
+            ProcessMode = Node.ProcessModeEnum.Always,
+        };
+        AddChild(_audio);
     }
 
     public override void _ExitTree()
@@ -65,6 +74,7 @@ public partial class SequenciaMorte : CanvasLayer
         _tPrompt = 0f;
 
         BuscarBarras();
+        TocarCue();
 
         _vinheta.Visible = true;
         _vinheta.Modulate = new Color(1f, 1f, 1f, 0f);
@@ -157,9 +167,19 @@ public partial class SequenciaMorte : CanvasLayer
     {
         Engine.TimeScale = 1f;
         RestaurarVolumes();
+        _audio.Stop();
         _vinheta.Visible = false;
         _prompt.Visible = false;
         _estado = Estado.Inativo;
+    }
+
+    private void TocarCue()
+    {
+        _audio.Stop();
+        var som = GD.Load<AudioStream>(CaminhoSom);
+        if (som == null) return;
+        _audio.Stream = som;
+        _audio.Play();
     }
 
     private void FadeAudio(float ratio)
