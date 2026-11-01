@@ -1069,10 +1069,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05, 0)
 [node name="Collider" type="CollisionShape3D" parent="Porta1/PortaColisor" unique_id=578021153]
 shape = SubResource("BoxShape3D_cy6r3")
 
-[node name="PreviewCamF" type="Camera3D" parent="." unique_id=1500880751]
-transform = Transform3D(-4.371139e-08, 0.24667926, -0.9690972, 0, 0.9690972, 0.24667926, 1, 1.0782693e-08, -4.2360583e-08, 13.5, 1.9, 0)
-fov = 60.0
-
 [node name="Navegacao" type="NavigationRegion3D" parent="." unique_id=1213022945]
 navigation_mesh = SubResource("NavigationMesh_d46x6")
 
