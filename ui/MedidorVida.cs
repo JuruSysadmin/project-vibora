@@ -71,7 +71,11 @@ public partial class MedidorVida : Control
     public override void _Process(double delta)
     {
         ObservarSaude();
-        ExecutarAnimacao((float)delta);
+
+        // HUD roda em tempo real. Sem dividir pelo TimeScale, o slow-motion da
+        // sequencia de morte congela a barra (delta encolhe 200x).
+        float dt = (float)(delta / System.Math.Max(Engine.TimeScale, 0.0001));
+        ExecutarAnimacao(dt);
     }
 
     public void DefinirVida(int jogador, float proporcao)
@@ -127,6 +131,13 @@ public partial class MedidorVida : Control
         }
         else
         {
+            // Cura interrompe um dano em andamento: sem isso o rastro escorre
+            // para o valor antigo enquanto a vida sobe, e depois salta.
+            _animandoDano = false;
+            _rastroParado = 0f;
+            _alvoRastro = _vida;
+            _rastroBarra.Value = _vidaBarra.Value;
+
             _alvoCura = _vida;
             _animandoCura = true;
         }
