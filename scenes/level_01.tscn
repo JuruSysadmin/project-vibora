@@ -24,8 +24,8 @@
 [ext_resource type="Script" uid="uid://bhls4td6lof17" path="res://sistemas/SequenciaMorte.cs" id="20_sm"]
 [ext_resource type="Script" uid="uid://bdxtp6ulh3mr8" path="res://sistemas/Inventario.cs" id="21_inv"]
 [ext_resource type="Script" uid="uid://db3etjt42ktk6" path="res://gameplay/Frasco.cs" id="23_fr"]
-[ext_resource type="AudioStream" path="res://art/sons/bgm_fase.ogg" id="24_bgm"]
-[ext_resource type="Script" uid="uid://bwqevm803t8ay" path="res://ui/InventarioHud.cs" id="25_invhud"]
+[ext_resource type="AudioStream" uid="uid://dc5oksdscgux2" path="res://art/sons/bgm_fase.ogg" id="24_bgm"]
+[ext_resource type="Script" path="res://ui/InventarioTela.cs" id="25_invtela"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_lwi15"]
 size = Vector3(16, 0.5, 12)
@@ -1110,13 +1110,12 @@ offset_left = 24.0
 offset_top = 24.0
 SaudePath = NodePath("../../Player/Saude")
 
-[node name="InventarioHud" type="HBoxContainer" parent="HudVida" unique_id=927153641]
-offset_left = 24.0
-offset_top = 60.0
-offset_right = 224.0
-offset_bottom = 124.0
-script = ExtResource("25_invhud")
-InventarioPath = NodePath("../../Player/Inventario")
+[node name="InventarioTela" type="CanvasLayer" parent="." unique_id=927153641]
+layer = 15
+script = ExtResource("25_invtela")
+InventarioPath = NodePath("Player/Inventario")
+SaudePath = NodePath("Player/Saude")
+ActorPath = NodePath("Player")
 
 [node name="SequenciaMorte" type="CanvasLayer" parent="." unique_id=913572048]
 unique_name_in_owner = true

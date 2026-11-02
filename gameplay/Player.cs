@@ -74,7 +74,7 @@ public partial class Player : CharacterBody3D
             rot.Y -= motion.Relative.X * MouseSensitivity;
             _pcam.Call("set_third_person_rotation_degrees", rot);
         }
-        else if (@event.IsActionPressed("ui_cancel"))
+        else if (@event.IsActionPressed("ui_cancel") && !InputLocked && !GetTree().Paused)
         {
             Input.MouseMode = Input.MouseMode == Input.MouseModeEnum.Captured
                 ? Input.MouseModeEnum.Visible
@@ -95,7 +95,7 @@ public partial class Player : CharacterBody3D
             _atrasoFrasco -= (float)delta;
         }
 
-        if (!InputLocked && Input.IsActionJustPressed("usar_item"))
+        if (!InputLocked && !GetTree().Paused && Input.IsActionJustPressed("usar_item"))
         {
             UsarFrasco();
         }
