@@ -6,17 +6,14 @@ public partial class DoorTransition : Node
     [Export] public float BlackHoldTime { get; set; } = 0.55f;
     [Export] public float FadeInTime { get; set; } = 0.45f;
     [Export] public string RequiredKeyId { get; set; } = "";
-    /// <summary>
-    /// Para onde o jogador olha ao chegar de cada lado (graus, eixo Y da câmera).
-    /// O padrão 180/0 serve para portas em parede voltada a Z; portas em parede
-    /// voltada a X usam 90/-90.
-    /// </summary>
     [Export] public float YawIntoRoomFromFrente { get; set; } = 180.0f;
     [Export] public float YawIntoRoomFromFundo { get; set; } = 0.0f;
     [Export] public string PromptText { get; set; } = "Abrir porta";
     [Export] public string LockedText { get; set; } = "Trancada — precisa de cartão";
+    [Export] public NodePath ActorPath { get; set; } = new("../Player");
+    [Export] public NodePath PhantomCameraPath { get; set; } = new("../PCam_Main");
 
-    private Player _player = null!;
+    private CharacterBody3D _actor = null!;
     private ColorRect _black = null!;
     private Label _prompt = null!;
     private Area3D _triggerFront = null!;
@@ -27,13 +24,12 @@ public partial class DoorTransition : Node
 
     public override void _Ready()
     {
-        Node level = GetParent();
-        _player = level.GetNode<Player>("Player");
+        _actor = GetNode<CharacterBody3D>(ActorPath);
         _black = GetNode<ColorRect>("Fade/Black");
         _prompt = GetNode<Label>("HUD/Prompt");
         _triggerFront = GetNode<Area3D>("GatilhoFrente");
         _triggerBack = GetNode<Area3D>("GatilhoFundo");
-        _phantomCamera = level.GetNode("PCam_Main");
+        _phantomCamera = GetNode(PhantomCameraPath);
 
         SetBlack(0.0f);
         SetPrompt(null);
@@ -80,7 +76,7 @@ public partial class DoorTransition : Node
 
     private void OnZoneChanged(Node3D body, string side, bool entered)
     {
-        if (body != _player)
+        if (body != _actor)
         {
             return;
         }
@@ -102,6 +98,19 @@ public partial class DoorTransition : Node
         _black.Color = color;
     }
 
+    private void SetActorInputLocked(bool locked)
+    {
+        _actor.Set("InputLocked", locked);
+    }
+
+    private void FaceActorYaw(float yawDegrees)
+    {
+        if (_actor.HasMethod("FaceYawDegrees"))
+        {
+            _actor.Call("FaceYawDegrees", yawDegrees);
+        }
+    }
+
     private void FaceIntoRoom(string destinationPoint)
     {
         float yaw = destinationPoint == "Fundo" ? YawIntoRoomFromFundo : YawIntoRoomFromFrente;
@@ -113,31 +122,46 @@ public partial class DoorTransition : Node
             _phantomCamera.Call("set_third_person_rotation_degrees", new Vector3(-15.0f, yaw, 0.0f));
         }
 
-        _player.FaceYawDegrees(yaw);
+        FaceActorYaw(yaw);
     }
 
     private async void Cross(string destinationPoint)
     {
         _busy = true;
         SetPrompt(null);
-        _player.InputLocked = true;
-        _player.Velocity = Vector3.Zero;
+        SetActorInputLocked(true);
+        _actor.Velocity = Vector3.Zero;
 
         Tween escurecer = CreateTween();
         escurecer.TweenProperty(_black, "color:a", 1.0f, FadeOutTime);
         await ToSignal(escurecer, Tween.SignalName.Finished);
 
-        _player.GlobalPosition = GetNode<Node3D>($"Pontos/{destinationPoint}").GlobalPosition;
-        _player.Velocity = Vector3.Zero;
+        if (!GodotObject.IsInstanceValid(this) || !GodotObject.IsInstanceValid(_actor))
+        {
+            return;
+        }
+
+        _actor.GlobalPosition = GetNode<Node3D>($"Pontos/{destinationPoint}").GlobalPosition;
+        _actor.Velocity = Vector3.Zero;
         FaceIntoRoom(destinationPoint);
 
         await ToSignal(GetTree().CreateTimer(BlackHoldTime), SceneTreeTimer.SignalName.Timeout);
+
+        if (!GodotObject.IsInstanceValid(this) || !GodotObject.IsInstanceValid(_actor))
+        {
+            return;
+        }
 
         Tween clarear = CreateTween();
         clarear.TweenProperty(_black, "color:a", 0.0f, FadeInTime);
         await ToSignal(clarear, Tween.SignalName.Finished);
 
-        _player.InputLocked = false;
+        if (!GodotObject.IsInstanceValid(this) || !GodotObject.IsInstanceValid(_actor))
+        {
+            return;
+        }
+
+        SetActorInputLocked(false);
         _busy = false;
     }
 }

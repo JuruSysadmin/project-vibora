@@ -8,7 +8,7 @@ O modelo da porta é um rip de PS1 com `AnimationPlayer` vazio — não existe a
 
 ## Como está montado
 
-`scripts/DoorTransition.cs`, anexado ao nó `PortaTransicao`:
+`sistemas/DoorTransition.cs`, anexado ao nó `PortaTransicao` (ator via `CharacterBody3D` + `Call`/`Set`, sem tipo `Player`):
 
 ```
 PortaTransicao (Node)          ← script
