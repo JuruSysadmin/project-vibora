@@ -88,6 +88,28 @@ public partial class Saude : Node
         Atual = Mathf.Min(Maximo, Atual + quantidade);
     }
 
+    public void Reviver()
+    {
+        if (Atual > 0)
+        {
+            return;
+        }
+
+        Atual = Maximo;
+        double agora = Time.GetTicksMsec() / 1000.0;
+        _protegidoAte = agora + Invulnerabilidade;
+    }
+
+    public void RestaurarVida()
+    {
+        if (Morto)
+        {
+            return;
+        }
+
+        Atual = Maximo;
+    }
+
     /// <summary>
     /// Duplica o material antes de piscar: sem duplicar, piscar um inimigo
     /// piscaria todos os que compartilham o mesmo .tres.

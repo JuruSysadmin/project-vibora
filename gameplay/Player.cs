@@ -15,6 +15,8 @@ public partial class Player : CharacterBody3D
     [Export] public float PitchMinDegrees { get; set; } = -63.0f;
     [Export] public float PitchMaxDegrees { get; set; } = 25.0f;
     [Export] public NodePath PhantomCameraPath { get; set; } = new("%PCam_Main");
+    [Export] public string CaminhoSomFrasco { get; set; } = "res://art/sons/curar.wav";
+    [Export] public float AtrasoFrasco { get; set; } = 1.0f;
 
     /// <summary>
     /// Trava o controle (movimento e órbita da câmera) durante transições e
@@ -27,6 +29,8 @@ public partial class Player : CharacterBody3D
     private PlayerMotor _motor = null!;
     private Node3D _body = null!;
     private Node _pcam = null!;
+    private AudioStreamPlayer _audioFrasco = null!;
+    private float _atrasoFrasco;
 
     public override void _Ready()
     {
@@ -42,6 +46,14 @@ public partial class Player : CharacterBody3D
         {
             saude.Morreu += Morrer;
         }
+
+        if (GetNodeOrNull<SequenciaMorte>("%SequenciaMorte") is SequenciaMorte sequencia)
+        {
+            sequencia.Reviveu += AoReviver;
+        }
+
+        _audioFrasco = new AudioStreamPlayer { Bus = "SFX" };
+        AddChild(_audioFrasco);
     }
 
     /// <summary>Vira o corpo de imediato (usado na chegada de uma transição).</summary>
@@ -78,6 +90,16 @@ public partial class Player : CharacterBody3D
 
     public override void _PhysicsProcess(double delta)
     {
+        if (_atrasoFrasco > 0f)
+        {
+            _atrasoFrasco -= (float)delta;
+        }
+
+        if (!InputLocked && Input.IsActionJustPressed("usar_item"))
+        {
+            UsarFrasco();
+        }
+
         _motor.Travado = InputLocked;
 
         Vector2 entrada = Input.GetVector("move_left", "move_right", "move_forward", "move_back");
@@ -90,6 +112,28 @@ public partial class Player : CharacterBody3D
             Input.IsActionJustReleased("jump"));
     }
 
+    private void UsarFrasco()
+    {
+        if (_atrasoFrasco > 0f) return;
+
+        if (GetNodeOrNull<Inventario>("Inventario") is not Inventario inventario) return;
+        if (!inventario.TentarConsumirFrasco()) return;
+
+        if (GetNodeOrNull<Saude>("Saude") is Saude saude)
+        {
+            saude.RestaurarVida();
+        }
+
+        var som = GD.Load<AudioStream>(CaminhoSomFrasco);
+        if (som != null)
+        {
+            _audioFrasco.Stream = som;
+            _audioFrasco.Play();
+        }
+
+        _atrasoFrasco = AtrasoFrasco;
+    }
+
     /// <summary>
     /// Morte do jogador: entrega para a SequenciaMorte. O reload direto fica
     /// como fallback caso o nó não exista, senão o jogo travaria com o
@@ -100,14 +144,31 @@ public partial class Player : CharacterBody3D
         InputLocked = true;
         Input.MouseMode = Input.MouseModeEnum.Visible;
 
+        bool comFrasco = false;
+        if (GetNodeOrNull<Inventario>("Inventario") is Inventario inventario)
+        {
+            comFrasco = inventario.ConsumirFrasco();
+        }
+
         if (GetNodeOrNull<SequenciaMorte>("%SequenciaMorte") is SequenciaMorte sequencia)
         {
-            sequencia.Iniciar();
+            sequencia.Iniciar(comFrasco);
             return;
         }
 
         GD.Print("[Player] morreu — recarregando a cena");
         GetTree().CreateTimer(2.5).Timeout += () => GetTree().ReloadCurrentScene();
+    }
+
+    private void AoReviver()
+    {
+        InputLocked = false;
+        Input.MouseMode = Input.MouseModeEnum.Captured;
+
+        if (GetNodeOrNull<Saude>("Saude") is Saude saude)
+        {
+            saude.Reviver();
+        }
     }
 
     private bool CanOrbitThirdPerson()

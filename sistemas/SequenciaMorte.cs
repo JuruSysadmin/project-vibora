@@ -4,11 +4,13 @@ using Godot;
 public partial class SequenciaMorte : CanvasLayer
 {
     [Signal] public delegate void ContinuouEventHandler();
+    [Signal] public delegate void ReviveuEventHandler();
 
     [ExportGroup("Animacao")]
     [Export] public float TempoDesaceleracao { get; set; } = 0.4f;
     [Export] public float TempoVinheta { get; set; } = 1.4f;
     [Export] public float EsperaAntesPrompt { get; set; } = 0.6f;
+    [Export] public float TempoUsoFrasco { get; set; } = 1.4f;
     [Export] public float EscalaMinima { get; set; } = 0.005f;
 
     [ExportGroup("Audio")]
@@ -16,6 +18,8 @@ public partial class SequenciaMorte : CanvasLayer
     [Export] public string BarraSfx { get; set; } = "SFX";
     [Export] public string BarraCue { get; set; } = "Master";
     [Export] public string CaminhoSom { get; set; } = "res://art/sons/morte.wav";
+    [Export] public string CaminhoSomFrasco { get; set; } = "res://art/sons/frasco.wav";
+    [Export] public string CaminhoBgm { get; set; } = "res://art/sons/bgm_gameover.ogg";
     [Export] public float TempoFadeAudio { get; set; } = 1.4f;
 
     [ExportGroup("Cores")]
@@ -27,7 +31,7 @@ public partial class SequenciaMorte : CanvasLayer
 
     public static int Continuacoes { get; private set; }
 
-    private enum Estado { Inativo, Desacelerando, Aguardando, Prompt }
+    private enum Estado { Inativo, Desacelerando, Aguardando, Spray, Prompt }
 
     private Estado _estado = Estado.Inativo;
 
@@ -36,6 +40,7 @@ public partial class SequenciaMorte : CanvasLayer
     private Control? _caixa;
     private bool _ajustado;
     private AudioStreamPlayer _audio = null!;
+    private AudioStreamPlayer _bgm = null!;
     private BaseButton _botaoSim = null!;
     private BaseButton _botaoNao = null!;
 
@@ -45,6 +50,8 @@ public partial class SequenciaMorte : CanvasLayer
 
     private bool _arte;
     private float _escala = 2f;
+    private bool _temFrasco;
+    private float _tUsoFrasco;
 
     private int[] _barras = System.Array.Empty<int>();
     private float[] _barrasBase = System.Array.Empty<float>();
@@ -66,6 +73,12 @@ public partial class SequenciaMorte : CanvasLayer
             ProcessMode = Node.ProcessModeEnum.Always,
         };
         AddChild(_audio);
+        _bgm = new AudioStreamPlayer
+        {
+            Bus = BarraCue,
+            ProcessMode = Node.ProcessModeEnum.Always,
+        };
+        AddChild(_bgm);
         ConstruirTela();
     }
 
@@ -78,11 +91,13 @@ public partial class SequenciaMorte : CanvasLayer
         _estado = Estado.Inativo;
     }
 
-    public void Iniciar()
+    public void Iniciar(bool temFrasco)
     {
         if (_estado != Estado.Inativo) return;
 
         _estado = Estado.Desacelerando;
+        _temFrasco = temFrasco;
+        _tUsoFrasco = 0f;
         _tDesaceleracao = 0f;
         _tVinheta = 0f;
         _tAudio = 0f;
@@ -90,7 +105,7 @@ public partial class SequenciaMorte : CanvasLayer
         _tPrompt = 0f;
 
         BuscarBarras();
-        TocarCue();
+        TocarCue(CaminhoSom);
 
         _vinheta.Visible = true;
         _vinheta.Modulate = new Color(1f, 1f, 1f, 0f);
@@ -111,6 +126,9 @@ public partial class SequenciaMorte : CanvasLayer
                 break;
             case Estado.Aguardando:
                 Aguardando(dt);
+                break;
+            case Estado.Spray:
+                Spray(dt);
                 break;
             case Estado.Prompt:
                 AnimarPrompt(dt);
@@ -146,12 +164,38 @@ public partial class SequenciaMorte : CanvasLayer
         _tAguarda += dt;
         if (_tAguarda >= EsperaAntesPrompt)
         {
+            if (_temFrasco)
+            {
+                _estado = Estado.Spray;
+                _tUsoFrasco = 0f;
+                TocarCue(CaminhoSomFrasco);
+                return;
+            }
+
             _estado = Estado.Prompt;
             _tPrompt = 0f;
             _tVinheta = 0f;
             _tela.Visible = true;
             _tela.Modulate = new Color(1f, 1f, 1f, 0f);
             _botaoSim.GrabFocus();
+
+            var bgm = GD.Load<AudioStream>(CaminhoBgm);
+            if (bgm is AudioStreamOggVorbis ogg) ogg.Loop = true;
+            if (bgm != null)
+            {
+                _bgm.Stream = bgm;
+                _bgm.Play();
+            }
+        }
+    }
+
+    private void Spray(float dt)
+    {
+        _tUsoFrasco += dt;
+        if (_tUsoFrasco >= TempoUsoFrasco)
+        {
+            Restaurar();
+            EmitSignal(SignalName.Reviveu);
         }
     }
 
@@ -242,6 +286,7 @@ public partial class SequenciaMorte : CanvasLayer
         Engine.TimeScale = 1f;
         RestaurarVolumes();
         _audio.Stop();
+        _bgm.Stop();
         _vinheta.Visible = false;
         _tela.Visible = false;
         _estado = Estado.Inativo;
@@ -293,10 +338,10 @@ public partial class SequenciaMorte : CanvasLayer
         _barrasBase[n] = AudioServer.GetBusVolumeDb(indice);
     }
 
-    private void TocarCue()
+    private void TocarCue(string caminho)
     {
         _audio.Stop();
-        var som = GD.Load<AudioStream>(CaminhoSom);
+        var som = GD.Load<AudioStream>(caminho);
         if (som == null) return;
         _audio.Stream = som;
         _audio.Play();
