@@ -1,0 +1,102 @@
+[gd_scene format=3]
+
+[ext_resource type="Material" uid="uid://iuo2fa3aroxb" path="res://art/materiais/floor.tres" id="1_cy6r3"]
+[ext_resource type="Material" uid="uid://dsntuvco3jwr" path="res://art/materiais/ceiling.tres" id="2_0tv6x"]
+[ext_resource type="Material" uid="uid://buh8cokssor13" path="res://art/ambientes/azulejo/Tiles101_1K-JPG.tres" id="3_1b6n0"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_d46x6"]
+size = Vector3(7.75, 0.5, 6.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_n3syt"]
+size = Vector3(7.75, 0.5, 6.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wqkcq"]
+size = Vector3(7.75, 0.5, 6.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jg26c"]
+size = Vector3(7.75, 0.5, 6.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_353n8"]
+size = Vector3(7.75, 5, 0.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4rfup"]
+size = Vector3(7.75, 5, 0.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_tlvr8"]
+size = Vector3(0.5, 5, 6.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4ldtp"]
+size = Vector3(0.5, 5, 6.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_w4cok"]
+size = Vector3(0.5, 5, 6.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3kr23"]
+size = Vector3(0.5, 5, 6.5)
+
+[node name="SalaRoom2" type="Node3D" unique_id=1065320616]
+
+[node name="Floor2" type="StaticBody3D" parent="." unique_id=1775618131 groups=["navegavel"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, -0.25, -9.25)
+
+[node name="Mesh" type="MeshInstance3D" parent="Floor2" unique_id=556358354]
+material_override = ExtResource("1_cy6r3")
+mesh = SubResource("BoxMesh_d46x6")
+
+[node name="Collider" type="CollisionShape3D" parent="Floor2" unique_id=1731047933]
+shape = SubResource("BoxShape3D_n3syt")
+
+[node name="Ceiling2" type="StaticBody3D" parent="." unique_id=1869189174 groups=["navegavel"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 5.25, -9.25)
+
+[node name="Mesh" type="MeshInstance3D" parent="Ceiling2" unique_id=1252652211]
+material_override = ExtResource("2_0tv6x")
+mesh = SubResource("BoxMesh_wqkcq")
+
+[node name="Collider" type="CollisionShape3D" parent="Ceiling2" unique_id=88177919]
+shape = SubResource("BoxShape3D_jg26c")
+
+[node name="WallBack" type="StaticBody3D" parent="." unique_id=196289674 groups=["navegavel"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 2.5, -12.25)
+
+[node name="Mesh" type="MeshInstance3D" parent="WallBack" unique_id=1498970989]
+material_override = ExtResource("3_1b6n0")
+mesh = SubResource("BoxMesh_353n8")
+
+[node name="Collider" type="CollisionShape3D" parent="WallBack" unique_id=673757372]
+shape = SubResource("BoxShape3D_4rfup")
+
+[node name="WallLeft" type="StaticBody3D" parent="." unique_id=1486519947 groups=["navegavel"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 2.5, -9.25)
+
+[node name="Mesh" type="MeshInstance3D" parent="WallLeft" unique_id=4365981]
+material_override = ExtResource("3_1b6n0")
+mesh = SubResource("BoxMesh_tlvr8")
+
+[node name="Collider" type="CollisionShape3D" parent="WallLeft" unique_id=2007094239]
+shape = SubResource("BoxShape3D_4ldtp")
+
+[node name="WallRight" type="StaticBody3D" parent="." unique_id=2068681619 groups=["navegavel"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.75, 2.5, -9.25)
+
+[node name="Mesh" type="MeshInstance3D" parent="WallRight" unique_id=69294523]
+material_override = ExtResource("3_1b6n0")
+mesh = SubResource("BoxMesh_w4cok")
+
+[node name="Collider" type="CollisionShape3D" parent="WallRight" unique_id=71890516]
+shape = SubResource("BoxShape3D_3kr23")
+
+[node name="LampR2_1" type="OmniLight3D" parent="." unique_id=694722991]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 4.4, -9.25)
+light_color = Color(1, 0.9137255, 0.76862746, 1)
+light_energy = 2.0
+shadow_enabled = true
+omni_range = 8.0
+
+[node name="LampR2_2" type="OmniLight3D" parent="." unique_id=641241294]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 4.4, -9.25)
+light_color = Color(1, 0.9137255, 0.76862746, 1)
+light_energy = 2.0
+shadow_enabled = true
+omni_range = 8.0
+

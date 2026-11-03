@@ -1,0 +1,11 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://ui/InventarioTela.cs" id="25_invtela"]
+
+[node name="InventarioTela" type="CanvasLayer" unique_id=927153641]
+layer = 15
+script = ExtResource("25_invtela")
+InventarioPath = NodePath("Player/Inventario")
+SaudePath = NodePath("Player/Saude")
+ActorPath = NodePath("Player")
+

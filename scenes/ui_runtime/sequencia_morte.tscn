@@ -1,0 +1,9 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" uid="uid://bhls4td6lof17" path="res://sistemas/SequenciaMorte.cs" id="20_sm"]
+
+[node name="SequenciaMorte" type="CanvasLayer" unique_id=913572048]
+unique_name_in_owner = true
+layer = 20
+script = ExtResource("20_sm")
+

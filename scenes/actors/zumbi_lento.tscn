@@ -1,0 +1,44 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" uid="uid://odlcx4l1c2t5" path="res://sistemas/Saude.cs" id="6_n3syt"]
+[ext_resource type="Script" uid="uid://c2jkuwo3uvcqx" path="res://gameplay/InimigoIA.cs" id="14_cy6r3"]
+[ext_resource type="Material" uid="uid://cmau6erknntbw" path="res://art/materiais/inimigo.tres" id="15_d46x6"]
+[ext_resource type="Resource" uid="uid://d0md83f7nmxuo" path="res://gameplay/dados/zumbi_lento.tres" id="17_d46x6"]
+[ext_resource type="Curve3D" uid="uid://c6rdfy4dxld5m" path="res://gameplay/dados/rota_sala1.tres" id="18_d46x6"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_n3syt"]
+radius = 0.4
+height = 1.8
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_wqkcq"]
+radius = 0.4
+height = 1.8
+
+[node name="ZumbiLento" type="CharacterBody3D" unique_id=1512548117]
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("14_cy6r3")
+Dados = ExtResource("17_d46x6")
+Rota = ExtResource("18_d46x6")
+
+[node name="Collider" type="CollisionShape3D" parent="." unique_id=2087452]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_n3syt")
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=1595524303]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+material_override = ExtResource("15_d46x6")
+mesh = SubResource("CapsuleMesh_wqkcq")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="." unique_id=1871161014]
+path_desired_distance = 0.5
+target_desired_distance = 0.6
+radius = 0.4
+
+[node name="Saude" type="Node" parent="." unique_id=1715379341 node_paths=PackedStringArray("Corpo")]
+script = ExtResource("6_n3syt")
+Corpo = NodePath("../Body")
+
+[editable path="Armario"]
+[editable path="ArmarioSalaB"]
+[editable path="ArmarioSalaA"]

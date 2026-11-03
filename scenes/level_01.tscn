@@ -1,91 +1,25 @@
 [gd_scene format=3 uid="uid://dnxbo0oosnl6l"]
 
-[ext_resource type="Material" uid="uid://iuo2fa3aroxb" path="res://art/materiais/floor.tres" id="1_cy6r3"]
-[ext_resource type="Material" uid="uid://dsntuvco3jwr" path="res://art/materiais/ceiling.tres" id="2_0tv6x"]
-[ext_resource type="Material" uid="uid://buh8cokssor13" path="res://art/ambientes/azulejo/Tiles101_1K-JPG.tres" id="3_1b6n0"]
-[ext_resource type="Script" uid="uid://repj6liq31hu" path="res://gameplay/Player.cs" id="4_1b6n0"]
-[ext_resource type="Material" uid="uid://ci482xng2v4iu" path="res://art/materiais/player.tres" id="5_42ncp"]
-[ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="6_1b6n0"]
-[ext_resource type="Script" uid="uid://odlcx4l1c2t5" path="res://sistemas/Saude.cs" id="6_n3syt"]
-[ext_resource type="Script" uid="uid://dlqnq727u8vbn" path="res://gameplay/PlayerMotor.cs" id="7_jg26c"]
-[ext_resource type="Script" uid="uid://csjccrhj5wnx7" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="7_llcge"]
-[ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="8_lwi15"]
-[ext_resource type="PackedScene" uid="uid://c0q08uefbp6ik" path="res://art/props/armario/Electrical_Cabinet_ujzfde2_Mid.fbx" id="9_lwi15"]
-[ext_resource type="Material" uid="uid://6v0picpor0j4" path="res://art/props/armario/armario.tres" id="10_e6mo4"]
-[ext_resource type="PackedScene" uid="uid://dye6w1wamxaah" path="res://art/props/porta/ROOM1061.fbx" id="11_e6mo4"]
-[ext_resource type="Script" uid="uid://cvrgoddqqcfu7" path="res://sistemas/DoorTransition.cs" id="13_2ucnx"]
-[ext_resource type="Material" uid="uid://b4qqxfwp1aqqy" path="res://art/materiais/aro.tres" id="13_s61md"]
-[ext_resource type="Script" uid="uid://c2jkuwo3uvcqx" path="res://gameplay/InimigoIA.cs" id="14_cy6r3"]
-[ext_resource type="Material" uid="uid://cmau6erknntbw" path="res://art/materiais/inimigo.tres" id="15_d46x6"]
 [ext_resource type="Resource" uid="uid://ild5ohueq2x6" path="res://gameplay/dados/perseguidor.tres" id="15_s61md"]
 [ext_resource type="Resource" uid="uid://d0md83f7nmxuo" path="res://gameplay/dados/zumbi_lento.tres" id="17_d46x6"]
 [ext_resource type="Curve3D" uid="uid://c6rdfy4dxld5m" path="res://gameplay/dados/rota_sala1.tres" id="18_d46x6"]
-[ext_resource type="PackedScene" path="res://ui/MedidorVida.tscn" id="19_mv"]
-[ext_resource type="Script" uid="uid://bhls4td6lof17" path="res://sistemas/SequenciaMorte.cs" id="20_sm"]
-[ext_resource type="Script" uid="uid://bdxtp6ulh3mr8" path="res://sistemas/Inventario.cs" id="21_inv"]
-[ext_resource type="Script" uid="uid://db3etjt42ktk6" path="res://gameplay/Frasco.cs" id="23_fr"]
 [ext_resource type="AudioStream" uid="uid://dc5oksdscgux2" path="res://art/sons/bgm_fase.ogg" id="24_bgm"]
-[ext_resource type="Script" path="res://ui/InventarioTela.cs" id="25_invtela"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_lwi15"]
-size = Vector3(16, 0.5, 12)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_e6mo4"]
-size = Vector3(16, 0.5, 12)
-
-[sub_resource type="BoxMesh" id="BoxMesh_px6rj"]
-size = Vector3(16, 0.5, 12)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_2ucnx"]
-size = Vector3(16, 0.5, 12)
-
-[sub_resource type="BoxMesh" id="BoxMesh_2ucnx"]
-size = Vector3(11.1, 5, 0.5)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_cr2eh"]
-size = Vector3(11.1, 5, 0.5)
-
-[sub_resource type="BoxMesh" id="BoxMesh_0tv6x"]
-size = Vector3(16.5, 5, 0.5)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_42ncp"]
-size = Vector3(16.5, 5, 0.5)
-
-[sub_resource type="BoxMesh" id="BoxMesh_s61md"]
-size = Vector3(0.5, 5, 12)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_d46x6"]
-size = Vector3(0.5, 5, 12)
-
-[sub_resource type="BoxMesh" id="BoxMesh_n3syt"]
-size = Vector3(0.5, 5, 4.5)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_wqkcq"]
-size = Vector3(0.5, 5, 4.5)
-
-[sub_resource type="BoxMesh" id="BoxMesh_cy6r3"]
-size = Vector3(4.1, 5, 0.5)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_0tv6x"]
-size = Vector3(4.1, 5, 0.5)
-
-[sub_resource type="BoxMesh" id="BoxMesh_42ncp"]
-size = Vector3(1.3, 2.8, 0.5)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_s61md"]
-size = Vector3(1.3, 2.8, 0.5)
-
-[sub_resource type="BoxMesh" id="BoxMesh_4ldtp"]
-size = Vector3(0.5, 5, 4.5)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_w4cok"]
-size = Vector3(0.5, 5, 4.5)
-
-[sub_resource type="BoxMesh" id="BoxMesh_3kr23"]
-size = Vector3(0.5, 1.5, 3)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_oy082"]
-size = Vector3(0.5, 1.5, 3)
+[ext_resource type="PackedScene" path="res://scenes/props/porta.tscn" id="30_porta"]
+[ext_resource type="PackedScene" path="res://scenes/sistemas/door_transition.tscn" id="31_door"]
+[ext_resource type="PackedScene" path="res://scenes/salas/sala_principal.tscn" id="40_sala_p"]
+[ext_resource type="PackedScene" path="res://scenes/salas/sala_room2.tscn" id="41_sala_r2"]
+[ext_resource type="PackedScene" path="res://scenes/salas/corredor.tscn" id="42_corredor"]
+[ext_resource type="PackedScene" path="res://scenes/salas/sala_a.tscn" id="43_sala_a"]
+[ext_resource type="PackedScene" path="res://scenes/salas/sala_b.tscn" id="44_sala_b"]
+[ext_resource type="PackedScene" path="res://scenes/actors/player.tscn" id="50_player"]
+[ext_resource type="PackedScene" path="res://scenes/actors/inimigo.tscn" id="51_inimigo"]
+[ext_resource type="PackedScene" path="res://scenes/actors/zumbi_lento.tscn" id="52_zumbi"]
+[ext_resource type="PackedScene" path="res://scenes/props/frasco.tscn" id="53_frasco"]
+[ext_resource type="PackedScene" path="res://scenes/ui_runtime/hud_vida.tscn" id="54_hud"]
+[ext_resource type="PackedScene" path="res://scenes/ui_runtime/inventario_tela.tscn" id="55_invtela"]
+[ext_resource type="PackedScene" path="res://scenes/ui_runtime/sequencia_morte.tscn" id="56_morte"]
+[ext_resource type="PackedScene" path="res://scenes/actors/main_camera.tscn" id="57_cam"]
+[ext_resource type="PackedScene" path="res://scenes/actors/pcam_main.tscn" id="58_pcam"]
 
 [sub_resource type="Environment" id="Environment_jg26c"]
 background_mode = 1
@@ -95,201 +29,6 @@ ambient_light_color = Color(0.53333336, 0.6, 0.73333335, 1)
 ambient_light_energy = 0.45
 tonemap_mode = 2
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_353n8"]
-radius = 0.4
-height = 1.8
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_px6rj"]
-radius = 0.4
-height = 1.8
-
-[sub_resource type="Resource" id="Resource_e6mo4"]
-script = ExtResource("8_lwi15")
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_px6rj"]
-size = Vector3(2.61842, 1.38774, 0.870313)
-
-[sub_resource type="BoxMesh" id="BoxMesh_d46x6"]
-size = Vector3(7.75, 0.5, 6.5)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_n3syt"]
-size = Vector3(7.75, 0.5, 6.5)
-
-[sub_resource type="BoxMesh" id="BoxMesh_wqkcq"]
-size = Vector3(7.75, 0.5, 6.5)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_jg26c"]
-size = Vector3(7.75, 0.5, 6.5)
-
-[sub_resource type="BoxMesh" id="BoxMesh_353n8"]
-size = Vector3(7.75, 5, 0.5)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_4rfup"]
-size = Vector3(7.75, 5, 0.5)
-
-[sub_resource type="BoxMesh" id="BoxMesh_tlvr8"]
-size = Vector3(0.5, 5, 6.5)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_4ldtp"]
-size = Vector3(0.5, 5, 6.5)
-
-[sub_resource type="BoxMesh" id="BoxMesh_w4cok"]
-size = Vector3(0.5, 5, 6.5)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_3kr23"]
-size = Vector3(0.5, 5, 6.5)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_353n8"]
-size = Vector3(1.4, 2, 0.7)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_tlvr8"]
-size = Vector3(1.4, 2, 0.7)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_a577o"]
-size = Vector3(0.7, 2, 1.4)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_l0wem"]
-size = Vector3(0.7, 2, 1.4)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_6y7lq"]
-size = Vector3(0.7, 2, 1.4)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_jvtd8"]
-size = Vector3(0.7, 2, 1.4)
-
-[sub_resource type="BoxMesh" id="BoxMesh_a577o"]
-size = Vector3(8, 0.5, 3.5)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_ne2m8"]
-size = Vector3(8, 0.5, 3.5)
-
-[sub_resource type="BoxMesh" id="BoxMesh_l0wem"]
-size = Vector3(8, 0.5, 3.5)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_luive"]
-size = Vector3(8, 0.5, 3.5)
-
-[sub_resource type="BoxMesh" id="BoxMesh_6y7lq"]
-size = Vector3(8, 3.5, 0.5)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_5wgha"]
-size = Vector3(8, 3.5, 0.5)
-
-[sub_resource type="BoxMesh" id="BoxMesh_jvtd8"]
-size = Vector3(8, 3.5, 0.5)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_auax2"]
-size = Vector3(8, 3.5, 0.5)
-
-[sub_resource type="BoxMesh" id="BoxMesh_vb0mg"]
-size = Vector3(10, 0.5, 12.5)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_px1o1"]
-size = Vector3(10, 0.5, 12.5)
-
-[sub_resource type="BoxMesh" id="BoxMesh_1slps"]
-size = Vector3(10, 0.5, 12.5)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_xymgi"]
-size = Vector3(10, 0.5, 12.5)
-
-[sub_resource type="BoxMesh" id="BoxMesh_05q7v"]
-size = Vector3(10, 8, 0.5)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_rt40s"]
-size = Vector3(10, 8, 0.5)
-
-[sub_resource type="BoxMesh" id="BoxMesh_hscr6"]
-size = Vector3(10, 8, 0.5)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_glrgf"]
-size = Vector3(10, 8, 0.5)
-
-[sub_resource type="BoxMesh" id="BoxMesh_auax2"]
-size = Vector3(0.5, 8, 5.6)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_vb0mg"]
-size = Vector3(0.5, 8, 5.6)
-
-[sub_resource type="BoxMesh" id="BoxMesh_px1o1"]
-size = Vector3(0.5, 8, 5.6)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_1slps"]
-size = Vector3(0.5, 8, 5.6)
-
-[sub_resource type="BoxMesh" id="BoxMesh_xymgi"]
-size = Vector3(0.5, 5.8, 1.3)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_05q7v"]
-size = Vector3(0.5, 5.8, 1.3)
-
-[sub_resource type="BoxMesh" id="BoxMesh_rt40s"]
-size = Vector3(0.5, 8, 5.6)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_hscr6"]
-size = Vector3(0.5, 8, 5.6)
-
-[sub_resource type="BoxMesh" id="BoxMesh_glrgf"]
-size = Vector3(0.5, 8, 5.6)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_glxa2"]
-size = Vector3(0.5, 8, 5.6)
-
-[sub_resource type="BoxMesh" id="BoxMesh_wn2an"]
-size = Vector3(0.5, 5.8, 1.3)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_xxwq1"]
-size = Vector3(0.5, 5.8, 1.3)
-
-[sub_resource type="BoxMesh" id="BoxMesh_r03n8"]
-size = Vector3(8.5, 0.5, 8.5)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_e6te3"]
-size = Vector3(8.5, 0.5, 8.5)
-
-[sub_resource type="BoxMesh" id="BoxMesh_m80cd"]
-size = Vector3(8.5, 0.5, 8.5)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_o05g6"]
-size = Vector3(8.5, 0.5, 8.5)
-
-[sub_resource type="BoxMesh" id="BoxMesh_b8mwo"]
-size = Vector3(8.5, 8, 0.5)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_iadww"]
-size = Vector3(8.5, 8, 0.5)
-
-[sub_resource type="BoxMesh" id="BoxMesh_j2jhu"]
-size = Vector3(8.5, 8, 0.5)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_atkk1"]
-size = Vector3(8.5, 8, 0.5)
-
-[sub_resource type="BoxMesh" id="BoxMesh_21n3k"]
-size = Vector3(0.5, 8, 8.5)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_6x6xm"]
-size = Vector3(0.5, 8, 8.5)
-
-[sub_resource type="BoxMesh" id="BoxMesh_cr2eh"]
-size = Vector3(0.1, 2.2, 0.55)
-
-[sub_resource type="BoxMesh" id="BoxMesh_jg26c"]
-size = Vector3(0.1, 2.2, 0.55)
-
-[sub_resource type="BoxMesh" id="BoxMesh_4rfup"]
-size = Vector3(1.3224, 0.1, 0.55)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_cy6r3"]
-size = Vector3(1.15, 2.1, 0.1)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_frasco"]
-size = Vector3(1.2, 1.6, 1.2)
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_frasco"]
-radius = 0.22
-height = 0.7
-
 [sub_resource type="NavigationMesh" id="NavigationMesh_d46x6"]
 vertices = PackedVector3Array(0.5, 6, -7.75, 7.5, 6, -7.75, 7.5, 6, -12, 0.5, 6, -12, 1.25, 0.5, -11.25, 1.25, 0.5, -7, 7, 0.5, -7, 7, 0.5, -11.25, 0.25, 6, -5.5, 8.25, 5.75, -1.75, 7.950001, 6, -4.1499996, 6.916666, 6, -2.375, 7.75, 6, 6, -7.5, 6, -5.5, -7.5, 6, 6, 7.916666, 6, 3.416666, 28, 9, 4, 28, 9, -3.75, 26.25, 9, -3.75, 26, 9, 4.25, 26, 9, -5.75, 16.75, 9, -5.75, 16.75, 9, 6, 26, 9, 6, -4.75, 0.5, -4.5, -5, 0.5, -5.25, -7.25, 0.5, -5.25, -7.25, 0.5, 5.5, 7.5, 0.5, -5.25, -1, 0.5, -5.25, -1.25, 0.5, -4.5, 7.5, 0.5, 5.5, 18.25, 0.5, -4.5, 18, 0.5, -5.25, 17.25, 0.5, -5.25, 17.25, 0.5, 5.5, 25.5, 0.5, -5.25, 22, 0.5, -5.25, 21.75, 0.5, -4.5, 25.5, 0.5, 5.5, 34.5, 9, 4, 34.5, 9, -3.75, 28.75, 0.5, -2.5, 28.5, 0.5, -3.25, 27.25, 0.5, -3.25, 27.25, 0.5, 3.5, 34, 0.5, -3.25, 32.5, 0.5, -3.25, 32.25, 0.5, -2.5, 34, 0.5, 3.5, 9.25, 4.5, -1.25, 9.25, 4.5, 1.5, 15.5, 4.5, 1.5, 15.5, 4.5, -1.25, 8.75, 0.5, -0.75, 8.75, 0.5, 1, 15.5, 0.5, 1, 15.5, 0.5, -0.75)
 polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1), PackedInt32Array(7, 6, 4), PackedInt32Array(4, 6, 5), PackedInt32Array(9, 11, 10), PackedInt32Array(10, 11, 1), PackedInt32Array(1, 11, 8), PackedInt32Array(1, 8, 0), PackedInt32Array(9, 15, 11), PackedInt32Array(11, 15, 12), PackedInt32Array(11, 12, 8), PackedInt32Array(8, 12, 13), PackedInt32Array(13, 12, 14), PackedInt32Array(17, 16, 18), PackedInt32Array(18, 16, 19), PackedInt32Array(18, 19, 20), PackedInt32Array(20, 19, 21), PackedInt32Array(21, 19, 22), PackedInt32Array(19, 23, 22), PackedInt32Array(25, 24, 26), PackedInt32Array(26, 24, 27), PackedInt32Array(30, 29, 28), PackedInt32Array(28, 31, 30), PackedInt32Array(30, 31, 27), PackedInt32Array(27, 24, 30), PackedInt32Array(33, 32, 34), PackedInt32Array(34, 32, 35), PackedInt32Array(37, 36, 38), PackedInt32Array(38, 36, 39), PackedInt32Array(32, 38, 35), PackedInt32Array(35, 38, 39), PackedInt32Array(17, 41, 16), PackedInt32Array(16, 41, 40), PackedInt32Array(43, 42, 44), PackedInt32Array(44, 42, 45), PackedInt32Array(47, 46, 48), PackedInt32Array(48, 46, 49), PackedInt32Array(42, 48, 45), PackedInt32Array(45, 48, 49), PackedInt32Array(53, 52, 50), PackedInt32Array(50, 52, 51), PackedInt32Array(57, 56, 54), PackedInt32Array(54, 56, 55)]
@@ -298,913 +37,98 @@ geometry_source_geometry_mode = 1
 geometry_source_group_name = &"navegavel"
 agent_height = 1.8
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_n3syt"]
-radius = 0.4
-height = 1.8
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_wqkcq"]
-radius = 0.4
-height = 1.8
-
 [node name="Level01" type="Node3D" unique_id=1069077734]
 
-[node name="Room" type="Node3D" parent="." unique_id=1997948591]
+[node name="SalaPrincipal" parent="." instance=ExtResource("40_sala_p")]
 
-[node name="Floor" type="StaticBody3D" parent="Room" unique_id=1682783075 groups=["navegavel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+[node name="SalaRoom2" parent="." instance=ExtResource("41_sala_r2")]
 
-[node name="Mesh" type="MeshInstance3D" parent="Room/Floor" unique_id=1649836882]
-material_override = ExtResource("1_cy6r3")
-mesh = SubResource("BoxMesh_lwi15")
+[node name="Corredor" parent="." instance=ExtResource("42_corredor")]
 
-[node name="Collider" type="CollisionShape3D" parent="Room/Floor" unique_id=1167848077]
-shape = SubResource("BoxShape3D_e6mo4")
+[node name="SalaA" parent="." instance=ExtResource("43_sala_a")]
 
-[node name="Ceiling" type="StaticBody3D" parent="Room" unique_id=541766861 groups=["navegavel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.25, 0)
+[node name="SalaB" parent="." instance=ExtResource("44_sala_b")]
 
-[node name="Mesh" type="MeshInstance3D" parent="Room/Ceiling" unique_id=1589807731]
-material_override = ExtResource("2_0tv6x")
-mesh = SubResource("BoxMesh_px6rj")
+[node name="Porta0" parent="." instance=ExtResource("30_porta")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0, -6.066)
 
-[node name="Collider" type="CollisionShape3D" parent="Room/Ceiling" unique_id=1349058442]
-shape = SubResource("BoxShape3D_2ucnx")
+[node name="Porta1" parent="." instance=ExtResource("30_porta")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 16.25, 0, 0)
 
-[node name="WallN" type="StaticBody3D" parent="Room" unique_id=79610611 groups=["navegavel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7, 2.5, -6.25)
+[node name="Porta2" parent="." instance=ExtResource("30_porta")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 26.25, 0, 0)
 
-[node name="Mesh" type="MeshInstance3D" parent="Room/WallN" unique_id=1104171841]
-material_override = ExtResource("3_1b6n0")
-mesh = SubResource("BoxMesh_2ucnx")
+[node name="PortaTransicao" parent="." instance=ExtResource("31_door")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0, -6.066)
 
-[node name="Collider" type="CollisionShape3D" parent="Room/WallN" unique_id=1817312169]
-shape = SubResource("BoxShape3D_cr2eh")
+[node name="TransicaoCorredor" parent="." instance=ExtResource("31_door")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 16.25, 0, 0)
+YawIntoRoomFromFrente = 90.0
+YawIntoRoomFromFundo = -90.0
 
-[node name="WallS" type="StaticBody3D" parent="Room" unique_id=1916123051 groups=["navegavel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 6.25)
+[node name="Frente" parent="TransicaoCorredor/Pontos" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 1.25)
 
-[node name="Mesh" type="MeshInstance3D" parent="Room/WallS" unique_id=1583897813]
-material_override = ExtResource("3_1b6n0")
-mesh = SubResource("BoxMesh_0tv6x")
+[node name="Fundo" parent="TransicaoCorredor/Pontos" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, -0.95)
 
-[node name="Collider" type="CollisionShape3D" parent="Room/WallS" unique_id=139031382]
-shape = SubResource("BoxShape3D_42ncp")
+[node name="GatilhoFrente" parent="TransicaoCorredor" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0.65)
 
-[node name="WallW" type="StaticBody3D" parent="Room" unique_id=1321687942 groups=["navegavel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.25, 2.5, 0)
+[node name="GatilhoFundo" parent="TransicaoCorredor" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -0.65)
 
-[node name="Mesh" type="MeshInstance3D" parent="Room/WallW" unique_id=1942595514]
-material_override = ExtResource("3_1b6n0")
-mesh = SubResource("BoxMesh_s61md")
+[node name="TransicaoSalaB" parent="." instance=ExtResource("31_door")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 26.25, 0, 0)
+YawIntoRoomFromFrente = 90.0
+YawIntoRoomFromFundo = -90.0
 
-[node name="Collider" type="CollisionShape3D" parent="Room/WallW" unique_id=640266524]
-shape = SubResource("BoxShape3D_d46x6")
+[node name="Frente" parent="TransicaoSalaB/Pontos" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 1.25)
 
-[node name="WallE" type="StaticBody3D" parent="Room" unique_id=146445234 groups=["navegavel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.25, 2.5, -3.75)
+[node name="Fundo" parent="TransicaoSalaB/Pontos" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, -0.95)
 
-[node name="Mesh" type="MeshInstance3D" parent="Room/WallE" unique_id=559123940]
-material_override = ExtResource("3_1b6n0")
-mesh = SubResource("BoxMesh_n3syt")
+[node name="GatilhoFrente" parent="TransicaoSalaB" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0.65)
 
-[node name="Collider" type="CollisionShape3D" parent="Room/WallE" unique_id=347000384]
-shape = SubResource("BoxShape3D_wqkcq")
-
-[node name="WallNRight" type="StaticBody3D" parent="Room" unique_id=643293280 groups=["navegavel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.2, 2.5, -6.25)
-
-[node name="Mesh" type="MeshInstance3D" parent="Room/WallNRight" unique_id=1913890815]
-material_override = ExtResource("3_1b6n0")
-mesh = SubResource("BoxMesh_cy6r3")
-
-[node name="Collider" type="CollisionShape3D" parent="Room/WallNRight" unique_id=213913058]
-shape = SubResource("BoxShape3D_0tv6x")
-
-[node name="WallNLintel" type="StaticBody3D" parent="Room" unique_id=327926812 groups=["navegavel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 3.6, -6.25)
-
-[node name="Mesh" type="MeshInstance3D" parent="Room/WallNLintel" unique_id=598408759]
-material_override = ExtResource("3_1b6n0")
-mesh = SubResource("BoxMesh_42ncp")
-
-[node name="Collider" type="CollisionShape3D" parent="Room/WallNLintel" unique_id=126119156]
-shape = SubResource("BoxShape3D_s61md")
-
-[node name="WallE2" type="StaticBody3D" parent="Room" unique_id=1938274815 groups=["navegavel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.25, 2.5, 3.75)
-
-[node name="Mesh" type="MeshInstance3D" parent="Room/WallE2" unique_id=1986309928]
-material_override = ExtResource("3_1b6n0")
-mesh = SubResource("BoxMesh_4ldtp")
-
-[node name="Collider" type="CollisionShape3D" parent="Room/WallE2" unique_id=782361978]
-shape = SubResource("BoxShape3D_w4cok")
-
-[node name="WallELintel" type="StaticBody3D" parent="Room" unique_id=1296024805 groups=["navegavel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.25, 4.25, 0)
-
-[node name="Mesh" type="MeshInstance3D" parent="Room/WallELintel" unique_id=1004701163]
-material_override = ExtResource("3_1b6n0")
-mesh = SubResource("BoxMesh_3kr23")
-
-[node name="Collider" type="CollisionShape3D" parent="Room/WallELintel" unique_id=1138001493]
-shape = SubResource("BoxShape3D_oy082")
+[node name="GatilhoFundo" parent="TransicaoSalaB" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -0.65)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1520227093]
 environment = SubResource("Environment_jg26c")
 
-[node name="Lamp1" type="OmniLight3D" parent="." unique_id=1229649023]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 4.4, -3)
-light_color = Color(1, 0.9137255, 0.76862746, 1)
-light_energy = 2.0
-shadow_enabled = true
-omni_range = 9.0
-
-[node name="Lamp2" type="OmniLight3D" parent="." unique_id=1085715467]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 4.4, -3)
-light_color = Color(1, 0.9137255, 0.76862746, 1)
-light_energy = 2.0
-shadow_enabled = true
-omni_range = 9.0
-
-[node name="Lamp3" type="OmniLight3D" parent="." unique_id=1363744682]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 4.4, 3)
-light_color = Color(1, 0.9137255, 0.76862746, 1)
-light_energy = 2.0
-shadow_enabled = true
-omni_range = 9.0
-
-[node name="Lamp4" type="OmniLight3D" parent="." unique_id=873743427]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 4.4, 3)
-light_color = Color(1, 0.9137255, 0.76862746, 1)
-light_energy = 2.0
-shadow_enabled = true
-omni_range = 9.0
-
-[node name="Player" type="CharacterBody3D" parent="." unique_id=356130549]
+[node name="Player" parent="." instance=ExtResource("50_player")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
-collision_layer = 2
-collision_mask = 5
-script = ExtResource("4_1b6n0")
 
-[node name="Collider" type="CollisionShape3D" parent="Player" unique_id=780146140]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
-shape = SubResource("CapsuleShape3D_353n8")
+[node name="MainCamera" parent="." instance=ExtResource("57_cam")]
 
-[node name="Body" type="MeshInstance3D" parent="Player" unique_id=1835220081]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
-material_override = ExtResource("5_42ncp")
-mesh = SubResource("CapsuleMesh_px6rj")
-
-[node name="Saude" type="Node" parent="Player" unique_id=1040864615 node_paths=PackedStringArray("Corpo")]
-script = ExtResource("6_n3syt")
-Corpo = NodePath("../Body")
-
-[node name="Inventario" type="Node" parent="Player" unique_id=914280173]
-script = ExtResource("21_inv")
-
-[node name="Motor" type="Node" parent="Player" unique_id=1063543824]
-script = ExtResource("7_jg26c")
-
-[node name="MainCamera" type="Camera3D" parent="." unique_id=349752352]
-physics_interpolation_mode = 1
+[node name="PCam_Main" parent="." instance=ExtResource("58_pcam")]
 transform = Transform3D(1, 0, 0, 0, 0.96639, 0.25708053, 0, -0.25708053, 0.96639, 0, 2.4226577, 3.092448)
-top_level = true
-current = true
-fov = 70.0
 
-[node name="PhantomCameraHost" type="Node" parent="MainCamera" unique_id=577680536]
-process_priority = 300
-process_physics_priority = 300
-script = ExtResource("6_1b6n0")
+[node name="HudVida" parent="." instance=ExtResource("54_hud")]
 
-[node name="PCam_Main" type="Node3D" parent="." unique_id=229277199 node_paths=PackedStringArray("follow_target")]
-unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 0.96639, 0.25708053, 0, -0.25708053, 0.96639, 0, 2.4226577, 3.092448)
-script = ExtResource("7_llcge")
-priority = 10
-follow_mode = 6
-follow_target = NodePath("../Player")
-tween_resource = SubResource("Resource_e6mo4")
-tween_on_load = false
-follow_offset = Vector3(0, 1.5, 0)
-follow_distance = 3.2
-vertical_rotation_offset = 0.26
-spring_length = 3.2
-align_transform_with_view = Callable()
-align_position_with_view = Callable()
-align_rotation_with_view = Callable()
+[node name="InventarioTela" parent="." instance=ExtResource("55_invtela")]
 
-[node name="Armario" parent="." unique_id=1680426603 instance=ExtResource("9_lwi15")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -5.56)
+[node name="SequenciaMorte" parent="." instance=ExtResource("56_morte")]
 
-[node name="ujzfde2_LOD0_TIER2_000" parent="Armario/world_root" parent_id_path=PackedInt32Array(1680426603, 415027278) index="0" unique_id=1989272047]
-material_override = ExtResource("10_e6mo4")
+[node name="Frasco1" parent="." instance=ExtResource("53_frasco")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0.35, -2)
 
-[node name="Collider" type="StaticBody3D" parent="Armario" unique_id=1711765566 groups=["navegavel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0097, 0.6924, -0.0075)
+[node name="Frasco2" parent="." instance=ExtResource("53_frasco")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.5, 0.35, 2)
 
-[node name="Shape" type="CollisionShape3D" parent="Armario/Collider" unique_id=1166097761]
-shape = SubResource("BoxShape3D_px6rj")
+[node name="Inimigo" parent="." instance=ExtResource("51_inimigo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 0.2, 0)
 
-[node name="ArmarioSalaB" parent="." unique_id=775955948 instance=ExtResource("9_lwi15")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.5, 0, -3.56)
-
-[node name="ujzfde2_LOD0_TIER2_000" parent="ArmarioSalaB/world_root" parent_id_path=PackedInt32Array(775955948, 415027278) index="0" unique_id=1989272047]
-material_override = ExtResource("10_e6mo4")
-
-[node name="Collider" type="StaticBody3D" parent="ArmarioSalaB" unique_id=1366856033 groups=["navegavel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0097, 0.6924, -0.0075)
-
-[node name="Shape" type="CollisionShape3D" parent="ArmarioSalaB/Collider" unique_id=2080966894]
-shape = SubResource("BoxShape3D_px6rj")
-
-[node name="ArmarioSalaA" parent="." unique_id=27167776 instance=ExtResource("9_lwi15")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, -5.56)
-
-[node name="ujzfde2_LOD0_TIER2_000" parent="ArmarioSalaA/world_root" parent_id_path=PackedInt32Array(27167776, 415027278) index="0" unique_id=1989272047]
-material_override = ExtResource("10_e6mo4")
-
-[node name="Collider" type="StaticBody3D" parent="ArmarioSalaA" unique_id=1367585974 groups=["navegavel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0097, 0.6924, -0.0075)
-
-[node name="Shape" type="CollisionShape3D" parent="ArmarioSalaA/Collider" unique_id=560787179]
-shape = SubResource("BoxShape3D_px6rj")
-
-[node name="Room2" type="Node3D" parent="." unique_id=1065320616]
-
-[node name="Floor2" type="StaticBody3D" parent="Room2" unique_id=1775618131 groups=["navegavel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, -0.25, -9.25)
-
-[node name="Mesh" type="MeshInstance3D" parent="Room2/Floor2" unique_id=556358354]
-material_override = ExtResource("1_cy6r3")
-mesh = SubResource("BoxMesh_d46x6")
-
-[node name="Collider" type="CollisionShape3D" parent="Room2/Floor2" unique_id=1731047933]
-shape = SubResource("BoxShape3D_n3syt")
-
-[node name="Ceiling2" type="StaticBody3D" parent="Room2" unique_id=1869189174 groups=["navegavel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 5.25, -9.25)
-
-[node name="Mesh" type="MeshInstance3D" parent="Room2/Ceiling2" unique_id=1252652211]
-material_override = ExtResource("2_0tv6x")
-mesh = SubResource("BoxMesh_wqkcq")
-
-[node name="Collider" type="CollisionShape3D" parent="Room2/Ceiling2" unique_id=88177919]
-shape = SubResource("BoxShape3D_jg26c")
-
-[node name="WallBack" type="StaticBody3D" parent="Room2" unique_id=196289674 groups=["navegavel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 2.5, -12.25)
-
-[node name="Mesh" type="MeshInstance3D" parent="Room2/WallBack" unique_id=1498970989]
-material_override = ExtResource("3_1b6n0")
-mesh = SubResource("BoxMesh_353n8")
-
-[node name="Collider" type="CollisionShape3D" parent="Room2/WallBack" unique_id=673757372]
-shape = SubResource("BoxShape3D_4rfup")
-
-[node name="WallLeft" type="StaticBody3D" parent="Room2" unique_id=1486519947 groups=["navegavel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 2.5, -9.25)
-
-[node name="Mesh" type="MeshInstance3D" parent="Room2/WallLeft" unique_id=4365981]
-material_override = ExtResource("3_1b6n0")
-mesh = SubResource("BoxMesh_tlvr8")
-
-[node name="Collider" type="CollisionShape3D" parent="Room2/WallLeft" unique_id=2007094239]
-shape = SubResource("BoxShape3D_4ldtp")
-
-[node name="WallRight" type="StaticBody3D" parent="Room2" unique_id=2068681619 groups=["navegavel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.75, 2.5, -9.25)
-
-[node name="Mesh" type="MeshInstance3D" parent="Room2/WallRight" unique_id=69294523]
-material_override = ExtResource("3_1b6n0")
-mesh = SubResource("BoxMesh_w4cok")
-
-[node name="Collider" type="CollisionShape3D" parent="Room2/WallRight" unique_id=71890516]
-shape = SubResource("BoxShape3D_3kr23")
-
-[node name="LampR2_1" type="OmniLight3D" parent="Room2" unique_id=694722991]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 4.4, -9.25)
-light_color = Color(1, 0.9137255, 0.76862746, 1)
-light_energy = 2.0
-shadow_enabled = true
-omni_range = 8.0
-
-[node name="LampR2_2" type="OmniLight3D" parent="Room2" unique_id=641241294]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 4.4, -9.25)
-light_color = Color(1, 0.9137255, 0.76862746, 1)
-light_energy = 2.0
-shadow_enabled = true
-omni_range = 8.0
-
-[node name="PortaTransicao" type="Node" parent="." unique_id=722856658]
-script = ExtResource("13_2ucnx")
-
-[node name="Fade" type="CanvasLayer" parent="PortaTransicao" unique_id=642010886]
-
-[node name="Black" type="ColorRect" parent="PortaTransicao/Fade" unique_id=884563677]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-color = Color(0, 0, 0, 0)
-
-[node name="Pontos" type="Node3D" parent="PortaTransicao" unique_id=1088040946]
-
-[node name="Frente" type="Node3D" parent="PortaTransicao/Pontos" unique_id=304335488]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0.1, -4.6)
-
-[node name="Fundo" type="Node3D" parent="PortaTransicao/Pontos" unique_id=1736520733]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0.1, -8)
-
-[node name="GatilhoFrente" type="Area3D" parent="PortaTransicao" unique_id=1813015520]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 1, -5.55)
-collision_mask = 2
-
-[node name="Shape" type="CollisionShape3D" parent="PortaTransicao/GatilhoFrente" unique_id=443932616]
-shape = SubResource("BoxShape3D_353n8")
-
-[node name="GatilhoFundo" type="Area3D" parent="PortaTransicao" unique_id=1617031358]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 1, -6.95)
-collision_mask = 2
-
-[node name="Shape" type="CollisionShape3D" parent="PortaTransicao/GatilhoFundo" unique_id=394976378]
-shape = SubResource("BoxShape3D_tlvr8")
-
-[node name="HUD" type="CanvasLayer" parent="PortaTransicao" unique_id=500378649]
-
-[node name="Prompt" type="Label" parent="PortaTransicao/HUD" unique_id=260207609]
-visible = false
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -96.0
-offset_bottom = -52.0
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 6
-theme_override_font_sizes/font_size = 26
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="TransicaoSalaB" type="Node" parent="." unique_id=1857652954]
-script = ExtResource("13_2ucnx")
-YawIntoRoomFromFrente = 90.0
-YawIntoRoomFromFundo = -90.0
-
-[node name="Fade" type="CanvasLayer" parent="TransicaoSalaB" unique_id=87068360]
-
-[node name="Black" type="ColorRect" parent="TransicaoSalaB/Fade" unique_id=45467718]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-color = Color(0, 0, 0, 0)
-
-[node name="Pontos" type="Node3D" parent="TransicaoSalaB" unique_id=1634438485]
-
-[node name="Frente" type="Node3D" parent="TransicaoSalaB/Pontos" unique_id=122406263]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 0.1, 0)
-
-[node name="Fundo" type="Node3D" parent="TransicaoSalaB/Pontos" unique_id=1978053483]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27.2, 0.1, 0)
-
-[node name="GatilhoFrente" type="Area3D" parent="TransicaoSalaB" unique_id=733601547]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25.6, 1, 0)
-collision_mask = 2
-
-[node name="Shape" type="CollisionShape3D" parent="TransicaoSalaB/GatilhoFrente" unique_id=919432115]
-shape = SubResource("BoxShape3D_a577o")
-
-[node name="GatilhoFundo" type="Area3D" parent="TransicaoSalaB" unique_id=1424058245]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.9, 1, 0)
-collision_mask = 2
-
-[node name="Shape" type="CollisionShape3D" parent="TransicaoSalaB/GatilhoFundo" unique_id=3263036]
-shape = SubResource("BoxShape3D_l0wem")
-
-[node name="HUD" type="CanvasLayer" parent="TransicaoSalaB" unique_id=2091288667]
-
-[node name="Prompt" type="Label" parent="TransicaoSalaB/HUD" unique_id=189007918]
-visible = false
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -96.0
-offset_bottom = -52.0
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 6
-theme_override_font_sizes/font_size = 26
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="TransicaoCorredor" type="Node" parent="." unique_id=1557889913]
-script = ExtResource("13_2ucnx")
-YawIntoRoomFromFrente = 90.0
-YawIntoRoomFromFundo = -90.0
-
-[node name="Fade" type="CanvasLayer" parent="TransicaoCorredor" unique_id=1503921779]
-
-[node name="Black" type="ColorRect" parent="TransicaoCorredor/Fade" unique_id=790245337]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-color = Color(0, 0, 0, 0)
-
-[node name="Pontos" type="Node3D" parent="TransicaoCorredor" unique_id=622180554]
-
-[node name="Frente" type="Node3D" parent="TransicaoCorredor/Pontos" unique_id=1204947068]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0.1, 0)
-
-[node name="Fundo" type="Node3D" parent="TransicaoCorredor/Pontos" unique_id=1648757485]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.2, 0.1, 0)
-
-[node name="GatilhoFrente" type="Area3D" parent="TransicaoCorredor" unique_id=1298432366]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.6, 1, 0)
-collision_mask = 2
-
-[node name="Shape" type="CollisionShape3D" parent="TransicaoCorredor/GatilhoFrente" unique_id=875079531]
-shape = SubResource("BoxShape3D_6y7lq")
-
-[node name="GatilhoFundo" type="Area3D" parent="TransicaoCorredor" unique_id=1620557337]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.9, 1, 0)
-collision_mask = 2
-
-[node name="Shape" type="CollisionShape3D" parent="TransicaoCorredor/GatilhoFundo" unique_id=1745003070]
-shape = SubResource("BoxShape3D_jvtd8")
-
-[node name="HUD" type="CanvasLayer" parent="TransicaoCorredor" unique_id=46430086]
-
-[node name="Prompt" type="Label" parent="TransicaoCorredor/HUD" unique_id=95572964]
-visible = false
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -96.0
-offset_bottom = -52.0
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 6
-theme_override_font_sizes/font_size = 26
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Corredor" type="Node3D" parent="." unique_id=1453685755]
-
-[node name="Chao" type="StaticBody3D" parent="Corredor" unique_id=490011803 groups=["navegavel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.25, -0.25, 0)
-
-[node name="Mesh" type="MeshInstance3D" parent="Corredor/Chao" unique_id=462904753]
-material_override = ExtResource("1_cy6r3")
-mesh = SubResource("BoxMesh_a577o")
-
-[node name="Collider" type="CollisionShape3D" parent="Corredor/Chao" unique_id=554349934]
-shape = SubResource("BoxShape3D_ne2m8")
-
-[node name="Teto" type="StaticBody3D" parent="Corredor" unique_id=1923137845 groups=["navegavel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.25, 3.75, 0)
-
-[node name="Mesh" type="MeshInstance3D" parent="Corredor/Teto" unique_id=970192472]
-material_override = ExtResource("2_0tv6x")
-mesh = SubResource("BoxMesh_l0wem")
-
-[node name="Collider" type="CollisionShape3D" parent="Corredor/Teto" unique_id=1425088191]
-shape = SubResource("BoxShape3D_luive")
-
-[node name="ParedeN" type="StaticBody3D" parent="Corredor" unique_id=312915658 groups=["navegavel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.25, 1.75, -1.75)
-
-[node name="Mesh" type="MeshInstance3D" parent="Corredor/ParedeN" unique_id=162331382]
-material_override = ExtResource("3_1b6n0")
-mesh = SubResource("BoxMesh_6y7lq")
-
-[node name="Collider" type="CollisionShape3D" parent="Corredor/ParedeN" unique_id=2068379204]
-shape = SubResource("BoxShape3D_5wgha")
-
-[node name="ParedeS" type="StaticBody3D" parent="Corredor" unique_id=1649873555 groups=["navegavel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.25, 1.75, 1.75)
-
-[node name="Mesh" type="MeshInstance3D" parent="Corredor/ParedeS" unique_id=1980825268]
-material_override = ExtResource("3_1b6n0")
-mesh = SubResource("BoxMesh_jvtd8")
-
-[node name="Collider" type="CollisionShape3D" parent="Corredor/ParedeS" unique_id=67543338]
-shape = SubResource("BoxShape3D_auax2")
-
-[node name="LampC1" type="OmniLight3D" parent="Corredor" unique_id=1152470227]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, 3, 0)
-light_color = Color(1, 0.9137255, 0.76862746, 1)
-light_energy = 1.8
-shadow_enabled = true
-omni_range = 6.0
-
-[node name="LampC2" type="OmniLight3D" parent="Corredor" unique_id=2125658658]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 3, 0)
-light_color = Color(1, 0.9137255, 0.76862746, 1)
-light_energy = 1.8
-shadow_enabled = true
-omni_range = 6.0
-
-[node name="SalaA" type="Node3D" parent="." unique_id=269307050]
-
-[node name="Chao" type="StaticBody3D" parent="SalaA" unique_id=1961840521 groups=["navegavel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.25, -0.25, 0)
-
-[node name="Mesh" type="MeshInstance3D" parent="SalaA/Chao" unique_id=119319155]
-material_override = ExtResource("1_cy6r3")
-mesh = SubResource("BoxMesh_vb0mg")
-
-[node name="Collider" type="CollisionShape3D" parent="SalaA/Chao" unique_id=2024337671]
-shape = SubResource("BoxShape3D_px1o1")
-
-[node name="Teto" type="StaticBody3D" parent="SalaA" unique_id=1493114476 groups=["navegavel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.25, 8.25, 0)
-
-[node name="Mesh" type="MeshInstance3D" parent="SalaA/Teto" unique_id=1438143383]
-material_override = ExtResource("2_0tv6x")
-mesh = SubResource("BoxMesh_1slps")
-
-[node name="Collider" type="CollisionShape3D" parent="SalaA/Teto" unique_id=1021195142]
-shape = SubResource("BoxShape3D_xymgi")
-
-[node name="ParedeN" type="StaticBody3D" parent="SalaA" unique_id=1791575281 groups=["navegavel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.25, 4, -6.25)
-
-[node name="Mesh" type="MeshInstance3D" parent="SalaA/ParedeN" unique_id=344955659]
-material_override = ExtResource("3_1b6n0")
-mesh = SubResource("BoxMesh_05q7v")
-
-[node name="Collider" type="CollisionShape3D" parent="SalaA/ParedeN" unique_id=1395379636]
-shape = SubResource("BoxShape3D_rt40s")
-
-[node name="ParedeS" type="StaticBody3D" parent="SalaA" unique_id=1067790382 groups=["navegavel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.25, 4, 6.25)
-
-[node name="Mesh" type="MeshInstance3D" parent="SalaA/ParedeS" unique_id=205315829]
-material_override = ExtResource("3_1b6n0")
-mesh = SubResource("BoxMesh_hscr6")
-
-[node name="Collider" type="CollisionShape3D" parent="SalaA/ParedeS" unique_id=142293076]
-shape = SubResource("BoxShape3D_glrgf")
-
-[node name="OesteN" type="StaticBody3D" parent="SalaA" unique_id=1141496555 groups=["navegavel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.25, 4, -3.45)
-
-[node name="Mesh" type="MeshInstance3D" parent="SalaA/OesteN" unique_id=2025297133]
-material_override = ExtResource("3_1b6n0")
-mesh = SubResource("BoxMesh_auax2")
-
-[node name="Collider" type="CollisionShape3D" parent="SalaA/OesteN" unique_id=2006704373]
-shape = SubResource("BoxShape3D_vb0mg")
-
-[node name="OesteS" type="StaticBody3D" parent="SalaA" unique_id=1551479524 groups=["navegavel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.25, 4, 3.45)
-
-[node name="Mesh" type="MeshInstance3D" parent="SalaA/OesteS" unique_id=1344108241]
-material_override = ExtResource("3_1b6n0")
-mesh = SubResource("BoxMesh_px1o1")
-
-[node name="Collider" type="CollisionShape3D" parent="SalaA/OesteS" unique_id=150077273]
-shape = SubResource("BoxShape3D_1slps")
-
-[node name="VergaOeste" type="StaticBody3D" parent="SalaA" unique_id=342158260 groups=["navegavel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.25, 5.1, 0)
-
-[node name="Mesh" type="MeshInstance3D" parent="SalaA/VergaOeste" unique_id=1164850104]
-material_override = ExtResource("3_1b6n0")
-mesh = SubResource("BoxMesh_xymgi")
-
-[node name="Collider" type="CollisionShape3D" parent="SalaA/VergaOeste" unique_id=1135135412]
-shape = SubResource("BoxShape3D_05q7v")
-
-[node name="LesteN" type="StaticBody3D" parent="SalaA" unique_id=357422868 groups=["navegavel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.25, 4, -3.45)
-
-[node name="Mesh" type="MeshInstance3D" parent="SalaA/LesteN" unique_id=1803455813]
-material_override = ExtResource("3_1b6n0")
-mesh = SubResource("BoxMesh_rt40s")
-
-[node name="Collider" type="CollisionShape3D" parent="SalaA/LesteN" unique_id=721358386]
-shape = SubResource("BoxShape3D_hscr6")
-
-[node name="LesteS" type="StaticBody3D" parent="SalaA" unique_id=2072101590 groups=["navegavel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.25, 4, 3.45)
-
-[node name="Mesh" type="MeshInstance3D" parent="SalaA/LesteS" unique_id=620240255]
-material_override = ExtResource("3_1b6n0")
-mesh = SubResource("BoxMesh_glrgf")
-
-[node name="Collider" type="CollisionShape3D" parent="SalaA/LesteS" unique_id=43430751]
-shape = SubResource("BoxShape3D_glxa2")
-
-[node name="VergaLeste" type="StaticBody3D" parent="SalaA" unique_id=1420909985 groups=["navegavel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.25, 5.1, 0)
-
-[node name="Mesh" type="MeshInstance3D" parent="SalaA/VergaLeste" unique_id=1854574512]
-material_override = ExtResource("3_1b6n0")
-mesh = SubResource("BoxMesh_wn2an")
-
-[node name="Collider" type="CollisionShape3D" parent="SalaA/VergaLeste" unique_id=1977670278]
-shape = SubResource("BoxShape3D_xxwq1")
-
-[node name="LampA1" type="OmniLight3D" parent="SalaA" unique_id=948556321]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.5, 7.2, -3)
-light_color = Color(1, 0.9137255, 0.76862746, 1)
-light_energy = 2.6
-shadow_enabled = true
-omni_range = 14.0
-
-[node name="LampA2" type="OmniLight3D" parent="SalaA" unique_id=1730230307]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 7.2, -3)
-light_color = Color(1, 0.9137255, 0.76862746, 1)
-light_energy = 2.6
-shadow_enabled = true
-omni_range = 14.0
-
-[node name="LampA3" type="OmniLight3D" parent="SalaA" unique_id=202732944]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.5, 7.2, 3)
-light_color = Color(1, 0.9137255, 0.76862746, 1)
-light_energy = 2.6
-shadow_enabled = true
-omni_range = 14.0
-
-[node name="LampA4" type="OmniLight3D" parent="SalaA" unique_id=1724803735]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 7.2, 3)
-light_color = Color(1, 0.9137255, 0.76862746, 1)
-light_energy = 2.6
-shadow_enabled = true
-omni_range = 14.0
-
-[node name="SalaB" type="Node3D" parent="." unique_id=333829168]
-
-[node name="Chao" type="StaticBody3D" parent="SalaB" unique_id=403421246 groups=["navegavel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.5, -0.25, 0)
-
-[node name="Mesh" type="MeshInstance3D" parent="SalaB/Chao" unique_id=1372409558]
-material_override = ExtResource("1_cy6r3")
-mesh = SubResource("BoxMesh_r03n8")
-
-[node name="Collider" type="CollisionShape3D" parent="SalaB/Chao" unique_id=749053221]
-shape = SubResource("BoxShape3D_e6te3")
-
-[node name="Teto" type="StaticBody3D" parent="SalaB" unique_id=1011512575 groups=["navegavel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.5, 8.25, 0)
-
-[node name="Mesh" type="MeshInstance3D" parent="SalaB/Teto" unique_id=1888434880]
-material_override = ExtResource("2_0tv6x")
-mesh = SubResource("BoxMesh_m80cd")
-
-[node name="Collider" type="CollisionShape3D" parent="SalaB/Teto" unique_id=852335579]
-shape = SubResource("BoxShape3D_o05g6")
-
-[node name="ParedeN" type="StaticBody3D" parent="SalaB" unique_id=175363595 groups=["navegavel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.5, 4, -4.25)
-
-[node name="Mesh" type="MeshInstance3D" parent="SalaB/ParedeN" unique_id=961535952]
-material_override = ExtResource("3_1b6n0")
-mesh = SubResource("BoxMesh_b8mwo")
-
-[node name="Collider" type="CollisionShape3D" parent="SalaB/ParedeN" unique_id=1433583185]
-shape = SubResource("BoxShape3D_iadww")
-
-[node name="ParedeS" type="StaticBody3D" parent="SalaB" unique_id=513881841 groups=["navegavel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.5, 4, 4.25)
-
-[node name="Mesh" type="MeshInstance3D" parent="SalaB/ParedeS" unique_id=1265598732]
-material_override = ExtResource("3_1b6n0")
-mesh = SubResource("BoxMesh_j2jhu")
-
-[node name="Collider" type="CollisionShape3D" parent="SalaB/ParedeS" unique_id=1284038515]
-shape = SubResource("BoxShape3D_atkk1")
-
-[node name="ParedeE" type="StaticBody3D" parent="SalaB" unique_id=1889455830 groups=["navegavel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34.75, 4, 0)
-
-[node name="Mesh" type="MeshInstance3D" parent="SalaB/ParedeE" unique_id=495026419]
-material_override = ExtResource("3_1b6n0")
-mesh = SubResource("BoxMesh_21n3k")
-
-[node name="Collider" type="CollisionShape3D" parent="SalaB/ParedeE" unique_id=2056596258]
-shape = SubResource("BoxShape3D_6x6xm")
-
-[node name="LampB1" type="OmniLight3D" parent="SalaB" unique_id=969894695]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.5, 7.2, -2)
-light_color = Color(1, 0.9137255, 0.76862746, 1)
-light_energy = 2.6
-shadow_enabled = true
-omni_range = 12.0
-
-[node name="LampB2" type="OmniLight3D" parent="SalaB" unique_id=658266966]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.5, 7.2, -2)
-light_color = Color(1, 0.9137255, 0.76862746, 1)
-light_energy = 2.6
-shadow_enabled = true
-omni_range = 12.0
-
-[node name="LampB3" type="OmniLight3D" parent="SalaB" unique_id=1248641555]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.5, 7.2, 2)
-light_color = Color(1, 0.9137255, 0.76862746, 1)
-light_energy = 2.6
-shadow_enabled = true
-omni_range = 12.0
-
-[node name="Porta0" type="Node3D" parent="." unique_id=1397208490]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0, -6.066)
-
-[node name="Porta" parent="Porta0" unique_id=1532815621 instance=ExtResource("11_e6mo4")]
-transform = Transform3D(-2.3167035e-09, 0, 0.053, 0, 0.053, 0, -0.053, 0, -2.3167035e-09, -0.5724001, 0, 0)
-
-[node name="PortaAro" type="Node3D" parent="Porta0" unique_id=767353668]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 0, 6.066)
-
-[node name="AroEsq" type="MeshInstance3D" parent="Porta0/PortaAro" unique_id=864127891]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8888, 1.1, -6.25)
-material_override = ExtResource("13_s61md")
-mesh = SubResource("BoxMesh_cr2eh")
-
-[node name="AroDir" type="MeshInstance3D" parent="Porta0/PortaAro" unique_id=461509867]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.1112, 1.1, -6.25)
-material_override = ExtResource("13_s61md")
-mesh = SubResource("BoxMesh_jg26c")
-
-[node name="AroTopo" type="MeshInstance3D" parent="Porta0/PortaAro" unique_id=796634213]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 2.1497, -6.25)
-material_override = ExtResource("13_s61md")
-mesh = SubResource("BoxMesh_4rfup")
-
-[node name="PortaColisor" type="StaticBody3D" parent="Porta0" unique_id=1793609399 groups=["navegavel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05, 0)
-
-[node name="Collider" type="CollisionShape3D" parent="Porta0/PortaColisor" unique_id=1729771092]
-shape = SubResource("BoxShape3D_cy6r3")
-
-[node name="Porta2" type="Node3D" parent="." unique_id=1785208422]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 26.25, 0, 0)
-
-[node name="Porta" parent="Porta2" unique_id=1687191243 instance=ExtResource("11_e6mo4")]
-transform = Transform3D(-2.3167035e-09, 0, 0.053, 0, 0.053, 0, -0.053, 0, -2.3167035e-09, -0.5724001, 0, 0)
-
-[node name="PortaAro" type="Node3D" parent="Porta2" unique_id=143584737]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 0, 6.066)
-
-[node name="AroEsq" type="MeshInstance3D" parent="Porta2/PortaAro" unique_id=1523926470]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8888, 1.1, -6.25)
-material_override = ExtResource("13_s61md")
-mesh = SubResource("BoxMesh_cr2eh")
-
-[node name="AroDir" type="MeshInstance3D" parent="Porta2/PortaAro" unique_id=1291258296]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.1112, 1.1, -6.25)
-material_override = ExtResource("13_s61md")
-mesh = SubResource("BoxMesh_jg26c")
-
-[node name="AroTopo" type="MeshInstance3D" parent="Porta2/PortaAro" unique_id=866827116]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 2.1497, -6.25)
-material_override = ExtResource("13_s61md")
-mesh = SubResource("BoxMesh_4rfup")
-
-[node name="PortaColisor" type="StaticBody3D" parent="Porta2" unique_id=837550152 groups=["navegavel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05, 0)
-
-[node name="Collider" type="CollisionShape3D" parent="Porta2/PortaColisor" unique_id=1586857300]
-shape = SubResource("BoxShape3D_cy6r3")
-
-[node name="Porta1" type="Node3D" parent="." unique_id=557032903]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 16.25, 0, 0)
-
-[node name="Porta" parent="Porta1" unique_id=963402379 instance=ExtResource("11_e6mo4")]
-transform = Transform3D(-2.3167035e-09, 0, 0.053, 0, 0.053, 0, -0.053, 0, -2.3167035e-09, -0.5724001, 0, 0)
-
-[node name="PortaAro" type="Node3D" parent="Porta1" unique_id=888994494]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 0, 6.066)
-
-[node name="AroEsq" type="MeshInstance3D" parent="Porta1/PortaAro" unique_id=1040092567]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8888, 1.1, -6.25)
-material_override = ExtResource("13_s61md")
-mesh = SubResource("BoxMesh_cr2eh")
-
-[node name="AroDir" type="MeshInstance3D" parent="Porta1/PortaAro" unique_id=1520309437]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.1112, 1.1, -6.25)
-material_override = ExtResource("13_s61md")
-mesh = SubResource("BoxMesh_jg26c")
-
-[node name="AroTopo" type="MeshInstance3D" parent="Porta1/PortaAro" unique_id=1557037837]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 2.1497, -6.25)
-material_override = ExtResource("13_s61md")
-mesh = SubResource("BoxMesh_4rfup")
-
-[node name="PortaColisor" type="StaticBody3D" parent="Porta1" unique_id=1949225885 groups=["navegavel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05, 0)
-
-[node name="Collider" type="CollisionShape3D" parent="Porta1/PortaColisor" unique_id=578021153]
-shape = SubResource("BoxShape3D_cy6r3")
-
-[node name="HudVida" type="CanvasLayer" parent="." unique_id=1930171827]
-
-[node name="MedidorVida" parent="HudVida" unique_id=1068354464 instance=ExtResource("19_mv")]
-offset_left = 24.0
-offset_top = 24.0
-SaudePath = NodePath("../../Player/Saude")
-
-[node name="InventarioTela" type="CanvasLayer" parent="." unique_id=927153641]
-layer = 15
-script = ExtResource("25_invtela")
-InventarioPath = NodePath("Player/Inventario")
-SaudePath = NodePath("Player/Saude")
-ActorPath = NodePath("Player")
-
-[node name="SequenciaMorte" type="CanvasLayer" parent="." unique_id=913572048]
-unique_name_in_owner = true
-layer = 20
-script = ExtResource("20_sm")
+[node name="ZumbiLento" parent="." instance=ExtResource("52_zumbi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0.2, -4)
 
 [node name="Ambiente" type="AudioStreamPlayer" parent="." unique_id=928436219]
 stream = ExtResource("24_bgm")
 autoplay = true
 bus = &"Music"
 
-[node name="Frasco1" type="Area3D" parent="." unique_id=941823657]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0.35, -2)
-collision_mask = 2
-script = ExtResource("23_fr")
-
-[node name="Shape" type="CollisionShape3D" parent="Frasco1" unique_id=1278895453]
-shape = SubResource("BoxShape3D_frasco")
-
-[node name="Visual" type="MeshInstance3D" parent="Frasco1" unique_id=1423417958]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
-mesh = SubResource("CapsuleMesh_frasco")
-
-[node name="Frasco2" type="Area3D" parent="." unique_id=941823658]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.5, 0.35, 2)
-collision_mask = 2
-script = ExtResource("23_fr")
-
-[node name="Shape" type="CollisionShape3D" parent="Frasco2" unique_id=187128888]
-shape = SubResource("BoxShape3D_frasco")
-
-[node name="Visual" type="MeshInstance3D" parent="Frasco2" unique_id=161947545]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
-mesh = SubResource("CapsuleMesh_frasco")
-
 [node name="Navegacao" type="NavigationRegion3D" parent="." unique_id=1213022945]
 navigation_mesh = SubResource("NavigationMesh_d46x6")
 
-[node name="Inimigo" type="CharacterBody3D" parent="." unique_id=396155259]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 0.2, 0)
-collision_layer = 4
-collision_mask = 3
-script = ExtResource("14_cy6r3")
-Dados = ExtResource("15_s61md")
-
-[node name="Collider" type="CollisionShape3D" parent="Inimigo" unique_id=1801829239]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
-shape = SubResource("CapsuleShape3D_n3syt")
-
-[node name="Body" type="MeshInstance3D" parent="Inimigo" unique_id=1694642156]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
-material_override = ExtResource("15_d46x6")
-mesh = SubResource("CapsuleMesh_wqkcq")
-
-[node name="NavigationAgent3D" type="NavigationAgent3D" parent="Inimigo" unique_id=847600636]
-path_desired_distance = 0.5
-target_desired_distance = 0.6
-radius = 0.4
-
-[node name="Saude" type="Node" parent="Inimigo" unique_id=648692296 node_paths=PackedStringArray("Corpo")]
-script = ExtResource("6_n3syt")
-Corpo = NodePath("../Body")
-
-[node name="ZumbiLento" type="CharacterBody3D" parent="." unique_id=1512548117]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0.2, -4)
-collision_layer = 4
-collision_mask = 3
-script = ExtResource("14_cy6r3")
-Dados = ExtResource("17_d46x6")
-Rota = ExtResource("18_d46x6")
-
-[node name="Collider" type="CollisionShape3D" parent="ZumbiLento" unique_id=2087452]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
-shape = SubResource("CapsuleShape3D_n3syt")
-
-[node name="Body" type="MeshInstance3D" parent="ZumbiLento" unique_id=1595524303]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
-material_override = ExtResource("15_d46x6")
-mesh = SubResource("CapsuleMesh_wqkcq")
-
-[node name="NavigationAgent3D" type="NavigationAgent3D" parent="ZumbiLento" unique_id=1871161014]
-path_desired_distance = 0.5
-target_desired_distance = 0.6
-radius = 0.4
-
-[node name="Saude" type="Node" parent="ZumbiLento" unique_id=1715379341 node_paths=PackedStringArray("Corpo")]
-script = ExtResource("6_n3syt")
-Corpo = NodePath("../Body")
-
-[editable path="Armario"]
-[editable path="ArmarioSalaB"]
-[editable path="ArmarioSalaA"]

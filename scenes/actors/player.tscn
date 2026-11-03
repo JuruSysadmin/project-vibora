@@ -1,0 +1,40 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" uid="uid://repj6liq31hu" path="res://gameplay/Player.cs" id="4_1b6n0"]
+[ext_resource type="Material" uid="uid://ci482xng2v4iu" path="res://art/materiais/player.tres" id="5_42ncp"]
+[ext_resource type="Script" uid="uid://odlcx4l1c2t5" path="res://sistemas/Saude.cs" id="6_n3syt"]
+[ext_resource type="Script" uid="uid://dlqnq727u8vbn" path="res://gameplay/PlayerMotor.cs" id="7_jg26c"]
+[ext_resource type="Script" uid="uid://bdxtp6ulh3mr8" path="res://sistemas/Inventario.cs" id="21_inv"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_353n8"]
+radius = 0.4
+height = 1.8
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_px6rj"]
+radius = 0.4
+height = 1.8
+
+[node name="Player" type="CharacterBody3D" unique_id=356130549]
+collision_layer = 2
+collision_mask = 5
+script = ExtResource("4_1b6n0")
+
+[node name="Collider" type="CollisionShape3D" parent="." unique_id=780146140]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_353n8")
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=1835220081]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+material_override = ExtResource("5_42ncp")
+mesh = SubResource("CapsuleMesh_px6rj")
+
+[node name="Saude" type="Node" parent="." unique_id=1040864615 node_paths=PackedStringArray("Corpo")]
+script = ExtResource("6_n3syt")
+Corpo = NodePath("../Body")
+
+[node name="Inventario" type="Node" parent="." unique_id=914280173]
+script = ExtResource("21_inv")
+
+[node name="Motor" type="Node" parent="." unique_id=1063543824]
+script = ExtResource("7_jg26c")
+

@@ -1,0 +1,11 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://ui/MedidorVida.tscn" id="19_mv"]
+
+[node name="HudVida" type="CanvasLayer" unique_id=1930171827]
+
+[node name="MedidorVida" parent="." unique_id=1068354464 instance=ExtResource("19_mv")]
+offset_left = 24.0
+offset_top = 24.0
+SaudePath = NodePath("../../Player/Saude")
+

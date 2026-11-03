@@ -1,0 +1,42 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" uid="uid://dye6w1wamxaah" path="res://art/props/porta/ROOM1061.fbx" id="1_porta"]
+[ext_resource type="Material" uid="uid://b4qqxfwp1aqqy" path="res://art/materiais/aro.tres" id="2_aro"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_aro_side"]
+size = Vector3(0.1, 2.2, 0.55)
+
+[sub_resource type="BoxMesh" id="BoxMesh_aro_top"]
+size = Vector3(1.3224, 0.1, 0.55)
+
+[sub_resource type="BoxShape3D" id="BoxShape_colisor"]
+size = Vector3(1.15, 2.1, 0.1)
+
+[node name="Porta" type="Node3D"]
+
+[node name="Porta" parent="." instance=ExtResource("1_porta")]
+transform = Transform3D(-2.3167035e-09, 0, 0.053, 0, 0.053, 0, -0.053, 0, -2.3167035e-09, -0.5724001, 0, 0)
+
+[node name="PortaAro" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 0, 6.066)
+
+[node name="AroEsq" type="MeshInstance3D" parent="PortaAro"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8888, 1.1, -6.25)
+material_override = ExtResource("2_aro")
+mesh = SubResource("BoxMesh_aro_side")
+
+[node name="AroDir" type="MeshInstance3D" parent="PortaAro"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.1112, 1.1, -6.25)
+material_override = ExtResource("2_aro")
+mesh = SubResource("BoxMesh_aro_side")
+
+[node name="AroTopo" type="MeshInstance3D" parent="PortaAro"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 2.1497, -6.25)
+material_override = ExtResource("2_aro")
+mesh = SubResource("BoxMesh_aro_top")
+
+[node name="PortaColisor" type="StaticBody3D" parent="." groups=["navegavel"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05, 0)
+
+[node name="Collider" type="CollisionShape3D" parent="PortaColisor"]
+shape = SubResource("BoxShape_colisor")
