@@ -15,6 +15,12 @@ public partial class InventarioTela : CanvasLayer
     [Export] public string CaminhoSomUsar { get; set; } = "res://art/sons/curar.wav";
     [Export] public Vector2 TamanhoSlot { get; set; } = new(88f, 88f);
 
+    // Whitelist do inventory pause: quem continua processando com o mundo congelado.
+    // Vazio cai no caminho relativo padrão da cena (irmãos no root do level).
+    [Export] public NodePath? CameraPath { get; set; }
+    [Export] public NodePath? CameraHostPath { get; set; }
+    [Export] public NodePath? PcamPath { get; set; }
+
     public bool Aberto { get; private set; }
 
     private Inventario? _inventario;
@@ -30,6 +36,9 @@ public partial class InventarioTela : CanvasLayer
     private readonly List<PanelContainer> _paineis = new();
     private readonly List<TextureRect> _icones = new();
     private readonly List<StyleBoxFlat> _estilos = new();
+    private readonly Dictionary<Node, ProcessModeEnum> _modosOriginais = new();
+    private readonly List<Node> _nosVivos = new();
+    private bool _mundoPausado;
     private int _selecionado;
     private int _frascos;
 
@@ -108,7 +117,7 @@ public partial class InventarioTela : CanvasLayer
         Visible = true;
         Input.MouseMode = Input.MouseModeEnum.Visible;
         SetActorLocked(true);
-        GetTree().Paused = true;
+        PausarMundo();
         AtualizarStatus();
         AtualizarDescricao();
         PintarSelecao();
@@ -120,9 +129,59 @@ public partial class InventarioTela : CanvasLayer
 
         Aberto = false;
         Visible = false;
-        GetTree().Paused = false;
+        DespausarMundo();
         SetActorLocked(false);
         Input.MouseMode = Input.MouseModeEnum.Captured;
+    }
+
+    public override void _ExitTree()
+    {
+        // Sair da árvore com o mundo pausado congelaria o jogo (a pausa é do tree, não do nó).
+        if (_mundoPausado) DespausarMundo();
+    }
+
+    /// <summary>Garante que o nó continue processando com <c>GetTree().Paused = true</c>.</summary>
+    private void ManterVivo(Node no)
+    {
+        if (!_modosOriginais.ContainsKey(no))
+        {
+            _modosOriginais[no] = no.ProcessMode;
+        }
+
+        no.ProcessMode = ProcessModeEnum.Always;
+    }
+
+    /// <summary>
+    /// Congela o mundo. A whitelist precisa estar <c>Always</c> ANTES do pause,
+    /// senão a câmera e a própria tela param junto.
+    /// </summary>
+    private void PausarMundo()
+    {
+        if (_mundoPausado) return;
+
+        foreach (var no in _nosVivos)
+        {
+            if (GodotObject.IsInstanceValid(no)) ManterVivo(no);
+        }
+
+        GetTree().Paused = true;
+        _mundoPausado = true;
+    }
+
+    /// <summary>Despausa e devolve cada nó da whitelist ao <c>ProcessMode</c> original.</summary>
+    private void DespausarMundo()
+    {
+        if (!_mundoPausado) return;
+
+        GetTree().Paused = false;
+
+        foreach (var (no, modo) in _modosOriginais)
+        {
+            if (GodotObject.IsInstanceValid(no)) no.ProcessMode = modo;
+        }
+
+        _modosOriginais.Clear();
+        _mundoPausado = false;
     }
 
     private void ResolverRefs()
@@ -141,6 +200,26 @@ public partial class InventarioTela : CanvasLayer
         {
             _actor = GetNodeOrNull(actorPath);
         }
+
+        _nosVivos.Clear();
+        _nosVivos.Add(this);
+        AdicionarNoVivo(CameraPath, "../MainCamera");
+        AdicionarNoVivo(CameraHostPath, "../MainCamera/PhantomCameraHost");
+        AdicionarNoVivo(PcamPath, "../PCam_Main");
+    }
+
+    private void AdicionarNoVivo(NodePath? exportado, string fallbackRelativo)
+    {
+        Node? no = exportado is { IsEmpty: false } caminho ? GetNodeOrNull(caminho) : null;
+        no ??= GetNodeOrNull(fallbackRelativo);
+
+        if (no == null)
+        {
+            GD.PushWarning($"[InventarioTela] whitelist do pause: '{fallbackRelativo}' não encontrado — a câmera pode congelar ao abrir o inventário.");
+            return;
+        }
+
+        if (!_nosVivos.Contains(no)) _nosVivos.Add(no);
     }
 
     private void AoInventarioMudou(int quantidade)
