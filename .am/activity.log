@@ -1,0 +1,59 @@
+2026-11-03T17:16:57Z	JuruSysadmin	created	demo/Build-jogavel-exportado.md	target=priority position=bottom
+2026-11-03T17:16:59Z	JuruSysadmin	created	demo/Build-jogavel-exportado.md	target=priority position=bottom
+2026-11-03T17:17:05Z	JuruSysadmin	created	demo/Loop-de-risco-legivel.md	target=priority position=bottom
+2026-11-03T17:17:05Z	JuruSysadmin	created	demo/Orientacao-minima-na-primeira-sala.md	target=priority position=bottom
+2026-11-03T17:17:05Z	JuruSysadmin	chore	demo/Commit-da-composicao-modular-do-level-01.md	target=priority position=top
+2026-11-03T17:17:09Z	JuruSysadmin	estimate	demo/Build-jogavel-exportado.md	3
+2026-11-03T17:17:09Z	JuruSysadmin	estimate	demo/Loop-de-risco-legivel.md	5
+2026-11-03T17:17:09Z	JuruSysadmin	estimate	demo/Orientacao-minima-na-primeira-sala.md	3
+2026-11-03T17:17:09Z	JuruSysadmin	set-type	demo/Build-jogavel-exportado.md	feature
+2026-11-03T17:17:09Z	JuruSysadmin	set-type	demo/Loop-de-risco-legivel.md	feature
+2026-11-03T17:17:09Z	JuruSysadmin	set-type	demo/Orientacao-minima-na-primeira-sala.md	feature
+2026-11-03T17:18:50Z	JuruSysadmin	started	demo/Commit-da-composicao-modular-do-level-01.md	pull
+2026-11-03T17:19:11Z	JuruSysadmin	accepted	demo/Commit-da-composicao-modular-do-level-01.md	Prefabs + level_01 modular commitados em 3fba61b
+2026-11-03T17:19:11Z	JuruSysadmin	accepted	demo/Commit-da-composicao-modular-do-level-01.md	Cenas em scenes/{actors,props,salas,sistemas,ui_runtime}; level_01 composição
+2026-11-03T17:21:56Z	JuruSysadmin	created	demo/Player-com-BASEmodel-animado.md	target=priority position=top
+2026-11-03T17:21:56Z	JuruSysadmin	set-type	demo/Player-com-BASEmodel-animado.md	feature
+2026-11-03T17:21:56Z	JuruSysadmin	estimate	demo/Player-com-BASEmodel-animado.md	5
+2026-11-03T20:25:41Z	JuruSysadmin	created	demo/Inventario-com-arte-Desperation.md	target=priority position=top
+2026-11-03T20:25:41Z	JuruSysadmin	set-type	demo/Inventario-com-arte-Desperation.md	feature
+2026-11-03T20:25:41Z	JuruSysadmin	estimate	demo/Inventario-com-arte-Desperation.md	3
+2026-11-03T20:25:41Z	JuruSysadmin	started	demo/Inventario-com-arte-Desperation.md	PM pediu plugar HUD novo
+2026-11-03T20:26:40Z	JuruSysadmin	finished	demo/Inventario-com-arte-Desperation.md	
+2026-11-03T20:26:40Z	JuruSysadmin	delivered	demo/Inventario-com-arte-Desperation.md	
+2026-11-03T20:38:13Z	JuruSysadmin	unstarted	demo/Inventario-com-arte-Desperation.md	
+2026-11-03T20:38:13Z	JuruSysadmin	started	demo/Inventario-com-arte-Desperation.md	Refazer âncoras letterbox + slots
+2026-11-03T20:39:05Z	JuruSysadmin	finished	demo/Inventario-com-arte-Desperation.md	
+2026-11-03T20:39:05Z	JuruSysadmin	delivered	demo/Inventario-com-arte-Desperation.md	
+2026-11-03T20:44:52Z	JuruSysadmin	bug	demo/Inventario-pause-quebra-PhantomCamera.md	target=priority position=top
+2026-11-03T20:45:06Z	JuruSysadmin	started	demo/Inventario-pause-quebra-PhantomCamera.md	pause do inventario dessincroniza PCam
+2026-11-03T20:45:43Z	JuruSysadmin	finished	demo/Inventario-pause-quebra-PhantomCamera.md	
+2026-11-03T20:45:43Z	JuruSysadmin	delivered	demo/Inventario-pause-quebra-PhantomCamera.md	
+2026-11-03T20:46:52Z	JuruSysadmin	bug	demo/Reverter-inventario-Desperation-para-UI-anterior.md	target=priority position=top
+2026-11-03T20:46:52Z	JuruSysadmin	started	demo/Reverter-inventario-Desperation-para-UI-anterior.md	PM pediu desfazer inventario novo; camera nao voltou
+2026-11-03T20:47:21Z	JuruSysadmin	finished	demo/Reverter-inventario-Desperation-para-UI-anterior.md	
+2026-11-03T20:47:21Z	JuruSysadmin	delivered	demo/Reverter-inventario-Desperation-para-UI-anterior.md	
+2026-11-03T20:59:27Z	JuruSysadmin	bug	demo/PCam-path-quebrou-apos-extract-de-prefabs.md	target=priority position=top
+2026-11-03T20:59:27Z	JuruSysadmin	started	demo/PCam-path-quebrou-apos-extract-de-prefabs.md	Player %PCam_Main nao resolve em cena instanciada
+2026-11-03T20:59:53Z	JuruSysadmin	finished	demo/PCam-path-quebrou-apos-extract-de-prefabs.md	
+2026-11-03T20:59:53Z	JuruSysadmin	delivered	demo/PCam-path-quebrou-apos-extract-de-prefabs.md	
+2026-11-03T21:02:49Z	JuruSysadmin	bug	demo/Camera-third-person-ainda-quebrada-apos-fix-path.md	target=priority position=top
+2026-11-03T21:02:49Z	JuruSysadmin	started	demo/Camera-third-person-ainda-quebrada-apos-fix-path.md	diagnostico runtime PCam/Player
+2026-11-03T21:06:24Z	JuruSysadmin	finished	demo/Camera-third-person-ainda-quebrada-apos-fix-path.md	
+2026-11-03T21:06:24Z	JuruSysadmin	delivered	demo/Camera-third-person-ainda-quebrada-apos-fix-path.md	
+2026-11-03T21:08:08Z	JuruSysadmin	chore	demo/Teste-regressao-PCam-follow-target.md	target=priority position=top
+2026-11-03T21:08:08Z	JuruSysadmin	started	demo/Teste-regressao-PCam-follow-target.md	headless godot check follow_target
+2026-11-03T21:08:52Z	JuruSysadmin	accepted	demo/Teste-regressao-PCam-follow-target.md	
+2026-11-03T21:08:52Z	JuruSysadmin	accepted	demo/Teste-regressao-PCam-follow-target.md	
+2026-11-03T21:09:50Z	JuruSysadmin	accepted	demo/Teste-regressao-PCam-follow-target.md	
+2026-11-03T21:20:14Z	JuruSysadmin	estimate	demo/Inventario-com-inventory-pause.md	3
+2026-11-03T21:20:20Z	JuruSysadmin	created	demo/Inventario-com-inventory-pause.md	target=priority position=top
+2026-11-03T21:20:20Z	JuruSysadmin	set-type	demo/Inventario-com-inventory-pause.md	feature
+2026-11-03T21:20:20Z	JuruSysadmin	estimate	demo/Inventario-com-inventory-pause.md	3
+2026-11-03T22:36:54Z	JuruSysadmin	started	demo/Inventario-com-inventory-pause.md	
+2026-11-03T22:40:57Z	JuruSysadmin	delivered	demo/Inventario-com-inventory-pause.md	Tree pause com whitelist (InventarioTela, MainCamera, PhantomCameraHost, PCam_Main) marcada Always antes do Paused=true. Audio ambiente e HUD pausam junto (whitelist minima). Novo teste tests/run_inventory_pause.sh cobre o ciclo abrir/fechar e a orbita viva durante o pause.
+2026-11-03T22:43:13Z	JuruSysadmin	accepted	demo/Inventario-com-inventory-pause.md	Aceite do PM (JuruSysadmin) após playtest.
+2026-11-03T22:43:39Z	JuruSysadmin	chore	demo/Documentar-inventory-pause-no-KB.md	target=priority position=top
+2026-11-03T22:43:42Z	JuruSysadmin	started	demo/Documentar-inventory-pause-no-KB.md	
+2026-11-03T22:44:19Z	JuruSysadmin	accepted	demo/Documentar-inventory-pause-no-KB.md	Nota /sistemas/inventario-pause.md criada e linkada no README do space. Registra a correcao do diagnostico antigo: pause quebrava a PCam por falta de whitelist, nao por causa do tree pause.
+2026-11-03T22:58:27Z	JuruSysadmin	accepted	demo/Documentar-inventory-pause-no-KB.md	Aceite do PM (JuruSysadmin).
