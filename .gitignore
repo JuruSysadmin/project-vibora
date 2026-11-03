@@ -18,6 +18,10 @@ obj/
 *.old
 *.tmp
 *~
+*.blend1
+
+# IDEs
+.idea/
 
 # Sistema
 .DS_Store
@@ -26,3 +30,7 @@ Thumbs.db
 # Credenciais e configuração local de agente
 .ai-game-dev/credentials.json
 .claude/settings.local.json
+
+# Addon MCP instalado por symlink para fora do repo
+# (commitado viraria um link absoluto quebrado em outra máquina)
+addons/godot_mcp_toolkit
