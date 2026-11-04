@@ -10,50 +10,84 @@ using Godot;
 /// </summary>
 public partial class Player : CharacterBody3D
 {
-    /// <summary>Degrees per mouse pixel (Phantom Third Person API uses degrees).</summary>
     [Export] public float MouseSensitivity { get; set; } = 0.15f;
     [Export] public float PitchMinDegrees { get; set; } = -63.0f;
     [Export] public float PitchMaxDegrees { get; set; } = 25.0f;
-    [Export] public NodePath PhantomCameraPath { get; set; } = new("%PCam_Main");
+    [Export] public NodePath PhantomCameraPath { get; set; } = new("../PCam_Main");
     [Export] public string CaminhoSomFrasco { get; set; } = "res://art/sons/curar.wav";
     [Export] public float AtrasoFrasco { get; set; } = 1.0f;
+    [Export] public float VelocidadeRefWalk { get; set; } = 1.35f;
+    [Export] public float TempoBlendAnimacao { get; set; } = 0.2f;
+    [Export] public float LimiarAndando { get; set; } = 0.4f;
+    [Export] public string CaminhoIdleFbx { get; set; } = "res://art/personagens/mixamo/idle.fbx";
+    [Export] public string CaminhoWalkFbx { get; set; } = "res://art/personagens/mixamo/walk_anim.fbx";
 
     /// <summary>
-    /// Trava o controle (movimento e órbita da câmera) durante transições e
-    /// cutscenes. Repassado ao motor a cada frame.
+    /// Trava o controle (movimento, órbita e uso de frasco) durante transições e
+    /// cutscenes. É <c>[Export]</c> de propósito: DoorTransition e InventarioTela
+    /// só têm um <c>Node</c> na mão e escrevem via <c>Set("InputLocked", ...)</c>,
+    /// que enxerga apenas propriedades registradas no objeto Godot.
     /// </summary>
-    public bool InputLocked { get; set; }
+    [Export] public bool InputLocked { get; set; }
 
     private const int FollowModeThirdPerson = 6;
+    private const string ClipMixamo = "mixamo_com";
+    private const string ClipIdle = "idle";
+    private const string ClipWalk = "walk";
 
     private PlayerMotor _motor = null!;
     private Node3D _body = null!;
     private Node _pcam = null!;
+    private SequenciaMorte? _sequenciaMorte;
+    private AnimationPlayer? _anim;
     private AudioStreamPlayer _audioFrasco = null!;
     private float _atrasoFrasco;
+    private string _animAtual = "";
 
     public override void _Ready()
     {
         _body = GetNode<Node3D>("Body");
         _motor = GetNode<PlayerMotor>("Motor");
         _motor.Configurar(this, _body);
+        _anim = GetNodeOrNull<AnimationPlayer>("Body/Mixamo/AnimationPlayer");
+        PrepararAnimacoesMixamo();
 
-        _pcam = GetNode(PhantomCameraPath);
         FloorSnapLength = 0.25f;
         Input.MouseMode = Input.MouseModeEnum.Captured;
+        CallDeferred(MethodName.BindPhantomCamera);
 
         if (GetNodeOrNull<Saude>("Saude") is Saude saude)
         {
             saude.Morreu += Morrer;
         }
 
-        if (GetNodeOrNull<SequenciaMorte>("%SequenciaMorte") is SequenciaMorte sequencia)
+        _sequenciaMorte = GetNodeOrNull<SequenciaMorte>("../SequenciaMorte");
+        if (_sequenciaMorte == null)
         {
-            sequencia.Reviveu += AoReviver;
+            GD.PushError("[Player] '../SequenciaMorte' não encontrado — morrer vai recarregar a cena.");
+        }
+        else
+        {
+            _sequenciaMorte.Reviveu += AoReviver;
         }
 
         _audioFrasco = new AudioStreamPlayer { Bus = "SFX" };
         AddChild(_audioFrasco);
+    }
+
+    private void BindPhantomCamera()
+    {
+        _pcam = GetNodeOrNull(PhantomCameraPath);
+        if (_pcam == null)
+        {
+            GD.PushError($"[Player] PhantomCamera '{PhantomCameraPath}' não encontrada — órbita third-person desligada.");
+            return;
+        }
+
+        // Não é redundância com o follow_target do .tscn: set_follow_target arma
+        // _should_follow, conecta tree_exiting, registra o alvo no spring arm e
+        // detecta se é corpo físico. Sem esta chamada a câmera não segue.
+        _pcam.Call("set_follow_target", this);
     }
 
     /// <summary>Vira o corpo de imediato (usado na chegada de uma transição).</summary>
@@ -110,6 +144,149 @@ public partial class Player : CharacterBody3D
             direcao,
             Input.IsActionJustPressed("jump"),
             Input.IsActionJustReleased("jump"));
+
+        AtualizarAnimacao();
+    }
+
+    private void PrepararAnimacoesMixamo()
+    {
+        if (_anim == null)
+        {
+            GD.PushError("[Player] 'Body/Mixamo/AnimationPlayer' não encontrado — sem animação de idle/walk.");
+            return;
+        }
+
+        AnimationLibrary? lib = _anim.GetAnimationLibrary("");
+        if (lib == null)
+        {
+            GD.PushError("[Player] AnimationPlayer sem biblioteca padrão — sem animação de idle/walk.");
+            return;
+        }
+
+        Animation? idleSrc = CarregarClipDoFbx(CaminhoIdleFbx, ClipMixamo);
+        if (idleSrc == null)
+        {
+            GD.PushError($"[Player] clip '{ClipMixamo}' não encontrado em {CaminhoIdleFbx} — sem idle.");
+        }
+        else
+        {
+            var idle = (Animation)idleSrc.Duplicate();
+            idle.LoopMode = Animation.LoopModeEnum.Linear;
+            if (lib.HasAnimation(ClipIdle)) lib.RemoveAnimation(ClipIdle);
+            lib.AddAnimation(ClipIdle, idle);
+        }
+
+        Animation? walkSrc = CarregarClipDoFbx(CaminhoWalkFbx, ClipMixamo);
+        if (walkSrc == null)
+        {
+            GD.PushError($"[Player] clip '{ClipMixamo}' não encontrado em {CaminhoWalkFbx} — sem walk.");
+        }
+        else
+        {
+            var walk = (Animation)walkSrc.Duplicate();
+            RemoverRootMotionHorizontal(walk, CaminhoWalkFbx);
+            walk.LoopMode = Animation.LoopModeEnum.Linear;
+            if (lib.HasAnimation(ClipWalk)) lib.RemoveAnimation(ClipWalk);
+            lib.AddAnimation(ClipWalk, walk);
+        }
+
+        foreach (string legado in new[] { ClipMixamo, "Take 001" })
+        {
+            if (lib.HasAnimation(legado))
+                lib.RemoveAnimation(legado);
+        }
+
+        if (_anim.HasAnimation(ClipIdle))
+        {
+            _anim.Play(ClipIdle);
+            _animAtual = ClipIdle;
+        }
+    }
+
+    /// <summary>
+    /// Extrai o clip de um FBX. Instancia a cena só para alcançar o
+    /// AnimationPlayer interno — por isso o <c>Free()</c> explícito: o nó nunca
+    /// entra na árvore, então <c>QueueFree()</c> não é o caminho.
+    /// </summary>
+    private static Animation? CarregarClipDoFbx(string caminho, string nomeClip)
+    {
+        if (!ResourceLoader.Exists(caminho))
+        {
+            GD.PushError($"[Player] FBX não existe: {caminho}");
+            return null;
+        }
+
+        if (GD.Load<PackedScene>(caminho)?.Instantiate() is not Node temp)
+        {
+            GD.PushError($"[Player] falhou ao instanciar {caminho}");
+            return null;
+        }
+
+        Animation? clip = null;
+        if (temp.FindChild("AnimationPlayer", recursive: true, owned: false) is AnimationPlayer ap
+            && ap.HasAnimation(nomeClip))
+        {
+            clip = (Animation)ap.GetAnimation(nomeClip).Duplicate();
+        }
+
+        temp.Free();
+        return clip;
+    }
+
+    private static void RemoverRootMotionHorizontal(Animation anim, string origem)
+    {
+        int trilhasAjustadas = 0;
+
+        for (int i = 0; i < anim.GetTrackCount(); i++)
+        {
+            if (anim.TrackGetType(i) != Animation.TrackType.Position3D) continue;
+            if (!anim.TrackGetPath(i).ToString().Contains("Hips")) continue;
+
+            Vector3 basePos = anim.PositionTrackInterpolate(i, 0.0);
+            int keys = anim.TrackGetKeyCount(i);
+            for (int k = 0; k < keys; k++)
+            {
+                var p = (Vector3)anim.TrackGetKeyValue(i, k);
+                p.X = basePos.X;
+                p.Z = basePos.Z;
+                anim.TrackSetKeyValue(i, k, p);
+            }
+
+            trilhasAjustadas++;
+        }
+
+        if (trilhasAjustadas == 0)
+        {
+            GD.PushWarning($"[Player] root motion não neutralizado: nenhuma track 'Hips' em {origem} — a caminhada pode deslizar para fora do lugar.");
+        }
+    }
+
+    private void AtualizarAnimacao()
+    {
+        if (_anim == null) return;
+
+        float horizontal = new Vector2(Velocity.X, Velocity.Z).Length();
+        bool andando = !InputLocked && horizontal > LimiarAndando;
+
+        if (andando && _anim.HasAnimation(ClipWalk))
+        {
+            float escala = VelocidadeRefWalk > 0.01f ? horizontal / VelocidadeRefWalk : 1f;
+            _anim.SpeedScale = Mathf.Clamp(escala, 0.6f, 2.2f);
+            if (_animAtual != ClipWalk)
+            {
+                _anim.Play(ClipWalk, TempoBlendAnimacao);
+                _animAtual = ClipWalk;
+            }
+        }
+        else if (_anim.HasAnimation(ClipIdle))
+        {
+            _anim.SpeedScale = 1f;
+            if (_animAtual != ClipIdle)
+            {
+                _anim.Play(ClipIdle, TempoBlendAnimacao);
+                _animAtual = ClipIdle;
+            }
+        }
     }
 
     private void UsarFrasco()
@@ -135,9 +312,9 @@ public partial class Player : CharacterBody3D
     }
 
     /// <summary>
-    /// Morte do jogador: entrega para a SequenciaMorte. O reload direto fica
-    /// como fallback caso o nó não exista, senão o jogo travaria com o
-    /// jogador morto e o input travado.
+    /// Morte do jogador: entrega para a SequenciaMorte, resolvida uma vez no
+    /// <c>_Ready</c>. Sem ela, recarrega a cena — o jogador morto com o input
+    /// travado travaria o jogo de vez.
     /// </summary>
     private void Morrer()
     {
@@ -150,9 +327,9 @@ public partial class Player : CharacterBody3D
             comFrasco = inventario.ConsumirFrasco();
         }
 
-        if (GetNodeOrNull<SequenciaMorte>("%SequenciaMorte") is SequenciaMorte sequencia)
+        if (_sequenciaMorte != null)
         {
-            sequencia.Iniciar(comFrasco);
+            _sequenciaMorte.Iniciar(comFrasco);
             return;
         }
 
@@ -173,10 +350,8 @@ public partial class Player : CharacterBody3D
 
     private bool CanOrbitThirdPerson()
     {
-        if (_pcam == null || !GodotObject.IsInstanceValid(_pcam))
-        {
+        if (!GodotObject.IsInstanceValid(_pcam))
             return false;
-        }
 
         if (!_pcam.HasMethod("get_follow_mode")
             || !_pcam.HasMethod("get_third_person_rotation_degrees")

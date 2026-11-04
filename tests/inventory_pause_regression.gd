@@ -131,6 +131,32 @@ func _run() -> void:
 
 	_ok("Painel cabe e está centralizado: rect=%s" % rec)
 
+	# --- Contrato: InputLocked tem que ser alcançável por Set/Get ---
+	# DoorTransition e InventarioTela travam o Player por nome ("InputLocked"),
+	# sem tipo. Se a propriedade sair da lista do objeto Godot (private, ou
+	# public sem [Export]), o lock para de acontecer sem nenhum erro de build.
+	var player_contrato := level.get_node_or_null("Player")
+	if player_contrato == null:
+		_fail("Player não encontrado")
+		quit(1)
+		return
+
+	player_contrato.set("InputLocked", true)
+	await process_frame
+	if player_contrato.get("InputLocked") != true:
+		_fail("InputLocked=true por Set() não chegou na propriedade — lock por nome quebrado (DoorTransition/InventarioTela)")
+		quit(1)
+		return
+
+	player_contrato.set("InputLocked", false)
+	await process_frame
+	if player_contrato.get("InputLocked") != false:
+		_fail("InputLocked=false por Set() não chegou na propriedade")
+		quit(1)
+		return
+
+	_ok("InputLocked é alcançável por Set/Get (contrato do lock por nome)")
+
 	var probe := Probe.new()
 	probe.name = "PauseProbe"
 	root.add_child(probe)
