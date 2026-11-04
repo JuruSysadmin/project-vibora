@@ -13,7 +13,7 @@ public partial class InventarioTela : CanvasLayer
     [Export] public NodePath? ActorPath { get; set; }
     [Export] public string CaminhoIconeFrasco { get; set; } = "res://art/telas/hud/esp_item.png";
     [Export] public string CaminhoSomUsar { get; set; } = "res://art/sons/curar.wav";
-    [Export] public Vector2 TamanhoSlot { get; set; } = new(88f, 88f);
+    [Export] public Vector2 TamanhoSlot { get; set; } = new(72f, 72f);
 
     // Whitelist do inventory pause: quem continua processando com o mundo congelado.
     // Vazio cai no caminho relativo padrão da cena (irmãos no root do level).
@@ -33,12 +33,12 @@ public partial class InventarioTela : CanvasLayer
     private GridContainer _grade = null!;
     private AudioStreamPlayer _audio = null!;
     private Texture2D? _iconeFrasco;
-    private readonly List<PanelContainer> _paineis = new();
     private readonly List<TextureRect> _icones = new();
     private readonly List<StyleBoxFlat> _estilos = new();
     private readonly Dictionary<Node, ProcessModeEnum> _modosOriginais = new();
     private readonly List<Node> _nosVivos = new();
     private bool _mundoPausado;
+    private Input.MouseModeEnum _mouseAntes;
     private int _selecionado;
     private int _frascos;
 
@@ -115,6 +115,7 @@ public partial class InventarioTela : CanvasLayer
 
         Aberto = true;
         Visible = true;
+        _mouseAntes = Input.MouseMode;
         Input.MouseMode = Input.MouseModeEnum.Visible;
         SetActorLocked(true);
         PausarMundo();
@@ -131,7 +132,9 @@ public partial class InventarioTela : CanvasLayer
         Visible = false;
         DespausarMundo();
         SetActorLocked(false);
-        Input.MouseMode = Input.MouseModeEnum.Captured;
+        // Devolve o mouse ao modo que estava antes — quem abriu o inventário não
+        // assume que o cursor deve voltar travado.
+        Input.MouseMode = _mouseAntes;
     }
 
     public override void _ExitTree()
@@ -256,6 +259,14 @@ public partial class InventarioTela : CanvasLayer
     private void UsarSelecionado()
     {
         if (_inventario == null || _selecionado >= _frascos) return;
+
+        // Usar com a vida cheia queimaria o frasco à toa (RE2 avisa e não deixa).
+        if (_saude != null && !_saude.Morto && _saude.Atual >= _saude.Maximo)
+        {
+            Avisar("Vida já está cheia.\nNada a curar.");
+            return;
+        }
+
         if (!_inventario.TentarConsumirFrasco()) return;
 
         if (_saude != null && !_saude.Morto)
@@ -277,7 +288,7 @@ public partial class InventarioTela : CanvasLayer
     {
         if (_saude == null || _saude.Maximo <= 0)
         {
-            _status.Text = "STATUS\n—";
+            _status.Text = "—";
             _status.Modulate = Colors.White;
             return;
         }
@@ -285,31 +296,40 @@ public partial class InventarioTela : CanvasLayer
         float p = (float)_saude.Atual / _saude.Maximo;
         if (p > 0.5f)
         {
-            _status.Text = "CONDITION\nFINE";
+            _status.Text = "CONDIÇÃO\nBEM";
             _status.Modulate = new Color(0.35f, 0.95f, 0.45f);
         }
         else if (p > 0.25f)
         {
-            _status.Text = "CONDITION\nCAUTION";
+            _status.Text = "CONDIÇÃO\nCUIDADO";
             _status.Modulate = new Color(0.95f, 0.9f, 0.25f);
         }
         else
         {
-            _status.Text = "CONDITION\nDANGER";
+            _status.Text = "CONDIÇÃO\nPERIGO";
             _status.Modulate = new Color(0.95f, 0.2f, 0.2f);
         }
     }
 
     private void AtualizarDescricao()
     {
+        _descricao.Modulate = Colors.White;
+
         if (_selecionado < _frascos)
         {
-            _descricao.Text = "Herb / First Aid\nRestores health to full.\n\n[Enter / Q] Use";
+            _descricao.Text = "Frasco de cura\nRestaura a vida por completo.\n\n[Enter / Q] Usar";
         }
         else
         {
-            _descricao.Text = "Empty slot";
+            _descricao.Text = "Vazio";
         }
+    }
+
+    /// <summary>Escreve um aviso no painel de descrição; sai na próxima troca de seleção.</summary>
+    private void Avisar(string texto)
+    {
+        _descricao.Text = texto;
+        _descricao.Modulate = new Color(0.95f, 0.85f, 0.3f);
     }
 
     private void PintarSelecao()
@@ -341,31 +361,29 @@ public partial class InventarioTela : CanvasLayer
         {
             Name = "Raiz",
             ProcessMode = ProcessModeEnum.WhenPaused,
-            AnchorsPreset = (int)Control.LayoutPreset.FullRect,
             MouseFilter = Control.MouseFilterEnum.Stop,
         };
         AddChild(_raiz);
+        // Âncoras só valem DEPOIS do nó entrar na árvore. Setadas no inicializador
+        // do objeto, a Raiz ficava 0×0 e o painel se centralizava num pai sem
+        // tamanho — aparecia cortado no canto superior esquerdo.
+        _raiz.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.FullRect);
 
         var fundo = new ColorRect
         {
             Color = new Color(0.02f, 0.06f, 0.04f, 0.82f),
-            AnchorsPreset = (int)Control.LayoutPreset.FullRect,
             MouseFilter = Control.MouseFilterEnum.Stop,
         };
         _raiz.AddChild(fundo);
+        fundo.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.FullRect);
 
         var painel = new PanelContainer
         {
             Name = "Painel",
         };
-        painel.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.Center);
         painel.GrowHorizontal = Control.GrowDirection.Both;
         painel.GrowVertical = Control.GrowDirection.Both;
         painel.CustomMinimumSize = new Vector2(720, 420);
-        painel.OffsetLeft = -360;
-        painel.OffsetTop = -210;
-        painel.OffsetRight = 360;
-        painel.OffsetBottom = 210;
         painel.AddThemeStyleboxOverride("panel", new StyleBoxFlat
         {
             BgColor = new Color(0.05f, 0.14f, 0.1f, 0.96f),
@@ -380,13 +398,18 @@ public partial class InventarioTela : CanvasLayer
             ContentMarginBottom = 20,
         });
         _raiz.AddChild(painel);
+        painel.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.Center);
+        painel.OffsetLeft = -360;
+        painel.OffsetTop = -210;
+        painel.OffsetRight = 360;
+        painel.OffsetBottom = 210;
 
         var colunas = new HBoxContainer();
-        colunas.AddThemeConstantOverride("separation", 28);
+        colunas.AddThemeConstantOverride("separation", 24);
         painel.AddChild(colunas);
 
         var esquerda = new VBoxContainer();
-        esquerda.CustomMinimumSize = new Vector2(160, 0);
+        esquerda.CustomMinimumSize = new Vector2(140, 0);
         esquerda.AddThemeConstantOverride("separation", 16);
         colunas.AddChild(esquerda);
 
@@ -394,7 +417,7 @@ public partial class InventarioTela : CanvasLayer
         tituloStatus.AddThemeColorOverride("font_color", new Color(0.65f, 0.85f, 0.7f));
         esquerda.AddChild(tituloStatus);
 
-        _status = new Label { Text = "CONDITION\nFINE" };
+        _status = new Label { Text = "CONDIÇÃO\nBEM" };
         _status.AddThemeFontSizeOverride("font_size", 28);
         _status.Modulate = new Color(0.35f, 0.95f, 0.45f);
         esquerda.AddChild(_status);
@@ -404,7 +427,7 @@ public partial class InventarioTela : CanvasLayer
         centro.AddThemeConstantOverride("separation", 12);
         colunas.AddChild(centro);
 
-        var tituloInv = new Label { Text = "INVENTORY" };
+        var tituloInv = new Label { Text = "INVENTÁRIO" };
         tituloInv.AddThemeColorOverride("font_color", new Color(0.65f, 0.85f, 0.7f));
         centro.AddChild(tituloInv);
 
@@ -445,12 +468,11 @@ public partial class InventarioTela : CanvasLayer
 
             slotPainel.AddChild(icone);
             _grade.AddChild(slotPainel);
-            _paineis.Add(slotPainel);
             _icones.Add(icone);
         }
 
         var direita = new VBoxContainer();
-        direita.CustomMinimumSize = new Vector2(200, 0);
+        direita.CustomMinimumSize = new Vector2(170, 0);
         direita.AddThemeConstantOverride("separation", 12);
         colunas.AddChild(direita);
 
@@ -460,15 +482,15 @@ public partial class InventarioTela : CanvasLayer
 
         _descricao = new Label
         {
-            Text = "Empty slot",
+            Text = "Vazio",
             AutowrapMode = TextServer.AutowrapMode.WordSmart,
-            CustomMinimumSize = new Vector2(200, 120),
+            CustomMinimumSize = new Vector2(170, 120),
         };
         direita.AddChild(_descricao);
 
         _ajuda = new Label
         {
-            Text = "[Tab] Close   [Arrows] Move",
+            Text = "[Tab] Fechar   [Setas] Mover",
             Modulate = new Color(0.55f, 0.7f, 0.6f),
         };
         direita.AddChild(_ajuda);

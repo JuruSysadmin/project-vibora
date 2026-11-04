@@ -64,13 +64,34 @@ A pausa pertence ao `SceneTree`, não ao nó. Se a `InventarioTela` for removida
 
 ## Teste
 
-`./tests/run_inventory_pause.sh` (headless, roda `dotnet build` antes):
+`./tests/run_inventory_pause.sh` (headless, roda `dotnet build` antes). O teste fixa o viewport em 1152×648 — em headless o padrão é 64×64 e o painel de 720 px nunca caberia, o que tornaria as checagens de layout um falso positivo.
 
-1. probe fora da whitelist processa com o jogo rodando e **para** durante o pause
-2. `Abrir()` pausa a árvore e deixa host + PCam em `Always`
-3. câmera **segue** o Player com o mundo pausado
-4. `Fechar()` despausa, restaura os `ProcessMode` originais e o mundo volta a processar
-5. segundo ciclo abrir/fechar não deixa resíduo
+1. a `Raiz` preenche a tela e o painel cabe nela, centralizado
+2. probe fora da whitelist processa com o jogo rodando e **para** durante o pause
+3. `Abrir()` pausa a árvore e deixa host + PCam em `Always`
+4. câmera **segue** o Player com o mundo pausado
+5. `Fechar()` despausa, restaura os `ProcessMode` originais e o mundo volta a processar
+6. segundo ciclo abrir/fechar não deixa resíduo
+
+## Layout: âncora no inicializador de objeto não pega
+
+Aconteceu de verdade: o painel abria cortado no canto superior esquerdo, com texto ilegível sobreposto.
+
+```csharp
+// ERRADO — a âncora não é aplicada: a Raiz fica 0×0
+_raiz = new Control { AnchorsPreset = (int)Control.LayoutPreset.FullRect };
+AddChild(_raiz);
+
+// CERTO — entra na árvore primeiro, depois aplica
+AddChild(_raiz);
+_raiz.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.FullRect);
+```
+
+Com a `Raiz` 0×0, o `PanelContainer` centralizado por `SetAnchorsAndOffsetsPreset(Center)` calcula o centro num pai sem tamanho e cai em coordenadas negativas — sobra na tela só o quadrante inferior direito dele.
+
+**Regra:** qualquer preset de âncora/offset só vale depois do `AddChild`. Vale para `AnchorsPreset`, `SetAnchorsAndOffsetsPreset` e para o preset de posição.
+
+Cuidado correlato: `InventarioTela` é `CanvasLayer`, e o primeiro filho dela é o `AudioStreamPlayer`, não a UI. Busque a `Raiz` por nome (`get_node_or_null("Raiz")`), não por índice.
 
 ## Ver também
 

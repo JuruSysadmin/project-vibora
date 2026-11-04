@@ -49,6 +49,11 @@ func _ok(msg: String) -> void:
 
 
 func _run() -> void:
+	# Viewport real: em headless o padrão é 64×64, e o painel (720 px de mínimo)
+	# nunca caberia — o teste de layout viraria falso positivo.
+	root.size = Vector2i(1152, 648)
+	await process_frame
+
 	var packed: PackedScene = load(LEVEL) as PackedScene
 	if packed == null:
 		_fail("não carregou %s" % LEVEL)
@@ -85,6 +90,46 @@ func _run() -> void:
 		_fail("a árvore já começa pausada")
 		quit(1)
 		return
+
+	# --- Layout: a raiz da UI precisa preencher a tela e o painel caber nela ---
+	# Regressão real: âncoras setadas no inicializador do objeto deixavam a Raiz
+	# 0×0, e o painel era centralizado num pai sem tamanho — aparecia cortado no
+	# canto superior esquerdo do inventário.
+	var raiz := inv.get_node_or_null("Raiz") as Control
+	if raiz == null:
+		_fail("InventarioTela sem nó 'Raiz'")
+		quit(1)
+		return
+
+	var viewport := root.get_visible_rect()
+	if not raiz.size.is_equal_approx(viewport.size):
+		_fail("Raiz não preenche a tela: size=%s viewport=%s (âncoras não aplicadas?)" % [raiz.size, viewport.size])
+		quit(1)
+		return
+
+	_ok("Raiz preenche a tela (%s)" % raiz.size)
+
+	var painel := raiz.get_node_or_null("Painel") as Control
+	if painel == null:
+		_fail("InventarioTela sem nó 'Painel'")
+		quit(1)
+		return
+
+	var rec := painel.get_global_rect()
+	if rec.position.x < -0.5 or rec.position.y < -0.5 \
+			or rec.end.x > viewport.size.x + 0.5 or rec.end.y > viewport.size.y + 0.5:
+		_fail("Painel fora da tela: rect=%s viewport=%s" % [rec, viewport.size])
+		quit(1)
+		return
+
+	var folga_esquerda := rec.position.x
+	var folga_direita := viewport.size.x - rec.end.x
+	if absf(folga_esquerda - folga_direita) > 2.0:
+		_fail("Painel não está centralizado: folga esquerda=%.1f direita=%.1f" % [folga_esquerda, folga_direita])
+		quit(1)
+		return
+
+	_ok("Painel cabe e está centralizado: rect=%s" % rec)
 
 	var probe := Probe.new()
 	probe.name = "PauseProbe"
