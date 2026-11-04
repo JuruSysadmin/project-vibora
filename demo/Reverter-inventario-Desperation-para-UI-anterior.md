@@ -2,13 +2,14 @@
 title: Reverter inventario Desperation para UI anterior
 type: bug
 created: "2026-11-03T20:46:52Z"
-modified: "2026-11-03T20:47:21Z"
+modified: "2026-11-04T17:57:52Z"
 author: JuruSysadmin
-status: delivered
+status: accepted
 started: "2026-11-03T20:46:52Z"
 finished: "2026-11-03T20:47:21Z"
 delivered: "2026-11-03T20:47:21Z"
 project: demo
+accepted: "2026-11-04T17:41:50Z"
 ---
 
 ## Problem statement

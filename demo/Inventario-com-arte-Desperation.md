@@ -2,14 +2,15 @@
 title: Inventario com arte Desperation
 type: feature
 created: "2026-11-03T20:25:41Z"
-modified: "2026-11-03T20:47:21Z"
+modified: "2026-11-04T17:58:02Z"
 author: JuruSysadmin
-status: delivered
+status: accepted
 estimate: "3"
 started: "2026-11-03T20:38:13Z"
 finished: "2026-11-03T20:39:05Z"
 delivered: "2026-11-03T20:39:05Z"
 project: demo
+accepted: "2026-11-04T17:41:50Z"
 ---
 
 ## What

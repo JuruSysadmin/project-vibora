@@ -2,7 +2,7 @@
 
 [ext_resource type="Material" uid="uid://iuo2fa3aroxb" path="res://art/materiais/floor.tres" id="1_cy6r3"]
 [ext_resource type="Material" uid="uid://dsntuvco3jwr" path="res://art/materiais/ceiling.tres" id="2_0tv6x"]
-[ext_resource type="Material" uid="uid://buh8cokssor13" path="res://art/ambientes/azulejo/Tiles101_1K-JPG.tres" id="3_1b6n0"]
+[ext_resource type="Material" uid="uid://bcwrugmp7vy4x" path="res://art/materiais/wall.tres" id="3_1b6n0"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_a577o"]
 size = Vector3(8, 0.5, 3.5)

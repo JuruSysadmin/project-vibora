@@ -2,17 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c4rtkl5ogp3no"
-path.s3tc="res://.godot/imported/PL0A.png-2936abc37a9358cc55eea3dc82bf694c.s3tc.ctex"
+uid="uid://c3cm6erugdnog"
+path.s3tc="res://.godot/imported/desperation_inventory_2d_service_pistol_diff.jpg-8e6b3de810733f6ee5f2bf15b21a2417.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
+generator_parameters={
+"md5": "984c19e283b78cbf89bc8c3670e6e7d7"
+}
 
 [deps]
 
-source_file="res://art/personagens/leon/PL0A.png"
-dest_files=["res://.godot/imported/PL0A.png-2936abc37a9358cc55eea3dc82bf694c.s3tc.ctex"]
+source_file="res://art/desperation_inventory_2d_service_pistol_diff.jpg"
+dest_files=["res://.godot/imported/desperation_inventory_2d_service_pistol_diff.jpg-8e6b3de810733f6ee5f2bf15b21a2417.s3tc.ctex"]
 
 [params]
 

@@ -5,7 +5,6 @@
 [node name="InventarioTela" type="CanvasLayer" unique_id=927153641]
 layer = 15
 script = ExtResource("25_invtela")
-InventarioPath = NodePath("Player/Inventario")
-SaudePath = NodePath("Player/Saude")
-ActorPath = NodePath("Player")
-
+InventarioPath = NodePath("../Player/Inventario")
+SaudePath = NodePath("../Player/Saude")
+ActorPath = NodePath("../Player")

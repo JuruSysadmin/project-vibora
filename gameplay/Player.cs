@@ -1,3 +1,4 @@
+using System;
 using Godot;
 
 /// <summary>
@@ -19,8 +20,7 @@ public partial class Player : CharacterBody3D
     [Export] public float VelocidadeRefWalk { get; set; } = 1.35f;
     [Export] public float TempoBlendAnimacao { get; set; } = 0.2f;
     [Export] public float LimiarAndando { get; set; } = 0.4f;
-    [Export] public string CaminhoIdleFbx { get; set; } = "res://art/personagens/mixamo/idle.fbx";
-    [Export] public string CaminhoWalkFbx { get; set; } = "res://art/personagens/mixamo/walk_anim.fbx";
+    [Export] public AnimationLibrary BibliotecaMixamo { get; set; } = null!;
 
     /// <summary>
     /// Trava o controle (movimento, órbita e uso de frasco) durante transições e
@@ -31,7 +31,6 @@ public partial class Player : CharacterBody3D
     [Export] public bool InputLocked { get; set; }
 
     private const int FollowModeThirdPerson = 6;
-    private const string ClipMixamo = "mixamo_com";
     private const string ClipIdle = "idle";
     private const string ClipWalk = "walk";
 
@@ -39,7 +38,7 @@ public partial class Player : CharacterBody3D
     private Node3D _body = null!;
     private Node _pcam = null!;
     private SequenciaMorte? _sequenciaMorte;
-    private AnimationPlayer? _anim;
+    private AnimationPlayer _anim = null!;
     private AudioStreamPlayer _audioFrasco = null!;
     private float _atrasoFrasco;
     private string _animAtual = "";
@@ -49,7 +48,7 @@ public partial class Player : CharacterBody3D
         _body = GetNode<Node3D>("Body");
         _motor = GetNode<PlayerMotor>("Motor");
         _motor.Configurar(this, _body);
-        _anim = GetNodeOrNull<AnimationPlayer>("Body/Mixamo/AnimationPlayer");
+        _anim = GetNode<AnimationPlayer>("Body/Mixamo/AnimationPlayer");
         PrepararAnimacoesMixamo();
 
         FloorSnapLength = 0.25f;
@@ -150,121 +149,35 @@ public partial class Player : CharacterBody3D
 
     private void PrepararAnimacoesMixamo()
     {
-        if (_anim == null)
-        {
-            GD.PushError("[Player] 'Body/Mixamo/AnimationPlayer' não encontrado — sem animação de idle/walk.");
-            return;
-        }
+        if (BibliotecaMixamo == null)
+            throw new InvalidOperationException("[Player] BibliotecaMixamo não atribuída — defina no player.tscn (player_clips.tres).");
 
         AnimationLibrary? lib = _anim.GetAnimationLibrary("");
         if (lib == null)
+            throw new InvalidOperationException("[Player] AnimationPlayer sem biblioteca padrão.");
+
+        foreach (string nome in BibliotecaMixamo.GetAnimationList())
         {
-            GD.PushError("[Player] AnimationPlayer sem biblioteca padrão — sem animação de idle/walk.");
-            return;
+            if (lib.HasAnimation(nome))
+                lib.RemoveAnimation(nome);
+            lib.AddAnimation(nome, BibliotecaMixamo.GetAnimation(nome));
         }
 
-        Animation? idleSrc = CarregarClipDoFbx(CaminhoIdleFbx, ClipMixamo);
-        if (idleSrc == null)
-        {
-            GD.PushError($"[Player] clip '{ClipMixamo}' não encontrado em {CaminhoIdleFbx} — sem idle.");
-        }
-        else
-        {
-            var idle = (Animation)idleSrc.Duplicate();
-            idle.LoopMode = Animation.LoopModeEnum.Linear;
-            if (lib.HasAnimation(ClipIdle)) lib.RemoveAnimation(ClipIdle);
-            lib.AddAnimation(ClipIdle, idle);
-        }
-
-        Animation? walkSrc = CarregarClipDoFbx(CaminhoWalkFbx, ClipMixamo);
-        if (walkSrc == null)
-        {
-            GD.PushError($"[Player] clip '{ClipMixamo}' não encontrado em {CaminhoWalkFbx} — sem walk.");
-        }
-        else
-        {
-            var walk = (Animation)walkSrc.Duplicate();
-            RemoverRootMotionHorizontal(walk, CaminhoWalkFbx);
-            walk.LoopMode = Animation.LoopModeEnum.Linear;
-            if (lib.HasAnimation(ClipWalk)) lib.RemoveAnimation(ClipWalk);
-            lib.AddAnimation(ClipWalk, walk);
-        }
-
-        foreach (string legado in new[] { ClipMixamo, "Take 001" })
+        foreach (string legado in new[] { "mixamo_com", "Take 001" })
         {
             if (lib.HasAnimation(legado))
                 lib.RemoveAnimation(legado);
         }
 
-        if (_anim.HasAnimation(ClipIdle))
-        {
-            _anim.Play(ClipIdle);
-            _animAtual = ClipIdle;
-        }
-    }
+        if (!_anim.HasAnimation(ClipIdle) || !_anim.HasAnimation(ClipWalk))
+            throw new InvalidOperationException("[Player] BibliotecaMixamo precisa dos clips 'idle' e 'walk'.");
 
-    /// <summary>
-    /// Extrai o clip de um FBX. Instancia a cena só para alcançar o
-    /// AnimationPlayer interno — por isso o <c>Free()</c> explícito: o nó nunca
-    /// entra na árvore, então <c>QueueFree()</c> não é o caminho.
-    /// </summary>
-    private static Animation? CarregarClipDoFbx(string caminho, string nomeClip)
-    {
-        if (!ResourceLoader.Exists(caminho))
-        {
-            GD.PushError($"[Player] FBX não existe: {caminho}");
-            return null;
-        }
-
-        if (GD.Load<PackedScene>(caminho)?.Instantiate() is not Node temp)
-        {
-            GD.PushError($"[Player] falhou ao instanciar {caminho}");
-            return null;
-        }
-
-        Animation? clip = null;
-        if (temp.FindChild("AnimationPlayer", recursive: true, owned: false) is AnimationPlayer ap
-            && ap.HasAnimation(nomeClip))
-        {
-            clip = (Animation)ap.GetAnimation(nomeClip).Duplicate();
-        }
-
-        temp.Free();
-        return clip;
-    }
-
-    private static void RemoverRootMotionHorizontal(Animation anim, string origem)
-    {
-        int trilhasAjustadas = 0;
-
-        for (int i = 0; i < anim.GetTrackCount(); i++)
-        {
-            if (anim.TrackGetType(i) != Animation.TrackType.Position3D) continue;
-            if (!anim.TrackGetPath(i).ToString().Contains("Hips")) continue;
-
-            Vector3 basePos = anim.PositionTrackInterpolate(i, 0.0);
-            int keys = anim.TrackGetKeyCount(i);
-            for (int k = 0; k < keys; k++)
-            {
-                var p = (Vector3)anim.TrackGetKeyValue(i, k);
-                p.X = basePos.X;
-                p.Z = basePos.Z;
-                anim.TrackSetKeyValue(i, k, p);
-            }
-
-            trilhasAjustadas++;
-        }
-
-        if (trilhasAjustadas == 0)
-        {
-            GD.PushWarning($"[Player] root motion não neutralizado: nenhuma track 'Hips' em {origem} — a caminhada pode deslizar para fora do lugar.");
-        }
+        _anim.Play(ClipIdle);
+        _animAtual = ClipIdle;
     }
 
     private void AtualizarAnimacao()
     {
-        if (_anim == null) return;
-
         float horizontal = new Vector2(Velocity.X, Velocity.Z).Length();
         bool andando = !InputLocked && horizontal > LimiarAndando;
 

@@ -2,13 +2,14 @@
 title: Camera third-person ainda quebrada apos fix path
 type: bug
 created: "2026-11-03T21:02:49Z"
-modified: "2026-11-03T21:06:24Z"
+modified: "2026-11-04T17:57:52Z"
 author: JuruSysadmin
-status: delivered
+status: accepted
 started: "2026-11-03T21:02:49Z"
 finished: "2026-11-03T21:06:24Z"
 delivered: "2026-11-03T21:06:24Z"
 project: demo
+accepted: "2026-11-04T17:44:50Z"
 ---
 
 ## Problem statement

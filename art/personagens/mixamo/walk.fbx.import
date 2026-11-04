@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://c0apw0a7lpvtf"
-path="res://.godot/imported/PL0A.fbx-8de2c577236c616904ee2dbad6a9db79.scn"
+uid="uid://blmnjdfk2pou8"
+path="res://.godot/imported/walk.fbx-599058eca4e4f5d39172bc7a5edd9c47.scn"
 
 [deps]
 
-source_file="res://art/personagens/leon/PL0A.fbx"
-dest_files=["res://.godot/imported/PL0A.fbx-8de2c577236c616904ee2dbad6a9db79.scn"]
+source_file="res://art/personagens/mixamo/walk.fbx"
+dest_files=["res://.godot/imported/walk.fbx-599058eca4e4f5d39172bc7a5edd9c47.scn"]
 
 [params]
 

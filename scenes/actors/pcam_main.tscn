@@ -11,7 +11,6 @@ unique_name_in_owner = true
 script = ExtResource("7_llcge")
 priority = 10
 follow_mode = 6
-follow_target = NodePath("../Player")
 tween_resource = SubResource("Resource_e6mo4")
 tween_on_load = false
 follow_offset = Vector3(0, 1.5, 0)

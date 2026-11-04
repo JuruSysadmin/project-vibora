@@ -104,13 +104,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
 [node name="MainCamera" parent="." instance=ExtResource("57_cam")]
 
 [node name="PCam_Main" parent="." instance=ExtResource("58_pcam")]
+unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 0.96639, 0.25708053, 0, -0.25708053, 0.96639, 0, 2.4226577, 3.092448)
+follow_target = NodePath("../Player")
 
 [node name="HudVida" parent="." instance=ExtResource("54_hud")]
 
 [node name="InventarioTela" parent="." instance=ExtResource("55_invtela")]
 
 [node name="SequenciaMorte" parent="." instance=ExtResource("56_morte")]
+unique_name_in_owner = true
 
 [node name="Frasco1" parent="." instance=ExtResource("53_frasco")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0.35, -2)

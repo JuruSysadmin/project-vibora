@@ -57,3 +57,75 @@
 2026-11-03T22:43:42Z	JuruSysadmin	started	demo/Documentar-inventory-pause-no-KB.md	
 2026-11-03T22:44:19Z	JuruSysadmin	accepted	demo/Documentar-inventory-pause-no-KB.md	Nota /sistemas/inventario-pause.md criada e linkada no README do space. Registra a correcao do diagnostico antigo: pause quebrava a PCam por falta de whitelist, nao por causa do tree pause.
 2026-11-03T22:58:27Z	JuruSysadmin	accepted	demo/Documentar-inventory-pause-no-KB.md	Aceite do PM (JuruSysadmin).
+2026-11-03T23:17:34Z	JuruSysadmin	chore	demo/Ignorar-lixo-local-no-gitignore.md	target=priority position=top
+2026-11-03T23:17:34Z	JuruSysadmin	started	demo/Ignorar-lixo-local-no-gitignore.md	
+2026-11-03T23:20:11Z	JuruSysadmin	accepted	demo/Ignorar-lixo-local-no-gitignore.md	Ignore ganhou .idea/, *.blend1 e addons/godot_mcp_toolkit (symlink para ~/.local/share, viraria link absoluto quebrado). Os .blend, .obj e texturas rip continuam rastreaveis por decisao do PM.
+2026-11-04T00:04:57Z	JuruSysadmin	bug	demo/Polir-textos-e-uso-do-inventario.md	target=priority position=top
+2026-11-04T00:05:01Z	JuruSysadmin	started	demo/Polir-textos-e-uso-do-inventario.md	
+2026-11-04T00:07:36Z	JuruSysadmin	delivered	demo/Polir-textos-e-uso-do-inventario.md	5 correcoes de UI no inventario: header duplicado, uso com vida cheia, MouseMode restaurado, textos em PT e codigo morto.
+2026-11-04T00:14:16Z	JuruSysadmin	rejected	demo/Polir-textos-e-uso-do-inventario.md	Playtest: painel do inventario aparece no canto esquerdo, cortado e com texto ilegivel. Nao e regressao dos textos (mexi em string/mouse/dead code) - e layout de base nunca verificado visualmente.
+2026-11-04T00:14:22Z	JuruSysadmin	started	demo/Polir-textos-e-uso-do-inventario.md	
+2026-11-04T00:28:45Z	JuruSysadmin	delivered	demo/Polir-textos-e-uso-do-inventario.md	Alem das 5 correcoes de UI, corrige o layout que o playtest flagrou: ancoras aplicadas depois do AddChild, slot reduzido para caber em 720px, e assercao de layout no teste de regressao.
+2026-11-04T00:38:25Z	JuruSysadmin	accepted	demo/Polir-textos-e-uso-do-inventario.md	Playtest do PM: layout do painel confirmado funcionando apos o fix das ancoras.
+2026-11-04T00:59:35Z	JuruSysadmin	created	demo/SalaPrincipal-pre-renderizada-com-camera-fixa.md	target=priority position=top
+2026-11-04T00:59:35Z	JuruSysadmin	set-type	demo/SalaPrincipal-pre-renderizada-com-camera-fixa.md	feature
+2026-11-04T00:59:35Z	JuruSysadmin	estimate	demo/SalaPrincipal-pre-renderizada-com-camera-fixa.md	5
+2026-11-04T01:22:36Z	JuruSysadmin	chore	demo/Aplicar-texturas-plaster-e-laminate-nas-salas.md	target=priority position=top
+2026-11-04T01:22:36Z	JuruSysadmin	started	demo/Aplicar-texturas-plaster-e-laminate-nas-salas.md	
+2026-11-04T01:23:48Z	JuruSysadmin	accepted	demo/Aplicar-texturas-plaster-e-laminate-nas-salas.md	
+2026-11-04T01:23:48Z	JuruSysadmin	accepted	demo/Aplicar-texturas-plaster-e-laminate-nas-salas.md	
+2026-11-04T01:25:39Z	JuruSysadmin	started	demo/Aplicar-texturas-plaster-e-laminate-nas-salas.md	
+2026-11-04T01:25:54Z	JuruSysadmin	accepted	demo/Aplicar-texturas-plaster-e-laminate-nas-salas.md	
+2026-11-04T01:25:54Z	JuruSysadmin	accepted	demo/Aplicar-texturas-plaster-e-laminate-nas-salas.md	
+2026-11-04T17:41:50Z	JuruSysadmin	accepted	demo/Reverter-inventario-Desperation-para-UI-anterior.md	
+2026-11-04T17:41:50Z	JuruSysadmin	accepted	demo/Inventario-pause-quebra-PhantomCamera.md	
+2026-11-04T17:41:50Z	JuruSysadmin	accepted	demo/Inventario-com-arte-Desperation.md	
+2026-11-04T17:44:50Z	JuruSysadmin	accepted	demo/Camera-third-person-ainda-quebrada-apos-fix-path.md	
+2026-11-04T17:44:50Z	JuruSysadmin	accepted	demo/PCam-path-quebrou-apos-extract-de-prefabs.md	
+2026-11-04T17:45:33Z	JuruSysadmin	accepted	demo/SalaPrincipal-pre-renderizada-com-camera-fixa.md	
+2026-11-04T17:52:58Z	JuruSysadmin	started	demo/Player-com-BASEmodel-animado.md	
+2026-11-04T17:55:34Z	JuruSysadmin	finished	demo/Player-com-BASEmodel-animado.md	
+2026-11-04T17:55:34Z	JuruSysadmin	delivered	demo/Player-com-BASEmodel-animado.md	
+2026-11-04T17:57:52Z	JuruSysadmin	accepted	demo/Camera-third-person-ainda-quebrada-apos-fix-path.md	Aceito pelo PM. run_pcam_follow passa: follow_target aponta pro Player e a camera acompanha.
+2026-11-04T17:57:52Z	JuruSysadmin	accepted	demo/PCam-path-quebrou-apos-extract-de-prefabs.md	Aceito pelo PM. Mesmo fix do follow_target; regressao coberta por tests/run_pcam_follow.sh.
+2026-11-04T17:57:52Z	JuruSysadmin	accepted	demo/Reverter-inventario-Desperation-para-UI-anterior.md	Aceito pelo PM. Revert executado; a UI voltou ao InventarioTela e depois recebeu o inventory pause com whitelist.
+2026-11-04T17:58:02Z	JuruSysadmin	accepted	demo/Inventario-pause-quebra-PhantomCamera.md	Aceito pelo PM. Diagnostico original invalidado: o pause quebrava a camera por falta de whitelist, nao por causa do tree pause. Corrigido em InventarioTela e documentado no KB (/sistemas/inventario-pause.md).
+2026-11-04T17:58:02Z	JuruSysadmin	accepted	demo/Inventario-com-arte-Desperation.md	Aceito pelo PM. Arte revertida: a PNG do Desperation tem itens, rotulos e selecao baked, entao nao serve como asset dinamico. Re-export em camadas pendente antes de retomar.
+2026-11-04T17:59:18Z	JuruSysadmin	chore	demo/Polir-animacao-Mixamo-idle-blend-sync.md	target=priority position=top
+2026-11-04T17:59:18Z	JuruSysadmin	started	demo/Polir-animacao-Mixamo-idle-blend-sync.md	
+2026-11-04T18:00:53Z	JuruSysadmin	accepted	demo/Polir-animacao-Mixamo-idle-blend-sync.md	
+2026-11-04T18:00:53Z	JuruSysadmin	accepted	demo/Polir-animacao-Mixamo-idle-blend-sync.md	
+2026-11-04T18:01:56Z	JuruSysadmin	started	demo/Polir-animacao-Mixamo-idle-blend-sync.md	
+2026-11-04T18:02:00Z	JuruSysadmin	accepted	demo/Polir-animacao-Mixamo-idle-blend-sync.md	
+2026-11-04T18:02:00Z	JuruSysadmin	accepted	demo/Polir-animacao-Mixamo-idle-blend-sync.md	
+2026-11-04T18:02:27Z	JuruSysadmin	started	demo/Polir-animacao-Mixamo-idle-blend-sync.md	
+2026-11-04T18:03:12Z	JuruSysadmin	accepted	demo/Polir-animacao-Mixamo-idle-blend-sync.md	
+2026-11-04T18:03:12Z	JuruSysadmin	accepted	demo/Polir-animacao-Mixamo-idle-blend-sync.md	
+2026-11-04T18:05:30Z	JuruSysadmin	started	demo/Polir-animacao-Mixamo-idle-blend-sync.md	
+2026-11-04T18:06:32Z	JuruSysadmin	accepted	demo/Polir-animacao-Mixamo-idle-blend-sync.md	
+2026-11-04T18:06:32Z	JuruSysadmin	accepted	demo/Polir-animacao-Mixamo-idle-blend-sync.md	
+2026-11-04T18:08:28Z	JuruSysadmin	chore	demo/Limpar-comentarios-do-Playercs.md	target=priority position=top
+2026-11-04T18:08:52Z	JuruSysadmin	started	demo/Limpar-comentarios-do-Playercs.md	
+2026-11-04T18:09:22Z	JuruSysadmin	accepted	demo/Limpar-comentarios-do-Playercs.md	
+2026-11-04T18:09:22Z	JuruSysadmin	accepted	demo/Limpar-comentarios-do-Playercs.md	Player.cs sem XML-docs e comentários inline; nomes e fluxo se sustentam sozinhos.
+2026-11-04T18:11:45Z	JuruSysadmin	chore	demo/Simplificar-IsInstanceValid-no-Player.md	target=priority position=top
+2026-11-04T18:11:45Z	JuruSysadmin	started	demo/Simplificar-IsInstanceValid-no-Player.md	
+2026-11-04T18:11:50Z	JuruSysadmin	accepted	demo/Simplificar-IsInstanceValid-no-Player.md	
+2026-11-04T18:11:50Z	JuruSysadmin	accepted	demo/Simplificar-IsInstanceValid-no-Player.md	CanOrbitThirdPerson usa só IsInstanceValid; cobre null e nó liberado.
+2026-11-04T18:19:07Z	JuruSysadmin	accepted	demo/Limpar-comentarios-do-Playercs.md	
+2026-11-04T18:19:07Z	JuruSysadmin	accepted	demo/Simplificar-IsInstanceValid-no-Player.md	
+2026-11-04T18:42:33Z	JuruSysadmin	bug	demo/Player-contrato-de-input-e-dependencias-sem-fallback.md	target=priority position=top
+2026-11-04T18:42:33Z	JuruSysadmin	started	demo/Player-contrato-de-input-e-dependencias-sem-fallback.md	
+2026-11-04T18:50:12Z	JuruSysadmin	delivered	demo/Player-contrato-de-input-e-dependencias-sem-fallback.md	7 achados do review aplicados. Dois achados meus foram corrigidos no caminho: o contrato do InputLocked foi verificado com teste (e estava quebrado sem [Export]), e a remocao do set_follow_target que eu havia recomendado se mostrou errada — o teste pegou.
+2026-11-04T18:56:07Z	JuruSysadmin	chore	demo/Carregar-clips-Mixamo-sem-Instantiate-runtime.md	target=priority position=top
+2026-11-04T18:56:07Z	JuruSysadmin	started	demo/Carregar-clips-Mixamo-sem-Instantiate-runtime.md	
+2026-11-04T18:56:27Z	JuruSysadmin	accepted	demo/Player-contrato-de-input-e-dependencias-sem-fallback.md	Playtest do PM: jogo rodou apos as correcoes do review. InputLocked verificado por teste (Set/Get) e set_follow_target mantido com o motivo documentado.
+2026-11-04T18:58:01Z	JuruSysadmin	accepted	demo/Carregar-clips-Mixamo-sem-Instantiate-runtime.md	
+2026-11-04T18:58:01Z	JuruSysadmin	accepted	demo/Carregar-clips-Mixamo-sem-Instantiate-runtime.md	Clips idle/walk bakeados em player_clips.tres; runtime só Load AnimationLibrary (sem Instantiate FBX nem Duplicate duplo). Bake: tools/bake_mixamo_player_clips.gd
+2026-11-04T19:04:51Z	JuruSysadmin	chore	demo/Player-fail-fast-sem-fallback-Mixamo.md	target=priority position=top
+2026-11-04T19:04:51Z	JuruSysadmin	started	demo/Player-fail-fast-sem-fallback-Mixamo.md	
+2026-11-04T19:05:21Z	JuruSysadmin	accepted	demo/Player-fail-fast-sem-fallback-Mixamo.md	
+2026-11-04T19:05:21Z	JuruSysadmin	accepted	demo/Player-fail-fast-sem-fallback-Mixamo.md	Removido Load fallback de BibliotecaMixamo; GetNode obrigatório no AnimationPlayer; throw se export/clips ausentes.
+2026-11-04T19:05:49Z	JuruSysadmin	accepted	demo/Player-fail-fast-sem-fallback-Mixamo.md	
+2026-11-04T19:05:49Z	JuruSysadmin	accepted	demo/Carregar-clips-Mixamo-sem-Instantiate-runtime.md	
+2026-11-04T19:05:49Z	JuruSysadmin	accepted	demo/Player-com-BASEmodel-animado.md	

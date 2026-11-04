@@ -2,24 +2,28 @@
 title: Player com BASEmodel animado
 type: feature
 created: "2026-11-03T17:21:56Z"
-modified: "2026-11-03T17:21:56Z"
+modified: "2026-11-04T19:05:49Z"
 author: JuruSysadmin
-status: unstarted
+status: accepted
 estimate: "5"
 project: demo
+started: "2026-11-04T17:52:58Z"
+finished: "2026-11-04T17:55:34Z"
+delivered: "2026-11-04T17:55:34Z"
+accepted: "2026-11-04T19:05:49Z"
 ---
 
 ## What
 
-Trocar o mesh placeholder do player (cápsula/cilindro em `scenes/actors/player.tscn`) pelo `BASEmodel.blend`, usando as animações que o arquivo já traz.
+Trocar o mesh placeholder do player pela personagem Mixamo (`art/personagens/mixamo/walk.fbx`), com animação de walk no movimento.
 
 ## Done when
 
-- O blend está versionado sob `art/` (não solto na raiz)
-- O player na cena usa o modelo em vez da CapsuleMesh
-- Pelo menos idle + walk (ou o equivalente que o blend tiver) tocam no movimento
+- Modelo Mixamo versionado sob `art/personagens/mixamo/`
+- `player.tscn` usa o modelo no lugar da CapsuleMesh
+- Walk (`mixamo_com`) toca ao andar; para ao parar
 - Colisão/câmera continuam jogáveis
 
 ## Notes
 
-Asset já existe na raiz do repo (`BASEmodel.blend`) com animações. Prioridade acima do build exportado — a demo mostrável deve parecer personagem, não primitiva.
+Originalmente BASEmodel.blend (apagado). Substituído por Mixamo Walking With Skin. Idle ainda é pose de rest (sem clip idle separado).
